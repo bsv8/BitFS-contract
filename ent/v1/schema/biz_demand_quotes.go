@@ -37,6 +37,5 @@ func (BizDemandQuotes) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("demand_id", "seller_pub_hex").Unique(),
 		index.Fields("demand_id", "created_at_unix"),
-		index.Fields("demand_id", "seller_pub_hex").Unique(),
 	}
 }

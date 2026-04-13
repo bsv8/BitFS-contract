@@ -40,11 +40,9 @@ func (Orders) Fields() []ent.Field {
 
 func (Orders) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("order_type", "idempotency_key").Unique(),
-		index.Fields("order_type", "status", "updated_at_unix"),
-		index.Fields("target_object_type", "target_object_id"),
-		index.Fields("owner_pubkey_hex", "created_at_unix"),
-		index.Fields("status", "updated_at_unix"),
+		index.Fields("order_type", "status").StorageKey("idx_orders_type_status"),
+		index.Fields("target_object_type", "target_object_id").StorageKey("idx_orders_target"),
+		index.Fields("owner_pubkey_hex", "created_at_unix").StorageKey("idx_orders_owner"),
+		index.Fields("status", "updated_at_unix").StorageKey("idx_orders_status"),
 	}
 }
-

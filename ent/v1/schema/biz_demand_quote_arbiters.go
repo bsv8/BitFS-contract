@@ -28,6 +28,5 @@ func (BizDemandQuoteArbiters) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("quote_id", "arbiter_pub_hex").Unique(),
 		index.Fields("arbiter_pub_hex", "quote_id"),
-		index.Fields("quote_id", "arbiter_pub_hex").Unique(),
 	}
 }

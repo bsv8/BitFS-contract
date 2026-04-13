@@ -71,11 +71,6 @@ var (
 				Unique:  false,
 				Columns: []*schema.Column{BizDemandQuoteArbitersColumns[2], BizDemandQuoteArbitersColumns[1]},
 			},
-			{
-				Name:    "bizdemandquotearbiters_quote_id_arbiter_pub_hex",
-				Unique:  true,
-				Columns: []*schema.Column{BizDemandQuoteArbitersColumns[1], BizDemandQuoteArbitersColumns[2]},
-			},
 		},
 	}
 	// BizDemandQuotesColumns holds the columns for the "biz_demand_quotes" table.
@@ -109,11 +104,6 @@ var (
 				Unique:  false,
 				Columns: []*schema.Column{BizDemandQuotesColumns[1], BizDemandQuotesColumns[11]},
 			},
-			{
-				Name:    "bizdemandquotes_demand_id_seller_pub_hex",
-				Unique:  true,
-				Columns: []*schema.Column{BizDemandQuotesColumns[1], BizDemandQuotesColumns[2]},
-			},
 		},
 	}
 	// BizDemandsColumns holds the columns for the "biz_demands" table.
@@ -138,11 +128,6 @@ var (
 				Name:    "bizdemands_created_at_unix_id",
 				Unique:  false,
 				Columns: []*schema.Column{BizDemandsColumns[3], BizDemandsColumns[0]},
-			},
-			{
-				Name:    "bizdemands_demand_id",
-				Unique:  false,
-				Columns: []*schema.Column{BizDemandsColumns[1]},
 			},
 		},
 	}
@@ -332,11 +317,6 @@ var (
 				Unique:  true,
 				Columns: []*schema.Column{BizSeedChunkSupplyColumns[1], BizSeedChunkSupplyColumns[2]},
 			},
-			{
-				Name:    "bizseedchunksupply_seed_hash_chunk_index",
-				Unique:  false,
-				Columns: []*schema.Column{BizSeedChunkSupplyColumns[1], BizSeedChunkSupplyColumns[2]},
-			},
 		},
 	}
 	// BizSeedPricingPolicyColumns holds the columns for the "biz_seed_pricing_policy" table.
@@ -400,11 +380,6 @@ var (
 				Name:    "bizworkspacefiles_seed_hash_workspace_path_file_path",
 				Unique:  false,
 				Columns: []*schema.Column{BizWorkspaceFilesColumns[3], BizWorkspaceFilesColumns[1], BizWorkspaceFilesColumns[2]},
-			},
-			{
-				Name:    "bizworkspacefiles_workspace_path_file_path",
-				Unique:  false,
-				Columns: []*schema.Column{BizWorkspaceFilesColumns[1], BizWorkspaceFilesColumns[2]},
 			},
 		},
 	}
@@ -528,11 +503,6 @@ var (
 				Name:    "factbsvutxos_spent_by_txid_spent_at_unix",
 				Unique:  false,
 				Columns: []*schema.Column{FactBsvUtxosColumns[9], FactBsvUtxosColumns[12]},
-			},
-			{
-				Name:    "factbsvutxos_txid_vout",
-				Unique:  false,
-				Columns: []*schema.Column{FactBsvUtxosColumns[4], FactBsvUtxosColumns[5]},
 			},
 		},
 	}
@@ -1349,11 +1319,6 @@ var (
 			{
 				Name:    "procfiledownloadchunks_seed_hash_chunk_index",
 				Unique:  true,
-				Columns: []*schema.Column{ProcFileDownloadChunksColumns[1], ProcFileDownloadChunksColumns[2]},
-			},
-			{
-				Name:    "procfiledownloadchunks_seed_hash_chunk_index",
-				Unique:  false,
 				Columns: []*schema.Column{ProcFileDownloadChunksColumns[1], ProcFileDownloadChunksColumns[2]},
 			},
 		},

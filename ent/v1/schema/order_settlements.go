@@ -52,10 +52,9 @@ func (OrderSettlements) Fields() []ent.Field {
 func (OrderSettlements) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("order_id", "settlement_no").Unique(),
-		index.Fields("order_id", "created_at_unix"),
-		index.Fields("status", "updated_at_unix"),
-		index.Fields("settlement_method", "status", "updated_at_unix"),
-		index.Fields("target_type", "target_id"),
+		index.Fields("order_id", "created_at_unix").StorageKey("idx_order_settlements_order"),
+		index.Fields("status", "updated_at_unix").StorageKey("idx_order_settlements_status"),
+		index.Fields("settlement_method", "status", "updated_at_unix").StorageKey("idx_order_settlements_method"),
+		index.Fields("target_type", "target_id").StorageKey("idx_order_settlements_target"),
 	}
 }
-

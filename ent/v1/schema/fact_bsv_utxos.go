@@ -44,6 +44,5 @@ func (FactBsvUtxos) Indexes() []ent.Index {
 		index.Fields("owner_pubkey_hex", "carrier_type", "utxo_state", "updated_at_unix"),
 		index.Fields("owner_pubkey_hex", "utxo_state", "updated_at_unix"),
 		index.Fields("spent_by_txid", "spent_at_unix"),
-		index.Fields("txid", "vout"),
 	}
 }

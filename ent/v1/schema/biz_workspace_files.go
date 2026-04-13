@@ -31,6 +31,5 @@ func (BizWorkspaceFiles) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("workspace_path", "file_path").Unique(),
 		index.Fields("seed_hash", "workspace_path", "file_path"),
-		index.Fields("workspace_path", "file_path"),
 	}
 }

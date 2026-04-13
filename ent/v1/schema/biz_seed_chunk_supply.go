@@ -28,6 +28,5 @@ func (BizSeedChunkSupply) Fields() []ent.Field {
 func (BizSeedChunkSupply) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("seed_hash", "chunk_index").Unique(),
-		index.Fields("seed_hash", "chunk_index"),
 	}
 }

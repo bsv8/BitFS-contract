@@ -29,6 +29,5 @@ func (BizDemands) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("demand_id").Unique(),
 		index.Fields("created_at_unix", "id"),
-		index.Fields("demand_id"),
 	}
 }
