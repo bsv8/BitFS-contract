@@ -58,12 +58,16 @@ type Tx struct {
 	FactSettlementChannelPoolSessionQuotePay *FactSettlementChannelPoolSessionQuotePayClient
 	// FactSettlementCycles is the client for interacting with the FactSettlementCycles builders.
 	FactSettlementCycles *FactSettlementCyclesClient
+	// FactSettlementPaymentAttempts is the client for interacting with the FactSettlementPaymentAttempts builders.
+	FactSettlementPaymentAttempts *FactSettlementPaymentAttemptsClient
 	// FactSettlementRecords is the client for interacting with the FactSettlementRecords builders.
 	FactSettlementRecords *FactSettlementRecordsClient
 	// FactTokenCarrierLinks is the client for interacting with the FactTokenCarrierLinks builders.
 	FactTokenCarrierLinks *FactTokenCarrierLinksClient
 	// FactTokenLots is the client for interacting with the FactTokenLots builders.
 	FactTokenLots *FactTokenLotsClient
+	// OrderSettlementEvents is the client for interacting with the OrderSettlementEvents builders.
+	OrderSettlementEvents *OrderSettlementEventsClient
 	// OrderSettlements is the client for interacting with the OrderSettlements builders.
 	OrderSettlements *OrderSettlementsClient
 	// Orders is the client for interacting with the Orders builders.
@@ -274,9 +278,11 @@ func (tx *Tx) init() {
 	tx.FactSettlementChannelChainQuotePay = NewFactSettlementChannelChainQuotePayClient(tx.config)
 	tx.FactSettlementChannelPoolSessionQuotePay = NewFactSettlementChannelPoolSessionQuotePayClient(tx.config)
 	tx.FactSettlementCycles = NewFactSettlementCyclesClient(tx.config)
+	tx.FactSettlementPaymentAttempts = NewFactSettlementPaymentAttemptsClient(tx.config)
 	tx.FactSettlementRecords = NewFactSettlementRecordsClient(tx.config)
 	tx.FactTokenCarrierLinks = NewFactTokenCarrierLinksClient(tx.config)
 	tx.FactTokenLots = NewFactTokenLotsClient(tx.config)
+	tx.OrderSettlementEvents = NewOrderSettlementEventsClient(tx.config)
 	tx.OrderSettlements = NewOrderSettlementsClient(tx.config)
 	tx.Orders = NewOrdersClient(tx.config)
 	tx.ProcChainTipState = NewProcChainTipStateClient(tx.config)

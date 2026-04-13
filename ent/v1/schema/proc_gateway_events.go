@@ -31,9 +31,13 @@ func (ProcGatewayEvents) Fields() []ent.Field {
 	}
 }
 
+func (ProcGatewayEvents) Edges() []ent.Edge {
+	return nil
+}
+
 func (ProcGatewayEvents) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("command_id"),
+		index.Fields("command_id").StorageKey("idx_proc_gateway_events_cmd_id"),
 		index.Fields("created_at_unix"),
 	}
 }

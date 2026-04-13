@@ -4,6 +4,7 @@ package factsettlementchannelchaindirectpay
 
 import (
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -11,8 +12,8 @@ const (
 	Label = "fact_settlement_channel_chain_direct_pay"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldSettlementCycleID holds the string denoting the settlement_cycle_id field in the database.
-	FieldSettlementCycleID = "settlement_cycle_id"
+	// FieldSettlementPaymentAttemptID holds the string denoting the settlement_payment_attempt_id field in the database.
+	FieldSettlementPaymentAttemptID = "settlement_payment_attempt_id"
 	// FieldTxid holds the string denoting the txid field in the database.
 	FieldTxid = "txid"
 	// FieldPaymentSubtype holds the string denoting the payment_subtype field in the database.
@@ -41,14 +42,23 @@ const (
 	FieldPayloadJSON = "payload_json"
 	// FieldUpdatedAtUnix holds the string denoting the updated_at_unix field in the database.
 	FieldUpdatedAtUnix = "updated_at_unix"
+	// EdgeSettlementPaymentAttempt holds the string denoting the settlement_payment_attempt edge name in mutations.
+	EdgeSettlementPaymentAttempt = "settlement_payment_attempt"
 	// Table holds the table name of the factsettlementchannelchaindirectpay in the database.
 	Table = "fact_settlement_channel_chain_direct_pay"
+	// SettlementPaymentAttemptTable is the table that holds the settlement_payment_attempt relation/edge.
+	SettlementPaymentAttemptTable = "fact_settlement_channel_chain_direct_pay"
+	// SettlementPaymentAttemptInverseTable is the table name for the FactSettlementPaymentAttempts entity.
+	// It exists in this package in order to avoid circular dependency with the "factsettlementpaymentattempts" package.
+	SettlementPaymentAttemptInverseTable = "fact_settlement_payment_attempts"
+	// SettlementPaymentAttemptColumn is the table column denoting the settlement_payment_attempt relation/edge.
+	SettlementPaymentAttemptColumn = "settlement_payment_attempt_id"
 )
 
 // Columns holds all SQL columns for factsettlementchannelchaindirectpay fields.
 var Columns = []string{
 	FieldID,
-	FieldSettlementCycleID,
+	FieldSettlementPaymentAttemptID,
 	FieldTxid,
 	FieldPaymentSubtype,
 	FieldStatus,
@@ -90,9 +100,9 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// BySettlementCycleID orders the results by the settlement_cycle_id field.
-func BySettlementCycleID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldSettlementCycleID, opts...).ToFunc()
+// BySettlementPaymentAttemptID orders the results by the settlement_payment_attempt_id field.
+func BySettlementPaymentAttemptID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSettlementPaymentAttemptID, opts...).ToFunc()
 }
 
 // ByTxid orders the results by the txid field.
@@ -163,4 +173,18 @@ func ByPayloadJSON(opts ...sql.OrderTermOption) OrderOption {
 // ByUpdatedAtUnix orders the results by the updated_at_unix field.
 func ByUpdatedAtUnix(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAtUnix, opts...).ToFunc()
+}
+
+// BySettlementPaymentAttemptField orders the results by settlement_payment_attempt field.
+func BySettlementPaymentAttemptField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newSettlementPaymentAttemptStep(), sql.OrderByField(field, opts...))
+	}
+}
+func newSettlementPaymentAttemptStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(SettlementPaymentAttemptInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, SettlementPaymentAttemptTable, SettlementPaymentAttemptColumn),
+	)
 }

@@ -14,7 +14,12 @@ type ProcDomainEvents struct {
 }
 
 func (ProcDomainEvents) Annotations() []schema.Annotation {
-	return []schema.Annotation{entsql.Annotation{Table: "proc_domain_events"}}
+	return []schema.Annotation{
+		entsql.Annotation{
+			Table: "proc_domain_events",
+			Check: "trim(command_id) <> ''",
+		},
+	}
 }
 
 func (ProcDomainEvents) Fields() []ent.Field {
@@ -29,9 +34,13 @@ func (ProcDomainEvents) Fields() []ent.Field {
 	}
 }
 
+func (ProcDomainEvents) Edges() []ent.Edge {
+	return nil
+}
+
 func (ProcDomainEvents) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("command_id", "id"),
+		index.Fields("command_id", "id").StorageKey("idx_proc_domain_events_cmd_id"),
 		index.Fields("created_at_unix"),
 		index.Fields("gateway_pubkey_hex", "id"),
 	}

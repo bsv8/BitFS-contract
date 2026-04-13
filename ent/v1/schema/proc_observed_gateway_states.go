@@ -36,10 +36,10 @@ func (ProcObservedGatewayStates) Fields() []ent.Field {
 
 func (ProcObservedGatewayStates) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("created_at_unix"),
-		index.Fields("event_name", "id"),
-		index.Fields("gateway_pubkey_hex", "id"),
+		index.Fields("created_at_unix").StorageKey("idx_proc_observed_gateway_states_created_at"),
+		index.Fields("gateway_pubkey_hex", "id").StorageKey("idx_proc_observed_gateway_states_gateway"),
+		index.Fields("event_name", "id").StorageKey("idx_proc_observed_gateway_states_event"),
+		index.Fields("state_after", "id").StorageKey("idx_proc_observed_gateway_states_state"),
 		index.Fields("source_ref", "observed_at_unix", "id"),
-		index.Fields("state_after", "id"),
 	}
 }

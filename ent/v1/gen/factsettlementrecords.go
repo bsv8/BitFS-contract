@@ -8,6 +8,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementpaymentattempts"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementrecords"
 )
 
@@ -18,8 +19,8 @@ type FactSettlementRecords struct {
 	ID int `json:"id,omitempty"`
 	// RecordID holds the value of the "record_id" field.
 	RecordID string `json:"record_id,omitempty"`
-	// SettlementCycleID holds the value of the "settlement_cycle_id" field.
-	SettlementCycleID int64 `json:"settlement_cycle_id,omitempty"`
+	// SettlementPaymentAttemptID holds the value of the "settlement_payment_attempt_id" field.
+	SettlementPaymentAttemptID int64 `json:"settlement_payment_attempt_id,omitempty"`
 	// AssetType holds the value of the "asset_type" field.
 	AssetType string `json:"asset_type,omitempty"`
 	// OwnerPubkeyHex holds the value of the "owner_pubkey_hex" field.
@@ -41,8 +42,31 @@ type FactSettlementRecords struct {
 	// Note holds the value of the "note" field.
 	Note string `json:"note,omitempty"`
 	// PayloadJSON holds the value of the "payload_json" field.
-	PayloadJSON  string `json:"payload_json,omitempty"`
+	PayloadJSON string `json:"payload_json,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the FactSettlementRecordsQuery when eager-loading is set.
+	Edges        FactSettlementRecordsEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// FactSettlementRecordsEdges holds the relations/edges for other nodes in the graph.
+type FactSettlementRecordsEdges struct {
+	// SettlementPaymentAttempt holds the value of the settlement_payment_attempt edge.
+	SettlementPaymentAttempt *FactSettlementPaymentAttempts `json:"settlement_payment_attempt,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// SettlementPaymentAttemptOrErr returns the SettlementPaymentAttempt value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e FactSettlementRecordsEdges) SettlementPaymentAttemptOrErr() (*FactSettlementPaymentAttempts, error) {
+	if e.SettlementPaymentAttempt != nil {
+		return e.SettlementPaymentAttempt, nil
+	} else if e.loadedTypes[0] {
+		return nil, &NotFoundError{label: factsettlementpaymentattempts.Label}
+	}
+	return nil, &NotLoadedError{edge: "settlement_payment_attempt"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -50,7 +74,7 @@ func (*FactSettlementRecords) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case factsettlementrecords.FieldID, factsettlementrecords.FieldSettlementCycleID, factsettlementrecords.FieldUsedSatoshi, factsettlementrecords.FieldOccurredAtUnix, factsettlementrecords.FieldConfirmedAtUnix:
+		case factsettlementrecords.FieldID, factsettlementrecords.FieldSettlementPaymentAttemptID, factsettlementrecords.FieldUsedSatoshi, factsettlementrecords.FieldOccurredAtUnix, factsettlementrecords.FieldConfirmedAtUnix:
 			values[i] = new(sql.NullInt64)
 		case factsettlementrecords.FieldRecordID, factsettlementrecords.FieldAssetType, factsettlementrecords.FieldOwnerPubkeyHex, factsettlementrecords.FieldSourceUtxoID, factsettlementrecords.FieldSourceLotID, factsettlementrecords.FieldUsedQuantityText, factsettlementrecords.FieldState, factsettlementrecords.FieldNote, factsettlementrecords.FieldPayloadJSON:
 			values[i] = new(sql.NullString)
@@ -81,11 +105,11 @@ func (_m *FactSettlementRecords) assignValues(columns []string, values []any) er
 			} else if value.Valid {
 				_m.RecordID = value.String
 			}
-		case factsettlementrecords.FieldSettlementCycleID:
+		case factsettlementrecords.FieldSettlementPaymentAttemptID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field settlement_cycle_id", values[i])
+				return fmt.Errorf("unexpected type %T for field settlement_payment_attempt_id", values[i])
 			} else if value.Valid {
-				_m.SettlementCycleID = value.Int64
+				_m.SettlementPaymentAttemptID = value.Int64
 			}
 		case factsettlementrecords.FieldAssetType:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -166,6 +190,11 @@ func (_m *FactSettlementRecords) Value(name string) (ent.Value, error) {
 	return _m.selectValues.Get(name)
 }
 
+// QuerySettlementPaymentAttempt queries the "settlement_payment_attempt" edge of the FactSettlementRecords entity.
+func (_m *FactSettlementRecords) QuerySettlementPaymentAttempt() *FactSettlementPaymentAttemptsQuery {
+	return NewFactSettlementRecordsClient(_m.config).QuerySettlementPaymentAttempt(_m)
+}
+
 // Update returns a builder for updating this FactSettlementRecords.
 // Note that you need to call FactSettlementRecords.Unwrap() before calling this method if this FactSettlementRecords
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -192,8 +221,8 @@ func (_m *FactSettlementRecords) String() string {
 	builder.WriteString("record_id=")
 	builder.WriteString(_m.RecordID)
 	builder.WriteString(", ")
-	builder.WriteString("settlement_cycle_id=")
-	builder.WriteString(fmt.Sprintf("%v", _m.SettlementCycleID))
+	builder.WriteString("settlement_payment_attempt_id=")
+	builder.WriteString(fmt.Sprintf("%v", _m.SettlementPaymentAttemptID))
 	builder.WriteString(", ")
 	builder.WriteString("asset_type=")
 	builder.WriteString(_m.AssetType)

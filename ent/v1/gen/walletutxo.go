@@ -30,6 +30,12 @@ type WalletUtxo struct {
 	ValueSatoshi int64 `json:"value_satoshi,omitempty"`
 	// State holds the value of the "state" field.
 	State string `json:"state,omitempty"`
+	// ScriptType holds the value of the "script_type" field.
+	ScriptType string `json:"script_type,omitempty"`
+	// ScriptTypeReason holds the value of the "script_type_reason" field.
+	ScriptTypeReason string `json:"script_type_reason,omitempty"`
+	// ScriptTypeUpdatedAtUnix holds the value of the "script_type_updated_at_unix" field.
+	ScriptTypeUpdatedAtUnix int64 `json:"script_type_updated_at_unix,omitempty"`
 	// AllocationClass holds the value of the "allocation_class" field.
 	AllocationClass string `json:"allocation_class,omitempty"`
 	// AllocationReason holds the value of the "allocation_reason" field.
@@ -52,9 +58,9 @@ func (*WalletUtxo) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case walletutxo.FieldID, walletutxo.FieldVout, walletutxo.FieldValueSatoshi, walletutxo.FieldCreatedAtUnix, walletutxo.FieldUpdatedAtUnix, walletutxo.FieldSpentAtUnix:
+		case walletutxo.FieldID, walletutxo.FieldVout, walletutxo.FieldValueSatoshi, walletutxo.FieldScriptTypeUpdatedAtUnix, walletutxo.FieldCreatedAtUnix, walletutxo.FieldUpdatedAtUnix, walletutxo.FieldSpentAtUnix:
 			values[i] = new(sql.NullInt64)
-		case walletutxo.FieldUtxoID, walletutxo.FieldWalletID, walletutxo.FieldAddress, walletutxo.FieldTxid, walletutxo.FieldState, walletutxo.FieldAllocationClass, walletutxo.FieldAllocationReason, walletutxo.FieldCreatedTxid, walletutxo.FieldSpentTxid:
+		case walletutxo.FieldUtxoID, walletutxo.FieldWalletID, walletutxo.FieldAddress, walletutxo.FieldTxid, walletutxo.FieldState, walletutxo.FieldScriptType, walletutxo.FieldScriptTypeReason, walletutxo.FieldAllocationClass, walletutxo.FieldAllocationReason, walletutxo.FieldCreatedTxid, walletutxo.FieldSpentTxid:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -118,6 +124,24 @@ func (_m *WalletUtxo) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field state", values[i])
 			} else if value.Valid {
 				_m.State = value.String
+			}
+		case walletutxo.FieldScriptType:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field script_type", values[i])
+			} else if value.Valid {
+				_m.ScriptType = value.String
+			}
+		case walletutxo.FieldScriptTypeReason:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field script_type_reason", values[i])
+			} else if value.Valid {
+				_m.ScriptTypeReason = value.String
+			}
+		case walletutxo.FieldScriptTypeUpdatedAtUnix:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field script_type_updated_at_unix", values[i])
+			} else if value.Valid {
+				_m.ScriptTypeUpdatedAtUnix = value.Int64
 			}
 		case walletutxo.FieldAllocationClass:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -217,6 +241,15 @@ func (_m *WalletUtxo) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("state=")
 	builder.WriteString(_m.State)
+	builder.WriteString(", ")
+	builder.WriteString("script_type=")
+	builder.WriteString(_m.ScriptType)
+	builder.WriteString(", ")
+	builder.WriteString("script_type_reason=")
+	builder.WriteString(_m.ScriptTypeReason)
+	builder.WriteString(", ")
+	builder.WriteString("script_type_updated_at_unix=")
+	builder.WriteString(fmt.Sprintf("%v", _m.ScriptTypeUpdatedAtUnix))
 	builder.WriteString(", ")
 	builder.WriteString("allocation_class=")
 	builder.WriteString(_m.AllocationClass)

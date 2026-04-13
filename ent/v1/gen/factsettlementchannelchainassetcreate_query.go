@@ -12,16 +12,18 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelchainassetcreate"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementpaymentattempts"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/predicate"
 )
 
 // FactSettlementChannelChainAssetCreateQuery is the builder for querying FactSettlementChannelChainAssetCreate entities.
 type FactSettlementChannelChainAssetCreateQuery struct {
 	config
-	ctx        *QueryContext
-	order      []factsettlementchannelchainassetcreate.OrderOption
-	inters     []Interceptor
-	predicates []predicate.FactSettlementChannelChainAssetCreate
+	ctx                          *QueryContext
+	order                        []factsettlementchannelchainassetcreate.OrderOption
+	inters                       []Interceptor
+	predicates                   []predicate.FactSettlementChannelChainAssetCreate
+	withSettlementPaymentAttempt *FactSettlementPaymentAttemptsQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -56,6 +58,28 @@ func (_q *FactSettlementChannelChainAssetCreateQuery) Unique(unique bool) *FactS
 func (_q *FactSettlementChannelChainAssetCreateQuery) Order(o ...factsettlementchannelchainassetcreate.OrderOption) *FactSettlementChannelChainAssetCreateQuery {
 	_q.order = append(_q.order, o...)
 	return _q
+}
+
+// QuerySettlementPaymentAttempt chains the current query on the "settlement_payment_attempt" edge.
+func (_q *FactSettlementChannelChainAssetCreateQuery) QuerySettlementPaymentAttempt() *FactSettlementPaymentAttemptsQuery {
+	query := (&FactSettlementPaymentAttemptsClient{config: _q.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := _q.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := _q.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(factsettlementchannelchainassetcreate.Table, factsettlementchannelchainassetcreate.FieldID, selector),
+			sqlgraph.To(factsettlementpaymentattempts.Table, factsettlementpaymentattempts.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, factsettlementchannelchainassetcreate.SettlementPaymentAttemptTable, factsettlementchannelchainassetcreate.SettlementPaymentAttemptColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first FactSettlementChannelChainAssetCreate entity from the query.
@@ -245,15 +269,27 @@ func (_q *FactSettlementChannelChainAssetCreateQuery) Clone() *FactSettlementCha
 		return nil
 	}
 	return &FactSettlementChannelChainAssetCreateQuery{
-		config:     _q.config,
-		ctx:        _q.ctx.Clone(),
-		order:      append([]factsettlementchannelchainassetcreate.OrderOption{}, _q.order...),
-		inters:     append([]Interceptor{}, _q.inters...),
-		predicates: append([]predicate.FactSettlementChannelChainAssetCreate{}, _q.predicates...),
+		config:                       _q.config,
+		ctx:                          _q.ctx.Clone(),
+		order:                        append([]factsettlementchannelchainassetcreate.OrderOption{}, _q.order...),
+		inters:                       append([]Interceptor{}, _q.inters...),
+		predicates:                   append([]predicate.FactSettlementChannelChainAssetCreate{}, _q.predicates...),
+		withSettlementPaymentAttempt: _q.withSettlementPaymentAttempt.Clone(),
 		// clone intermediate query.
 		sql:  _q.sql.Clone(),
 		path: _q.path,
 	}
+}
+
+// WithSettlementPaymentAttempt tells the query-builder to eager-load the nodes that are connected to
+// the "settlement_payment_attempt" edge. The optional arguments are used to configure the query builder of the edge.
+func (_q *FactSettlementChannelChainAssetCreateQuery) WithSettlementPaymentAttempt(opts ...func(*FactSettlementPaymentAttemptsQuery)) *FactSettlementChannelChainAssetCreateQuery {
+	query := (&FactSettlementPaymentAttemptsClient{config: _q.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	_q.withSettlementPaymentAttempt = query
+	return _q
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -262,12 +298,12 @@ func (_q *FactSettlementChannelChainAssetCreateQuery) Clone() *FactSettlementCha
 // Example:
 //
 //	var v []struct {
-//		SettlementCycleID int64 `json:"settlement_cycle_id,omitempty"`
+//		SettlementPaymentAttemptID int64 `json:"settlement_payment_attempt_id,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.FactSettlementChannelChainAssetCreate.Query().
-//		GroupBy(factsettlementchannelchainassetcreate.FieldSettlementCycleID).
+//		GroupBy(factsettlementchannelchainassetcreate.FieldSettlementPaymentAttemptID).
 //		Aggregate(gen.Count()).
 //		Scan(ctx, &v)
 func (_q *FactSettlementChannelChainAssetCreateQuery) GroupBy(field string, fields ...string) *FactSettlementChannelChainAssetCreateGroupBy {
@@ -285,11 +321,11 @@ func (_q *FactSettlementChannelChainAssetCreateQuery) GroupBy(field string, fiel
 // Example:
 //
 //	var v []struct {
-//		SettlementCycleID int64 `json:"settlement_cycle_id,omitempty"`
+//		SettlementPaymentAttemptID int64 `json:"settlement_payment_attempt_id,omitempty"`
 //	}
 //
 //	client.FactSettlementChannelChainAssetCreate.Query().
-//		Select(factsettlementchannelchainassetcreate.FieldSettlementCycleID).
+//		Select(factsettlementchannelchainassetcreate.FieldSettlementPaymentAttemptID).
 //		Scan(ctx, &v)
 func (_q *FactSettlementChannelChainAssetCreateQuery) Select(fields ...string) *FactSettlementChannelChainAssetCreateSelect {
 	_q.ctx.Fields = append(_q.ctx.Fields, fields...)
@@ -332,8 +368,11 @@ func (_q *FactSettlementChannelChainAssetCreateQuery) prepareQuery(ctx context.C
 
 func (_q *FactSettlementChannelChainAssetCreateQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*FactSettlementChannelChainAssetCreate, error) {
 	var (
-		nodes = []*FactSettlementChannelChainAssetCreate{}
-		_spec = _q.querySpec()
+		nodes       = []*FactSettlementChannelChainAssetCreate{}
+		_spec       = _q.querySpec()
+		loadedTypes = [1]bool{
+			_q.withSettlementPaymentAttempt != nil,
+		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*FactSettlementChannelChainAssetCreate).scanValues(nil, columns)
@@ -341,6 +380,7 @@ func (_q *FactSettlementChannelChainAssetCreateQuery) sqlAll(ctx context.Context
 	_spec.Assign = func(columns []string, values []any) error {
 		node := &FactSettlementChannelChainAssetCreate{config: _q.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	for i := range hooks {
@@ -352,7 +392,45 @@ func (_q *FactSettlementChannelChainAssetCreateQuery) sqlAll(ctx context.Context
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := _q.withSettlementPaymentAttempt; query != nil {
+		if err := _q.loadSettlementPaymentAttempt(ctx, query, nodes, nil,
+			func(n *FactSettlementChannelChainAssetCreate, e *FactSettlementPaymentAttempts) {
+				n.Edges.SettlementPaymentAttempt = e
+			}); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
+}
+
+func (_q *FactSettlementChannelChainAssetCreateQuery) loadSettlementPaymentAttempt(ctx context.Context, query *FactSettlementPaymentAttemptsQuery, nodes []*FactSettlementChannelChainAssetCreate, init func(*FactSettlementChannelChainAssetCreate), assign func(*FactSettlementChannelChainAssetCreate, *FactSettlementPaymentAttempts)) error {
+	ids := make([]int64, 0, len(nodes))
+	nodeids := make(map[int64][]*FactSettlementChannelChainAssetCreate)
+	for i := range nodes {
+		fk := nodes[i].SettlementPaymentAttemptID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(factsettlementpaymentattempts.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "settlement_payment_attempt_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
 }
 
 func (_q *FactSettlementChannelChainAssetCreateQuery) sqlCount(ctx context.Context) (int, error) {
@@ -379,6 +457,9 @@ func (_q *FactSettlementChannelChainAssetCreateQuery) querySpec() *sqlgraph.Quer
 			if fields[i] != factsettlementchannelchainassetcreate.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
+		}
+		if _q.withSettlementPaymentAttempt != nil {
+			_spec.Node.AddColumnOnce(factsettlementchannelchainassetcreate.FieldSettlementPaymentAttemptID)
 		}
 	}
 	if ps := _q.predicates; len(ps) > 0 {

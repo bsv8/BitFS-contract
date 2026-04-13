@@ -14,7 +14,10 @@ type FactTokenCarrierLinks struct {
 }
 
 func (FactTokenCarrierLinks) Annotations() []schema.Annotation {
-	return []schema.Annotation{entsql.Annotation{Table: "fact_token_carrier_links"}}
+	return []schema.Annotation{entsql.Annotation{
+		Table: "fact_token_carrier_links",
+		Check: "link_state IN ('active','released','moved')",
+	}}
 }
 
 func (FactTokenCarrierLinks) Fields() []ent.Field {

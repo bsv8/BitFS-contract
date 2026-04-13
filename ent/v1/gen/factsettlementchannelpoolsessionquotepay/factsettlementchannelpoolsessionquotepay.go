@@ -4,6 +4,7 @@ package factsettlementchannelpoolsessionquotepay
 
 import (
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -11,8 +12,8 @@ const (
 	Label = "fact_settlement_channel_pool_session_quote_pay"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldSettlementCycleID holds the string denoting the settlement_cycle_id field in the database.
-	FieldSettlementCycleID = "settlement_cycle_id"
+	// FieldSettlementPaymentAttemptID holds the string denoting the settlement_payment_attempt_id field in the database.
+	FieldSettlementPaymentAttemptID = "settlement_payment_attempt_id"
 	// FieldPoolSessionID holds the string denoting the pool_session_id field in the database.
 	FieldPoolSessionID = "pool_session_id"
 	// FieldTxid holds the string denoting the txid field in the database.
@@ -43,14 +44,23 @@ const (
 	FieldCreatedAtUnix = "created_at_unix"
 	// FieldUpdatedAtUnix holds the string denoting the updated_at_unix field in the database.
 	FieldUpdatedAtUnix = "updated_at_unix"
+	// EdgeSettlementPaymentAttempt holds the string denoting the settlement_payment_attempt edge name in mutations.
+	EdgeSettlementPaymentAttempt = "settlement_payment_attempt"
 	// Table holds the table name of the factsettlementchannelpoolsessionquotepay in the database.
 	Table = "fact_settlement_channel_pool_session_quote_pay"
+	// SettlementPaymentAttemptTable is the table that holds the settlement_payment_attempt relation/edge.
+	SettlementPaymentAttemptTable = "fact_settlement_channel_pool_session_quote_pay"
+	// SettlementPaymentAttemptInverseTable is the table name for the FactSettlementPaymentAttempts entity.
+	// It exists in this package in order to avoid circular dependency with the "factsettlementpaymentattempts" package.
+	SettlementPaymentAttemptInverseTable = "fact_settlement_payment_attempts"
+	// SettlementPaymentAttemptColumn is the table column denoting the settlement_payment_attempt relation/edge.
+	SettlementPaymentAttemptColumn = "settlement_payment_attempt_id"
 )
 
 // Columns holds all SQL columns for factsettlementchannelpoolsessionquotepay fields.
 var Columns = []string{
 	FieldID,
-	FieldSettlementCycleID,
+	FieldSettlementPaymentAttemptID,
 	FieldPoolSessionID,
 	FieldTxid,
 	FieldPoolScheme,
@@ -105,9 +115,9 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// BySettlementCycleID orders the results by the settlement_cycle_id field.
-func BySettlementCycleID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldSettlementCycleID, opts...).ToFunc()
+// BySettlementPaymentAttemptID orders the results by the settlement_payment_attempt_id field.
+func BySettlementPaymentAttemptID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSettlementPaymentAttemptID, opts...).ToFunc()
 }
 
 // ByPoolSessionID orders the results by the pool_session_id field.
@@ -183,4 +193,18 @@ func ByCreatedAtUnix(opts ...sql.OrderTermOption) OrderOption {
 // ByUpdatedAtUnix orders the results by the updated_at_unix field.
 func ByUpdatedAtUnix(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAtUnix, opts...).ToFunc()
+}
+
+// BySettlementPaymentAttemptField orders the results by settlement_payment_attempt field.
+func BySettlementPaymentAttemptField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newSettlementPaymentAttemptStep(), sql.OrderByField(field, opts...))
+	}
+}
+func newSettlementPaymentAttemptStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(SettlementPaymentAttemptInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, SettlementPaymentAttemptTable, SettlementPaymentAttemptColumn),
+	)
 }

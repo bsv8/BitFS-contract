@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelchaindirectpay"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementpaymentattempts"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/predicate"
 )
 
@@ -27,24 +28,17 @@ func (_u *FactSettlementChannelChainDirectPayUpdate) Where(ps ...predicate.FactS
 	return _u
 }
 
-// SetSettlementCycleID sets the "settlement_cycle_id" field.
-func (_u *FactSettlementChannelChainDirectPayUpdate) SetSettlementCycleID(v int64) *FactSettlementChannelChainDirectPayUpdate {
-	_u.mutation.ResetSettlementCycleID()
-	_u.mutation.SetSettlementCycleID(v)
+// SetSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field.
+func (_u *FactSettlementChannelChainDirectPayUpdate) SetSettlementPaymentAttemptID(v int64) *FactSettlementChannelChainDirectPayUpdate {
+	_u.mutation.SetSettlementPaymentAttemptID(v)
 	return _u
 }
 
-// SetNillableSettlementCycleID sets the "settlement_cycle_id" field if the given value is not nil.
-func (_u *FactSettlementChannelChainDirectPayUpdate) SetNillableSettlementCycleID(v *int64) *FactSettlementChannelChainDirectPayUpdate {
+// SetNillableSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field if the given value is not nil.
+func (_u *FactSettlementChannelChainDirectPayUpdate) SetNillableSettlementPaymentAttemptID(v *int64) *FactSettlementChannelChainDirectPayUpdate {
 	if v != nil {
-		_u.SetSettlementCycleID(*v)
+		_u.SetSettlementPaymentAttemptID(*v)
 	}
-	return _u
-}
-
-// AddSettlementCycleID adds value to the "settlement_cycle_id" field.
-func (_u *FactSettlementChannelChainDirectPayUpdate) AddSettlementCycleID(v int64) *FactSettlementChannelChainDirectPayUpdate {
-	_u.mutation.AddSettlementCycleID(v)
 	return _u
 }
 
@@ -300,9 +294,20 @@ func (_u *FactSettlementChannelChainDirectPayUpdate) AddUpdatedAtUnix(v int64) *
 	return _u
 }
 
+// SetSettlementPaymentAttempt sets the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (_u *FactSettlementChannelChainDirectPayUpdate) SetSettlementPaymentAttempt(v *FactSettlementPaymentAttempts) *FactSettlementChannelChainDirectPayUpdate {
+	return _u.SetSettlementPaymentAttemptID(v.ID)
+}
+
 // Mutation returns the FactSettlementChannelChainDirectPayMutation object of the builder.
 func (_u *FactSettlementChannelChainDirectPayUpdate) Mutation() *FactSettlementChannelChainDirectPayMutation {
 	return _u.mutation
+}
+
+// ClearSettlementPaymentAttempt clears the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (_u *FactSettlementChannelChainDirectPayUpdate) ClearSettlementPaymentAttempt() *FactSettlementChannelChainDirectPayUpdate {
+	_u.mutation.ClearSettlementPaymentAttempt()
+	return _u
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -332,7 +337,18 @@ func (_u *FactSettlementChannelChainDirectPayUpdate) ExecX(ctx context.Context) 
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (_u *FactSettlementChannelChainDirectPayUpdate) check() error {
+	if _u.mutation.SettlementPaymentAttemptCleared() && len(_u.mutation.SettlementPaymentAttemptIDs()) > 0 {
+		return errors.New(`gen: clearing a required unique edge "FactSettlementChannelChainDirectPay.settlement_payment_attempt"`)
+	}
+	return nil
+}
+
 func (_u *FactSettlementChannelChainDirectPayUpdate) sqlSave(ctx context.Context) (_node int, err error) {
+	if err := _u.check(); err != nil {
+		return _node, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(factsettlementchannelchaindirectpay.Table, factsettlementchannelchaindirectpay.Columns, sqlgraph.NewFieldSpec(factsettlementchannelchaindirectpay.FieldID, field.TypeInt))
 	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -340,12 +356,6 @@ func (_u *FactSettlementChannelChainDirectPayUpdate) sqlSave(ctx context.Context
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := _u.mutation.SettlementCycleID(); ok {
-		_spec.SetField(factsettlementchannelchaindirectpay.FieldSettlementCycleID, field.TypeInt64, value)
-	}
-	if value, ok := _u.mutation.AddedSettlementCycleID(); ok {
-		_spec.AddField(factsettlementchannelchaindirectpay.FieldSettlementCycleID, field.TypeInt64, value)
 	}
 	if value, ok := _u.mutation.Txid(); ok {
 		_spec.SetField(factsettlementchannelchaindirectpay.FieldTxid, field.TypeString, value)
@@ -413,6 +423,35 @@ func (_u *FactSettlementChannelChainDirectPayUpdate) sqlSave(ctx context.Context
 	if value, ok := _u.mutation.AddedUpdatedAtUnix(); ok {
 		_spec.AddField(factsettlementchannelchaindirectpay.FieldUpdatedAtUnix, field.TypeInt64, value)
 	}
+	if _u.mutation.SettlementPaymentAttemptCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   factsettlementchannelchaindirectpay.SettlementPaymentAttemptTable,
+			Columns: []string{factsettlementchannelchaindirectpay.SettlementPaymentAttemptColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(factsettlementpaymentattempts.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.SettlementPaymentAttemptIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   factsettlementchannelchaindirectpay.SettlementPaymentAttemptTable,
+			Columns: []string{factsettlementchannelchaindirectpay.SettlementPaymentAttemptColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(factsettlementpaymentattempts.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{factsettlementchannelchaindirectpay.Label}
@@ -433,24 +472,17 @@ type FactSettlementChannelChainDirectPayUpdateOne struct {
 	mutation *FactSettlementChannelChainDirectPayMutation
 }
 
-// SetSettlementCycleID sets the "settlement_cycle_id" field.
-func (_u *FactSettlementChannelChainDirectPayUpdateOne) SetSettlementCycleID(v int64) *FactSettlementChannelChainDirectPayUpdateOne {
-	_u.mutation.ResetSettlementCycleID()
-	_u.mutation.SetSettlementCycleID(v)
+// SetSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field.
+func (_u *FactSettlementChannelChainDirectPayUpdateOne) SetSettlementPaymentAttemptID(v int64) *FactSettlementChannelChainDirectPayUpdateOne {
+	_u.mutation.SetSettlementPaymentAttemptID(v)
 	return _u
 }
 
-// SetNillableSettlementCycleID sets the "settlement_cycle_id" field if the given value is not nil.
-func (_u *FactSettlementChannelChainDirectPayUpdateOne) SetNillableSettlementCycleID(v *int64) *FactSettlementChannelChainDirectPayUpdateOne {
+// SetNillableSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field if the given value is not nil.
+func (_u *FactSettlementChannelChainDirectPayUpdateOne) SetNillableSettlementPaymentAttemptID(v *int64) *FactSettlementChannelChainDirectPayUpdateOne {
 	if v != nil {
-		_u.SetSettlementCycleID(*v)
+		_u.SetSettlementPaymentAttemptID(*v)
 	}
-	return _u
-}
-
-// AddSettlementCycleID adds value to the "settlement_cycle_id" field.
-func (_u *FactSettlementChannelChainDirectPayUpdateOne) AddSettlementCycleID(v int64) *FactSettlementChannelChainDirectPayUpdateOne {
-	_u.mutation.AddSettlementCycleID(v)
 	return _u
 }
 
@@ -706,9 +738,20 @@ func (_u *FactSettlementChannelChainDirectPayUpdateOne) AddUpdatedAtUnix(v int64
 	return _u
 }
 
+// SetSettlementPaymentAttempt sets the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (_u *FactSettlementChannelChainDirectPayUpdateOne) SetSettlementPaymentAttempt(v *FactSettlementPaymentAttempts) *FactSettlementChannelChainDirectPayUpdateOne {
+	return _u.SetSettlementPaymentAttemptID(v.ID)
+}
+
 // Mutation returns the FactSettlementChannelChainDirectPayMutation object of the builder.
 func (_u *FactSettlementChannelChainDirectPayUpdateOne) Mutation() *FactSettlementChannelChainDirectPayMutation {
 	return _u.mutation
+}
+
+// ClearSettlementPaymentAttempt clears the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (_u *FactSettlementChannelChainDirectPayUpdateOne) ClearSettlementPaymentAttempt() *FactSettlementChannelChainDirectPayUpdateOne {
+	_u.mutation.ClearSettlementPaymentAttempt()
+	return _u
 }
 
 // Where appends a list predicates to the FactSettlementChannelChainDirectPayUpdate builder.
@@ -751,7 +794,18 @@ func (_u *FactSettlementChannelChainDirectPayUpdateOne) ExecX(ctx context.Contex
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (_u *FactSettlementChannelChainDirectPayUpdateOne) check() error {
+	if _u.mutation.SettlementPaymentAttemptCleared() && len(_u.mutation.SettlementPaymentAttemptIDs()) > 0 {
+		return errors.New(`gen: clearing a required unique edge "FactSettlementChannelChainDirectPay.settlement_payment_attempt"`)
+	}
+	return nil
+}
+
 func (_u *FactSettlementChannelChainDirectPayUpdateOne) sqlSave(ctx context.Context) (_node *FactSettlementChannelChainDirectPay, err error) {
+	if err := _u.check(); err != nil {
+		return _node, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(factsettlementchannelchaindirectpay.Table, factsettlementchannelchaindirectpay.Columns, sqlgraph.NewFieldSpec(factsettlementchannelchaindirectpay.FieldID, field.TypeInt))
 	id, ok := _u.mutation.ID()
 	if !ok {
@@ -776,12 +830,6 @@ func (_u *FactSettlementChannelChainDirectPayUpdateOne) sqlSave(ctx context.Cont
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := _u.mutation.SettlementCycleID(); ok {
-		_spec.SetField(factsettlementchannelchaindirectpay.FieldSettlementCycleID, field.TypeInt64, value)
-	}
-	if value, ok := _u.mutation.AddedSettlementCycleID(); ok {
-		_spec.AddField(factsettlementchannelchaindirectpay.FieldSettlementCycleID, field.TypeInt64, value)
 	}
 	if value, ok := _u.mutation.Txid(); ok {
 		_spec.SetField(factsettlementchannelchaindirectpay.FieldTxid, field.TypeString, value)
@@ -848,6 +896,35 @@ func (_u *FactSettlementChannelChainDirectPayUpdateOne) sqlSave(ctx context.Cont
 	}
 	if value, ok := _u.mutation.AddedUpdatedAtUnix(); ok {
 		_spec.AddField(factsettlementchannelchaindirectpay.FieldUpdatedAtUnix, field.TypeInt64, value)
+	}
+	if _u.mutation.SettlementPaymentAttemptCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   factsettlementchannelchaindirectpay.SettlementPaymentAttemptTable,
+			Columns: []string{factsettlementchannelchaindirectpay.SettlementPaymentAttemptColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(factsettlementpaymentattempts.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.SettlementPaymentAttemptIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   factsettlementchannelchaindirectpay.SettlementPaymentAttemptTable,
+			Columns: []string{factsettlementchannelchaindirectpay.SettlementPaymentAttemptColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(factsettlementpaymentattempts.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &FactSettlementChannelChainDirectPay{config: _u.config}
 	_spec.Assign = _node.assignValues

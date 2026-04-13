@@ -4,6 +4,7 @@ package factsettlementrecords
 
 import (
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/predicate"
 )
 
@@ -57,9 +58,9 @@ func RecordID(v string) predicate.FactSettlementRecords {
 	return predicate.FactSettlementRecords(sql.FieldEQ(FieldRecordID, v))
 }
 
-// SettlementCycleID applies equality check predicate on the "settlement_cycle_id" field. It's identical to SettlementCycleIDEQ.
-func SettlementCycleID(v int64) predicate.FactSettlementRecords {
-	return predicate.FactSettlementRecords(sql.FieldEQ(FieldSettlementCycleID, v))
+// SettlementPaymentAttemptID applies equality check predicate on the "settlement_payment_attempt_id" field. It's identical to SettlementPaymentAttemptIDEQ.
+func SettlementPaymentAttemptID(v int64) predicate.FactSettlementRecords {
+	return predicate.FactSettlementRecords(sql.FieldEQ(FieldSettlementPaymentAttemptID, v))
 }
 
 // AssetType applies equality check predicate on the "asset_type" field. It's identical to AssetTypeEQ.
@@ -182,44 +183,24 @@ func RecordIDContainsFold(v string) predicate.FactSettlementRecords {
 	return predicate.FactSettlementRecords(sql.FieldContainsFold(FieldRecordID, v))
 }
 
-// SettlementCycleIDEQ applies the EQ predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDEQ(v int64) predicate.FactSettlementRecords {
-	return predicate.FactSettlementRecords(sql.FieldEQ(FieldSettlementCycleID, v))
+// SettlementPaymentAttemptIDEQ applies the EQ predicate on the "settlement_payment_attempt_id" field.
+func SettlementPaymentAttemptIDEQ(v int64) predicate.FactSettlementRecords {
+	return predicate.FactSettlementRecords(sql.FieldEQ(FieldSettlementPaymentAttemptID, v))
 }
 
-// SettlementCycleIDNEQ applies the NEQ predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDNEQ(v int64) predicate.FactSettlementRecords {
-	return predicate.FactSettlementRecords(sql.FieldNEQ(FieldSettlementCycleID, v))
+// SettlementPaymentAttemptIDNEQ applies the NEQ predicate on the "settlement_payment_attempt_id" field.
+func SettlementPaymentAttemptIDNEQ(v int64) predicate.FactSettlementRecords {
+	return predicate.FactSettlementRecords(sql.FieldNEQ(FieldSettlementPaymentAttemptID, v))
 }
 
-// SettlementCycleIDIn applies the In predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDIn(vs ...int64) predicate.FactSettlementRecords {
-	return predicate.FactSettlementRecords(sql.FieldIn(FieldSettlementCycleID, vs...))
+// SettlementPaymentAttemptIDIn applies the In predicate on the "settlement_payment_attempt_id" field.
+func SettlementPaymentAttemptIDIn(vs ...int64) predicate.FactSettlementRecords {
+	return predicate.FactSettlementRecords(sql.FieldIn(FieldSettlementPaymentAttemptID, vs...))
 }
 
-// SettlementCycleIDNotIn applies the NotIn predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDNotIn(vs ...int64) predicate.FactSettlementRecords {
-	return predicate.FactSettlementRecords(sql.FieldNotIn(FieldSettlementCycleID, vs...))
-}
-
-// SettlementCycleIDGT applies the GT predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDGT(v int64) predicate.FactSettlementRecords {
-	return predicate.FactSettlementRecords(sql.FieldGT(FieldSettlementCycleID, v))
-}
-
-// SettlementCycleIDGTE applies the GTE predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDGTE(v int64) predicate.FactSettlementRecords {
-	return predicate.FactSettlementRecords(sql.FieldGTE(FieldSettlementCycleID, v))
-}
-
-// SettlementCycleIDLT applies the LT predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDLT(v int64) predicate.FactSettlementRecords {
-	return predicate.FactSettlementRecords(sql.FieldLT(FieldSettlementCycleID, v))
-}
-
-// SettlementCycleIDLTE applies the LTE predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDLTE(v int64) predicate.FactSettlementRecords {
-	return predicate.FactSettlementRecords(sql.FieldLTE(FieldSettlementCycleID, v))
+// SettlementPaymentAttemptIDNotIn applies the NotIn predicate on the "settlement_payment_attempt_id" field.
+func SettlementPaymentAttemptIDNotIn(vs ...int64) predicate.FactSettlementRecords {
+	return predicate.FactSettlementRecords(sql.FieldNotIn(FieldSettlementPaymentAttemptID, vs...))
 }
 
 // AssetTypeEQ applies the EQ predicate on the "asset_type" field.
@@ -860,6 +841,29 @@ func PayloadJSONEqualFold(v string) predicate.FactSettlementRecords {
 // PayloadJSONContainsFold applies the ContainsFold predicate on the "payload_json" field.
 func PayloadJSONContainsFold(v string) predicate.FactSettlementRecords {
 	return predicate.FactSettlementRecords(sql.FieldContainsFold(FieldPayloadJSON, v))
+}
+
+// HasSettlementPaymentAttempt applies the HasEdge predicate on the "settlement_payment_attempt" edge.
+func HasSettlementPaymentAttempt() predicate.FactSettlementRecords {
+	return predicate.FactSettlementRecords(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, SettlementPaymentAttemptTable, SettlementPaymentAttemptColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasSettlementPaymentAttemptWith applies the HasEdge predicate on the "settlement_payment_attempt" edge with a given conditions (other predicates).
+func HasSettlementPaymentAttemptWith(preds ...predicate.FactSettlementPaymentAttempts) predicate.FactSettlementRecords {
+	return predicate.FactSettlementRecords(func(s *sql.Selector) {
+		step := newSettlementPaymentAttemptStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

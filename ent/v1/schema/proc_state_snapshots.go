@@ -14,7 +14,12 @@ type ProcStateSnapshots struct {
 }
 
 func (ProcStateSnapshots) Annotations() []schema.Annotation {
-	return []schema.Annotation{entsql.Annotation{Table: "proc_state_snapshots"}}
+	return []schema.Annotation{
+		entsql.Annotation{
+			Table: "proc_state_snapshots",
+			Check: "trim(command_id) <> ''",
+		},
+	}
 }
 
 func (ProcStateSnapshots) Fields() []ent.Field {
@@ -31,9 +36,13 @@ func (ProcStateSnapshots) Fields() []ent.Field {
 	}
 }
 
+func (ProcStateSnapshots) Edges() []ent.Edge {
+	return nil
+}
+
 func (ProcStateSnapshots) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("command_id", "id"),
+		index.Fields("command_id", "id").StorageKey("idx_proc_state_snapshots_cmd_id"),
 		index.Fields("created_at_unix"),
 		index.Fields("gateway_pubkey_hex", "id"),
 	}

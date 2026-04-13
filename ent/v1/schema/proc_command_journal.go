@@ -14,13 +14,19 @@ type ProcCommandJournal struct {
 }
 
 func (ProcCommandJournal) Annotations() []schema.Annotation {
-	return []schema.Annotation{entsql.Annotation{Table: "proc_command_journal"}}
+	return []schema.Annotation{
+		entsql.Annotation{
+			Table: "proc_command_journal",
+			Check: "trim(command_id) <> ''",
+		},
+	}
 }
 
 func (ProcCommandJournal) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.Int64("created_at_unix"),
-		field.String("command_id").Unique(),
+		field.String("command_id").Unique().Immutable(),
 		field.String("command_type"),
 		field.String("gateway_pubkey_hex"),
 		field.String("aggregate_id"),
@@ -41,9 +47,8 @@ func (ProcCommandJournal) Fields() []ent.Field {
 
 func (ProcCommandJournal) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("command_id"),
 		index.Fields("created_at_unix"),
 		index.Fields("gateway_pubkey_hex", "id"),
-		index.Fields("trigger_key", "id"),
+		index.Fields("trigger_key", "id").StorageKey("idx_proc_command_journal_trigger_key"),
 	}
 }

@@ -32,6 +32,6 @@ func (WalletLocalBroadcastTxs) Fields() []ent.Field {
 
 func (WalletLocalBroadcastTxs) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("wallet_id", "observed_at_unix", "created_at_unix"),
+		index.Fields("wallet_id", "observed_at_unix", "created_at_unix").StorageKey("idx_wallet_local_broadcast_txs_wallet_observed"),
 	}
 }

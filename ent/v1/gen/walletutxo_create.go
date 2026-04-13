@@ -61,6 +61,48 @@ func (_c *WalletUtxoCreate) SetState(v string) *WalletUtxoCreate {
 	return _c
 }
 
+// SetScriptType sets the "script_type" field.
+func (_c *WalletUtxoCreate) SetScriptType(v string) *WalletUtxoCreate {
+	_c.mutation.SetScriptType(v)
+	return _c
+}
+
+// SetNillableScriptType sets the "script_type" field if the given value is not nil.
+func (_c *WalletUtxoCreate) SetNillableScriptType(v *string) *WalletUtxoCreate {
+	if v != nil {
+		_c.SetScriptType(*v)
+	}
+	return _c
+}
+
+// SetScriptTypeReason sets the "script_type_reason" field.
+func (_c *WalletUtxoCreate) SetScriptTypeReason(v string) *WalletUtxoCreate {
+	_c.mutation.SetScriptTypeReason(v)
+	return _c
+}
+
+// SetNillableScriptTypeReason sets the "script_type_reason" field if the given value is not nil.
+func (_c *WalletUtxoCreate) SetNillableScriptTypeReason(v *string) *WalletUtxoCreate {
+	if v != nil {
+		_c.SetScriptTypeReason(*v)
+	}
+	return _c
+}
+
+// SetScriptTypeUpdatedAtUnix sets the "script_type_updated_at_unix" field.
+func (_c *WalletUtxoCreate) SetScriptTypeUpdatedAtUnix(v int64) *WalletUtxoCreate {
+	_c.mutation.SetScriptTypeUpdatedAtUnix(v)
+	return _c
+}
+
+// SetNillableScriptTypeUpdatedAtUnix sets the "script_type_updated_at_unix" field if the given value is not nil.
+func (_c *WalletUtxoCreate) SetNillableScriptTypeUpdatedAtUnix(v *int64) *WalletUtxoCreate {
+	if v != nil {
+		_c.SetScriptTypeUpdatedAtUnix(*v)
+	}
+	return _c
+}
+
 // SetAllocationClass sets the "allocation_class" field.
 func (_c *WalletUtxoCreate) SetAllocationClass(v string) *WalletUtxoCreate {
 	_c.mutation.SetAllocationClass(v)
@@ -160,6 +202,18 @@ func (_c *WalletUtxoCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (_c *WalletUtxoCreate) defaults() {
+	if _, ok := _c.mutation.ScriptType(); !ok {
+		v := walletutxo.DefaultScriptType
+		_c.mutation.SetScriptType(v)
+	}
+	if _, ok := _c.mutation.ScriptTypeReason(); !ok {
+		v := walletutxo.DefaultScriptTypeReason
+		_c.mutation.SetScriptTypeReason(v)
+	}
+	if _, ok := _c.mutation.ScriptTypeUpdatedAtUnix(); !ok {
+		v := walletutxo.DefaultScriptTypeUpdatedAtUnix
+		_c.mutation.SetScriptTypeUpdatedAtUnix(v)
+	}
 	if _, ok := _c.mutation.AllocationClass(); !ok {
 		v := walletutxo.DefaultAllocationClass
 		_c.mutation.SetAllocationClass(v)
@@ -192,6 +246,15 @@ func (_c *WalletUtxoCreate) check() error {
 	}
 	if _, ok := _c.mutation.State(); !ok {
 		return &ValidationError{Name: "state", err: errors.New(`gen: missing required field "WalletUtxo.state"`)}
+	}
+	if _, ok := _c.mutation.ScriptType(); !ok {
+		return &ValidationError{Name: "script_type", err: errors.New(`gen: missing required field "WalletUtxo.script_type"`)}
+	}
+	if _, ok := _c.mutation.ScriptTypeReason(); !ok {
+		return &ValidationError{Name: "script_type_reason", err: errors.New(`gen: missing required field "WalletUtxo.script_type_reason"`)}
+	}
+	if _, ok := _c.mutation.ScriptTypeUpdatedAtUnix(); !ok {
+		return &ValidationError{Name: "script_type_updated_at_unix", err: errors.New(`gen: missing required field "WalletUtxo.script_type_updated_at_unix"`)}
 	}
 	if _, ok := _c.mutation.AllocationClass(); !ok {
 		return &ValidationError{Name: "allocation_class", err: errors.New(`gen: missing required field "WalletUtxo.allocation_class"`)}
@@ -273,6 +336,18 @@ func (_c *WalletUtxoCreate) createSpec() (*WalletUtxo, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.State(); ok {
 		_spec.SetField(walletutxo.FieldState, field.TypeString, value)
 		_node.State = value
+	}
+	if value, ok := _c.mutation.ScriptType(); ok {
+		_spec.SetField(walletutxo.FieldScriptType, field.TypeString, value)
+		_node.ScriptType = value
+	}
+	if value, ok := _c.mutation.ScriptTypeReason(); ok {
+		_spec.SetField(walletutxo.FieldScriptTypeReason, field.TypeString, value)
+		_node.ScriptTypeReason = value
+	}
+	if value, ok := _c.mutation.ScriptTypeUpdatedAtUnix(); ok {
+		_spec.SetField(walletutxo.FieldScriptTypeUpdatedAtUnix, field.TypeInt64, value)
+		_node.ScriptTypeUpdatedAtUnix = value
 	}
 	if value, ok := _c.mutation.AllocationClass(); ok {
 		_spec.SetField(walletutxo.FieldAllocationClass, field.TypeString, value)

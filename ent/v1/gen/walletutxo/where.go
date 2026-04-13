@@ -87,6 +87,21 @@ func State(v string) predicate.WalletUtxo {
 	return predicate.WalletUtxo(sql.FieldEQ(FieldState, v))
 }
 
+// ScriptType applies equality check predicate on the "script_type" field. It's identical to ScriptTypeEQ.
+func ScriptType(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldEQ(FieldScriptType, v))
+}
+
+// ScriptTypeReason applies equality check predicate on the "script_type_reason" field. It's identical to ScriptTypeReasonEQ.
+func ScriptTypeReason(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldEQ(FieldScriptTypeReason, v))
+}
+
+// ScriptTypeUpdatedAtUnix applies equality check predicate on the "script_type_updated_at_unix" field. It's identical to ScriptTypeUpdatedAtUnixEQ.
+func ScriptTypeUpdatedAtUnix(v int64) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldEQ(FieldScriptTypeUpdatedAtUnix, v))
+}
+
 // AllocationClass applies equality check predicate on the "allocation_class" field. It's identical to AllocationClassEQ.
 func AllocationClass(v string) predicate.WalletUtxo {
 	return predicate.WalletUtxo(sql.FieldEQ(FieldAllocationClass, v))
@@ -525,6 +540,176 @@ func StateEqualFold(v string) predicate.WalletUtxo {
 // StateContainsFold applies the ContainsFold predicate on the "state" field.
 func StateContainsFold(v string) predicate.WalletUtxo {
 	return predicate.WalletUtxo(sql.FieldContainsFold(FieldState, v))
+}
+
+// ScriptTypeEQ applies the EQ predicate on the "script_type" field.
+func ScriptTypeEQ(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldEQ(FieldScriptType, v))
+}
+
+// ScriptTypeNEQ applies the NEQ predicate on the "script_type" field.
+func ScriptTypeNEQ(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldNEQ(FieldScriptType, v))
+}
+
+// ScriptTypeIn applies the In predicate on the "script_type" field.
+func ScriptTypeIn(vs ...string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldIn(FieldScriptType, vs...))
+}
+
+// ScriptTypeNotIn applies the NotIn predicate on the "script_type" field.
+func ScriptTypeNotIn(vs ...string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldNotIn(FieldScriptType, vs...))
+}
+
+// ScriptTypeGT applies the GT predicate on the "script_type" field.
+func ScriptTypeGT(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldGT(FieldScriptType, v))
+}
+
+// ScriptTypeGTE applies the GTE predicate on the "script_type" field.
+func ScriptTypeGTE(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldGTE(FieldScriptType, v))
+}
+
+// ScriptTypeLT applies the LT predicate on the "script_type" field.
+func ScriptTypeLT(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldLT(FieldScriptType, v))
+}
+
+// ScriptTypeLTE applies the LTE predicate on the "script_type" field.
+func ScriptTypeLTE(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldLTE(FieldScriptType, v))
+}
+
+// ScriptTypeContains applies the Contains predicate on the "script_type" field.
+func ScriptTypeContains(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldContains(FieldScriptType, v))
+}
+
+// ScriptTypeHasPrefix applies the HasPrefix predicate on the "script_type" field.
+func ScriptTypeHasPrefix(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldHasPrefix(FieldScriptType, v))
+}
+
+// ScriptTypeHasSuffix applies the HasSuffix predicate on the "script_type" field.
+func ScriptTypeHasSuffix(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldHasSuffix(FieldScriptType, v))
+}
+
+// ScriptTypeEqualFold applies the EqualFold predicate on the "script_type" field.
+func ScriptTypeEqualFold(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldEqualFold(FieldScriptType, v))
+}
+
+// ScriptTypeContainsFold applies the ContainsFold predicate on the "script_type" field.
+func ScriptTypeContainsFold(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldContainsFold(FieldScriptType, v))
+}
+
+// ScriptTypeReasonEQ applies the EQ predicate on the "script_type_reason" field.
+func ScriptTypeReasonEQ(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldEQ(FieldScriptTypeReason, v))
+}
+
+// ScriptTypeReasonNEQ applies the NEQ predicate on the "script_type_reason" field.
+func ScriptTypeReasonNEQ(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldNEQ(FieldScriptTypeReason, v))
+}
+
+// ScriptTypeReasonIn applies the In predicate on the "script_type_reason" field.
+func ScriptTypeReasonIn(vs ...string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldIn(FieldScriptTypeReason, vs...))
+}
+
+// ScriptTypeReasonNotIn applies the NotIn predicate on the "script_type_reason" field.
+func ScriptTypeReasonNotIn(vs ...string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldNotIn(FieldScriptTypeReason, vs...))
+}
+
+// ScriptTypeReasonGT applies the GT predicate on the "script_type_reason" field.
+func ScriptTypeReasonGT(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldGT(FieldScriptTypeReason, v))
+}
+
+// ScriptTypeReasonGTE applies the GTE predicate on the "script_type_reason" field.
+func ScriptTypeReasonGTE(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldGTE(FieldScriptTypeReason, v))
+}
+
+// ScriptTypeReasonLT applies the LT predicate on the "script_type_reason" field.
+func ScriptTypeReasonLT(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldLT(FieldScriptTypeReason, v))
+}
+
+// ScriptTypeReasonLTE applies the LTE predicate on the "script_type_reason" field.
+func ScriptTypeReasonLTE(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldLTE(FieldScriptTypeReason, v))
+}
+
+// ScriptTypeReasonContains applies the Contains predicate on the "script_type_reason" field.
+func ScriptTypeReasonContains(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldContains(FieldScriptTypeReason, v))
+}
+
+// ScriptTypeReasonHasPrefix applies the HasPrefix predicate on the "script_type_reason" field.
+func ScriptTypeReasonHasPrefix(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldHasPrefix(FieldScriptTypeReason, v))
+}
+
+// ScriptTypeReasonHasSuffix applies the HasSuffix predicate on the "script_type_reason" field.
+func ScriptTypeReasonHasSuffix(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldHasSuffix(FieldScriptTypeReason, v))
+}
+
+// ScriptTypeReasonEqualFold applies the EqualFold predicate on the "script_type_reason" field.
+func ScriptTypeReasonEqualFold(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldEqualFold(FieldScriptTypeReason, v))
+}
+
+// ScriptTypeReasonContainsFold applies the ContainsFold predicate on the "script_type_reason" field.
+func ScriptTypeReasonContainsFold(v string) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldContainsFold(FieldScriptTypeReason, v))
+}
+
+// ScriptTypeUpdatedAtUnixEQ applies the EQ predicate on the "script_type_updated_at_unix" field.
+func ScriptTypeUpdatedAtUnixEQ(v int64) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldEQ(FieldScriptTypeUpdatedAtUnix, v))
+}
+
+// ScriptTypeUpdatedAtUnixNEQ applies the NEQ predicate on the "script_type_updated_at_unix" field.
+func ScriptTypeUpdatedAtUnixNEQ(v int64) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldNEQ(FieldScriptTypeUpdatedAtUnix, v))
+}
+
+// ScriptTypeUpdatedAtUnixIn applies the In predicate on the "script_type_updated_at_unix" field.
+func ScriptTypeUpdatedAtUnixIn(vs ...int64) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldIn(FieldScriptTypeUpdatedAtUnix, vs...))
+}
+
+// ScriptTypeUpdatedAtUnixNotIn applies the NotIn predicate on the "script_type_updated_at_unix" field.
+func ScriptTypeUpdatedAtUnixNotIn(vs ...int64) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldNotIn(FieldScriptTypeUpdatedAtUnix, vs...))
+}
+
+// ScriptTypeUpdatedAtUnixGT applies the GT predicate on the "script_type_updated_at_unix" field.
+func ScriptTypeUpdatedAtUnixGT(v int64) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldGT(FieldScriptTypeUpdatedAtUnix, v))
+}
+
+// ScriptTypeUpdatedAtUnixGTE applies the GTE predicate on the "script_type_updated_at_unix" field.
+func ScriptTypeUpdatedAtUnixGTE(v int64) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldGTE(FieldScriptTypeUpdatedAtUnix, v))
+}
+
+// ScriptTypeUpdatedAtUnixLT applies the LT predicate on the "script_type_updated_at_unix" field.
+func ScriptTypeUpdatedAtUnixLT(v int64) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldLT(FieldScriptTypeUpdatedAtUnix, v))
+}
+
+// ScriptTypeUpdatedAtUnixLTE applies the LTE predicate on the "script_type_updated_at_unix" field.
+func ScriptTypeUpdatedAtUnixLTE(v int64) predicate.WalletUtxo {
+	return predicate.WalletUtxo(sql.FieldLTE(FieldScriptTypeUpdatedAtUnix, v))
 }
 
 // AllocationClassEQ applies the EQ predicate on the "allocation_class" field.

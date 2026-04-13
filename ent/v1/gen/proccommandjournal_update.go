@@ -48,20 +48,6 @@ func (_u *ProcCommandJournalUpdate) AddCreatedAtUnix(v int64) *ProcCommandJourna
 	return _u
 }
 
-// SetCommandID sets the "command_id" field.
-func (_u *ProcCommandJournalUpdate) SetCommandID(v string) *ProcCommandJournalUpdate {
-	_u.mutation.SetCommandID(v)
-	return _u
-}
-
-// SetNillableCommandID sets the "command_id" field if the given value is not nil.
-func (_u *ProcCommandJournalUpdate) SetNillableCommandID(v *string) *ProcCommandJournalUpdate {
-	if v != nil {
-		_u.SetCommandID(*v)
-	}
-	return _u
-}
-
 // SetCommandType sets the "command_type" field.
 func (_u *ProcCommandJournalUpdate) SetCommandType(v string) *ProcCommandJournalUpdate {
 	_u.mutation.SetCommandType(v)
@@ -340,9 +326,6 @@ func (_u *ProcCommandJournalUpdate) sqlSave(ctx context.Context) (_node int, err
 	if value, ok := _u.mutation.AddedCreatedAtUnix(); ok {
 		_spec.AddField(proccommandjournal.FieldCreatedAtUnix, field.TypeInt64, value)
 	}
-	if value, ok := _u.mutation.CommandID(); ok {
-		_spec.SetField(proccommandjournal.FieldCommandID, field.TypeString, value)
-	}
 	if value, ok := _u.mutation.CommandType(); ok {
 		_spec.SetField(proccommandjournal.FieldCommandType, field.TypeString, value)
 	}
@@ -435,20 +418,6 @@ func (_u *ProcCommandJournalUpdateOne) SetNillableCreatedAtUnix(v *int64) *ProcC
 // AddCreatedAtUnix adds value to the "created_at_unix" field.
 func (_u *ProcCommandJournalUpdateOne) AddCreatedAtUnix(v int64) *ProcCommandJournalUpdateOne {
 	_u.mutation.AddCreatedAtUnix(v)
-	return _u
-}
-
-// SetCommandID sets the "command_id" field.
-func (_u *ProcCommandJournalUpdateOne) SetCommandID(v string) *ProcCommandJournalUpdateOne {
-	_u.mutation.SetCommandID(v)
-	return _u
-}
-
-// SetNillableCommandID sets the "command_id" field if the given value is not nil.
-func (_u *ProcCommandJournalUpdateOne) SetNillableCommandID(v *string) *ProcCommandJournalUpdateOne {
-	if v != nil {
-		_u.SetCommandID(*v)
-	}
 	return _u
 }
 
@@ -759,9 +728,6 @@ func (_u *ProcCommandJournalUpdateOne) sqlSave(ctx context.Context) (_node *Proc
 	}
 	if value, ok := _u.mutation.AddedCreatedAtUnix(); ok {
 		_spec.AddField(proccommandjournal.FieldCreatedAtUnix, field.TypeInt64, value)
-	}
-	if value, ok := _u.mutation.CommandID(); ok {
-		_spec.SetField(proccommandjournal.FieldCommandID, field.TypeString, value)
 	}
 	if value, ok := _u.mutation.CommandType(); ok {
 		_spec.SetField(proccommandjournal.FieldCommandType, field.TypeString, value)

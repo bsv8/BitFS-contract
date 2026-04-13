@@ -35,10 +35,12 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelchainquotepay"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelpoolsessionquotepay"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementcycles"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementpaymentattempts"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementrecords"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/facttokencarrierlinks"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/facttokenlots"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/orders"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/ordersettlementevents"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/ordersettlements"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procchaintipstate"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procchaintipworkerlogs"
@@ -149,9 +151,11 @@ func checkColumn(t, c string) error {
 			factsettlementchannelchainquotepay.Table:       factsettlementchannelchainquotepay.ValidColumn,
 			factsettlementchannelpoolsessionquotepay.Table: factsettlementchannelpoolsessionquotepay.ValidColumn,
 			factsettlementcycles.Table:                     factsettlementcycles.ValidColumn,
+			factsettlementpaymentattempts.Table:            factsettlementpaymentattempts.ValidColumn,
 			factsettlementrecords.Table:                    factsettlementrecords.ValidColumn,
 			facttokencarrierlinks.Table:                    facttokencarrierlinks.ValidColumn,
 			facttokenlots.Table:                            facttokenlots.ValidColumn,
+			ordersettlementevents.Table:                    ordersettlementevents.ValidColumn,
 			ordersettlements.Table:                         ordersettlements.ValidColumn,
 			orders.Table:                                   orders.ValidColumn,
 			procchaintipstate.Table:                        procchaintipstate.ValidColumn,

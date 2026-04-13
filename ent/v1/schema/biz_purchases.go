@@ -34,10 +34,10 @@ func (BizPurchases) Fields() []ent.Field {
 
 func (BizPurchases) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("created_at_unix", "id"),
-		index.Fields("demand_id", "created_at_unix", "id"),
-		index.Fields("demand_id", "chunk_index", "seller_pub_hex", "arbiter_pub_hex", "created_at_unix", "id"),
-		index.Fields("seller_pub_hex", "created_at_unix", "id"),
-		index.Fields("status", "created_at_unix", "id"),
+		index.Fields("created_at_unix", "id").StorageKey("idx_biz_purchases_created_at"),
+		index.Fields("demand_id", "created_at_unix", "id").StorageKey("idx_biz_purchases_demand_created"),
+		index.Fields("demand_id", "chunk_index", "seller_pub_hex", "arbiter_pub_hex", "created_at_unix", "id").StorageKey("idx_biz_purchases_history_lookup"),
+		index.Fields("seller_pub_hex", "created_at_unix", "id").StorageKey("idx_biz_purchases_seller_created"),
+		index.Fields("status", "created_at_unix", "id").StorageKey("idx_biz_purchases_status_created"),
 	}
 }

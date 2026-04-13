@@ -9,6 +9,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelchaindirectpay"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementpaymentattempts"
 )
 
 // FactSettlementChannelChainDirectPay is the model entity for the FactSettlementChannelChainDirectPay schema.
@@ -16,8 +17,8 @@ type FactSettlementChannelChainDirectPay struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// SettlementCycleID holds the value of the "settlement_cycle_id" field.
-	SettlementCycleID int64 `json:"settlement_cycle_id,omitempty"`
+	// SettlementPaymentAttemptID holds the value of the "settlement_payment_attempt_id" field.
+	SettlementPaymentAttemptID int64 `json:"settlement_payment_attempt_id,omitempty"`
 	// Txid holds the value of the "txid" field.
 	Txid string `json:"txid,omitempty"`
 	// PaymentSubtype holds the value of the "payment_subtype" field.
@@ -46,7 +47,30 @@ type FactSettlementChannelChainDirectPay struct {
 	PayloadJSON string `json:"payload_json,omitempty"`
 	// UpdatedAtUnix holds the value of the "updated_at_unix" field.
 	UpdatedAtUnix int64 `json:"updated_at_unix,omitempty"`
-	selectValues  sql.SelectValues
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the FactSettlementChannelChainDirectPayQuery when eager-loading is set.
+	Edges        FactSettlementChannelChainDirectPayEdges `json:"edges"`
+	selectValues sql.SelectValues
+}
+
+// FactSettlementChannelChainDirectPayEdges holds the relations/edges for other nodes in the graph.
+type FactSettlementChannelChainDirectPayEdges struct {
+	// SettlementPaymentAttempt holds the value of the settlement_payment_attempt edge.
+	SettlementPaymentAttempt *FactSettlementPaymentAttempts `json:"settlement_payment_attempt,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// SettlementPaymentAttemptOrErr returns the SettlementPaymentAttempt value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e FactSettlementChannelChainDirectPayEdges) SettlementPaymentAttemptOrErr() (*FactSettlementPaymentAttempts, error) {
+	if e.SettlementPaymentAttempt != nil {
+		return e.SettlementPaymentAttempt, nil
+	} else if e.loadedTypes[0] {
+		return nil, &NotFoundError{label: factsettlementpaymentattempts.Label}
+	}
+	return nil, &NotLoadedError{edge: "settlement_payment_attempt"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -54,7 +78,7 @@ func (*FactSettlementChannelChainDirectPay) scanValues(columns []string) ([]any,
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case factsettlementchannelchaindirectpay.FieldID, factsettlementchannelchaindirectpay.FieldSettlementCycleID, factsettlementchannelchaindirectpay.FieldWalletInputSatoshi, factsettlementchannelchaindirectpay.FieldWalletOutputSatoshi, factsettlementchannelchaindirectpay.FieldNetAmountSatoshi, factsettlementchannelchaindirectpay.FieldBlockHeight, factsettlementchannelchaindirectpay.FieldOccurredAtUnix, factsettlementchannelchaindirectpay.FieldSubmittedAtUnix, factsettlementchannelchaindirectpay.FieldWalletObservedAtUnix, factsettlementchannelchaindirectpay.FieldUpdatedAtUnix:
+		case factsettlementchannelchaindirectpay.FieldID, factsettlementchannelchaindirectpay.FieldSettlementPaymentAttemptID, factsettlementchannelchaindirectpay.FieldWalletInputSatoshi, factsettlementchannelchaindirectpay.FieldWalletOutputSatoshi, factsettlementchannelchaindirectpay.FieldNetAmountSatoshi, factsettlementchannelchaindirectpay.FieldBlockHeight, factsettlementchannelchaindirectpay.FieldOccurredAtUnix, factsettlementchannelchaindirectpay.FieldSubmittedAtUnix, factsettlementchannelchaindirectpay.FieldWalletObservedAtUnix, factsettlementchannelchaindirectpay.FieldUpdatedAtUnix:
 			values[i] = new(sql.NullInt64)
 		case factsettlementchannelchaindirectpay.FieldTxid, factsettlementchannelchaindirectpay.FieldPaymentSubtype, factsettlementchannelchaindirectpay.FieldStatus, factsettlementchannelchaindirectpay.FieldFromPartyID, factsettlementchannelchaindirectpay.FieldToPartyID, factsettlementchannelchaindirectpay.FieldPayloadJSON:
 			values[i] = new(sql.NullString)
@@ -79,11 +103,11 @@ func (_m *FactSettlementChannelChainDirectPay) assignValues(columns []string, va
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			_m.ID = int(value.Int64)
-		case factsettlementchannelchaindirectpay.FieldSettlementCycleID:
+		case factsettlementchannelchaindirectpay.FieldSettlementPaymentAttemptID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field settlement_cycle_id", values[i])
+				return fmt.Errorf("unexpected type %T for field settlement_payment_attempt_id", values[i])
 			} else if value.Valid {
-				_m.SettlementCycleID = value.Int64
+				_m.SettlementPaymentAttemptID = value.Int64
 			}
 		case factsettlementchannelchaindirectpay.FieldTxid:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -182,6 +206,11 @@ func (_m *FactSettlementChannelChainDirectPay) Value(name string) (ent.Value, er
 	return _m.selectValues.Get(name)
 }
 
+// QuerySettlementPaymentAttempt queries the "settlement_payment_attempt" edge of the FactSettlementChannelChainDirectPay entity.
+func (_m *FactSettlementChannelChainDirectPay) QuerySettlementPaymentAttempt() *FactSettlementPaymentAttemptsQuery {
+	return NewFactSettlementChannelChainDirectPayClient(_m.config).QuerySettlementPaymentAttempt(_m)
+}
+
 // Update returns a builder for updating this FactSettlementChannelChainDirectPay.
 // Note that you need to call FactSettlementChannelChainDirectPay.Unwrap() before calling this method if this FactSettlementChannelChainDirectPay
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -205,8 +234,8 @@ func (_m *FactSettlementChannelChainDirectPay) String() string {
 	var builder strings.Builder
 	builder.WriteString("FactSettlementChannelChainDirectPay(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
-	builder.WriteString("settlement_cycle_id=")
-	builder.WriteString(fmt.Sprintf("%v", _m.SettlementCycleID))
+	builder.WriteString("settlement_payment_attempt_id=")
+	builder.WriteString(fmt.Sprintf("%v", _m.SettlementPaymentAttemptID))
 	builder.WriteString(", ")
 	builder.WriteString("txid=")
 	builder.WriteString(_m.Txid)

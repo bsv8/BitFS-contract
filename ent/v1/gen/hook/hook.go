@@ -285,6 +285,18 @@ func (f FactSettlementCyclesFunc) Mutate(ctx context.Context, m gen.Mutation) (g
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.FactSettlementCyclesMutation", m)
 }
 
+// The FactSettlementPaymentAttemptsFunc type is an adapter to allow the use of ordinary
+// function as FactSettlementPaymentAttempts mutator.
+type FactSettlementPaymentAttemptsFunc func(context.Context, *gen.FactSettlementPaymentAttemptsMutation) (gen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f FactSettlementPaymentAttemptsFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.Value, error) {
+	if mv, ok := m.(*gen.FactSettlementPaymentAttemptsMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.FactSettlementPaymentAttemptsMutation", m)
+}
+
 // The FactSettlementRecordsFunc type is an adapter to allow the use of ordinary
 // function as FactSettlementRecords mutator.
 type FactSettlementRecordsFunc func(context.Context, *gen.FactSettlementRecordsMutation) (gen.Value, error)
@@ -319,6 +331,18 @@ func (f FactTokenLotsFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.Valu
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.FactTokenLotsMutation", m)
+}
+
+// The OrderSettlementEventsFunc type is an adapter to allow the use of ordinary
+// function as OrderSettlementEvents mutator.
+type OrderSettlementEventsFunc func(context.Context, *gen.OrderSettlementEventsMutation) (gen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f OrderSettlementEventsFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.Value, error) {
+	if mv, ok := m.(*gen.OrderSettlementEventsMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.OrderSettlementEventsMutation", m)
 }
 
 // The OrderSettlementsFunc type is an adapter to allow the use of ordinary

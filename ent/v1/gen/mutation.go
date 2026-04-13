@@ -33,10 +33,12 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelchainquotepay"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelpoolsessionquotepay"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementcycles"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementpaymentattempts"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementrecords"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/facttokencarrierlinks"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/facttokenlots"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/orders"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/ordersettlementevents"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/ordersettlements"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/predicate"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procchaintipstate"
@@ -99,9 +101,11 @@ const (
 	TypeFactSettlementChannelChainQuotePay       = "FactSettlementChannelChainQuotePay"
 	TypeFactSettlementChannelPoolSessionQuotePay = "FactSettlementChannelPoolSessionQuotePay"
 	TypeFactSettlementCycles                     = "FactSettlementCycles"
+	TypeFactSettlementPaymentAttempts            = "FactSettlementPaymentAttempts"
 	TypeFactSettlementRecords                    = "FactSettlementRecords"
 	TypeFactTokenCarrierLinks                    = "FactTokenCarrierLinks"
 	TypeFactTokenLots                            = "FactTokenLots"
+	TypeOrderSettlementEvents                    = "OrderSettlementEvents"
 	TypeOrderSettlements                         = "OrderSettlements"
 	TypeOrders                                   = "Orders"
 	TypeProcChainTipState                        = "ProcChainTipState"
@@ -15369,37 +15373,37 @@ func (m *FactPoolSessionEventsMutation) ResetEdge(name string) error {
 // FactSettlementChannelChainAssetCreateMutation represents an operation that mutates the FactSettlementChannelChainAssetCreate nodes in the graph.
 type FactSettlementChannelChainAssetCreateMutation struct {
 	config
-	op                         Op
-	typ                        string
-	id                         *int
-	settlement_cycle_id        *int64
-	addsettlement_cycle_id     *int64
-	txid                       *string
-	payment_subtype            *string
-	status                     *string
-	wallet_input_satoshi       *int64
-	addwallet_input_satoshi    *int64
-	wallet_output_satoshi      *int64
-	addwallet_output_satoshi   *int64
-	net_amount_satoshi         *int64
-	addnet_amount_satoshi      *int64
-	block_height               *int64
-	addblock_height            *int64
-	occurred_at_unix           *int64
-	addoccurred_at_unix        *int64
-	submitted_at_unix          *int64
-	addsubmitted_at_unix       *int64
-	wallet_observed_at_unix    *int64
-	addwallet_observed_at_unix *int64
-	from_party_id              *string
-	to_party_id                *string
-	payload_json               *string
-	updated_at_unix            *int64
-	addupdated_at_unix         *int64
-	clearedFields              map[string]struct{}
-	done                       bool
-	oldValue                   func(context.Context) (*FactSettlementChannelChainAssetCreate, error)
-	predicates                 []predicate.FactSettlementChannelChainAssetCreate
+	op                                Op
+	typ                               string
+	id                                *int
+	txid                              *string
+	payment_subtype                   *string
+	status                            *string
+	wallet_input_satoshi              *int64
+	addwallet_input_satoshi           *int64
+	wallet_output_satoshi             *int64
+	addwallet_output_satoshi          *int64
+	net_amount_satoshi                *int64
+	addnet_amount_satoshi             *int64
+	block_height                      *int64
+	addblock_height                   *int64
+	occurred_at_unix                  *int64
+	addoccurred_at_unix               *int64
+	submitted_at_unix                 *int64
+	addsubmitted_at_unix              *int64
+	wallet_observed_at_unix           *int64
+	addwallet_observed_at_unix        *int64
+	from_party_id                     *string
+	to_party_id                       *string
+	payload_json                      *string
+	updated_at_unix                   *int64
+	addupdated_at_unix                *int64
+	clearedFields                     map[string]struct{}
+	settlement_payment_attempt        *int64
+	clearedsettlement_payment_attempt bool
+	done                              bool
+	oldValue                          func(context.Context) (*FactSettlementChannelChainAssetCreate, error)
+	predicates                        []predicate.FactSettlementChannelChainAssetCreate
 }
 
 var _ ent.Mutation = (*FactSettlementChannelChainAssetCreateMutation)(nil)
@@ -15500,60 +15504,40 @@ func (m *FactSettlementChannelChainAssetCreateMutation) IDs(ctx context.Context)
 	}
 }
 
-// SetSettlementCycleID sets the "settlement_cycle_id" field.
-func (m *FactSettlementChannelChainAssetCreateMutation) SetSettlementCycleID(i int64) {
-	m.settlement_cycle_id = &i
-	m.addsettlement_cycle_id = nil
+// SetSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field.
+func (m *FactSettlementChannelChainAssetCreateMutation) SetSettlementPaymentAttemptID(i int64) {
+	m.settlement_payment_attempt = &i
 }
 
-// SettlementCycleID returns the value of the "settlement_cycle_id" field in the mutation.
-func (m *FactSettlementChannelChainAssetCreateMutation) SettlementCycleID() (r int64, exists bool) {
-	v := m.settlement_cycle_id
+// SettlementPaymentAttemptID returns the value of the "settlement_payment_attempt_id" field in the mutation.
+func (m *FactSettlementChannelChainAssetCreateMutation) SettlementPaymentAttemptID() (r int64, exists bool) {
+	v := m.settlement_payment_attempt
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldSettlementCycleID returns the old "settlement_cycle_id" field's value of the FactSettlementChannelChainAssetCreate entity.
+// OldSettlementPaymentAttemptID returns the old "settlement_payment_attempt_id" field's value of the FactSettlementChannelChainAssetCreate entity.
 // If the FactSettlementChannelChainAssetCreate object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *FactSettlementChannelChainAssetCreateMutation) OldSettlementCycleID(ctx context.Context) (v int64, err error) {
+func (m *FactSettlementChannelChainAssetCreateMutation) OldSettlementPaymentAttemptID(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldSettlementCycleID is only allowed on UpdateOne operations")
+		return v, errors.New("OldSettlementPaymentAttemptID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldSettlementCycleID requires an ID field in the mutation")
+		return v, errors.New("OldSettlementPaymentAttemptID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldSettlementCycleID: %w", err)
+		return v, fmt.Errorf("querying old value for OldSettlementPaymentAttemptID: %w", err)
 	}
-	return oldValue.SettlementCycleID, nil
+	return oldValue.SettlementPaymentAttemptID, nil
 }
 
-// AddSettlementCycleID adds i to the "settlement_cycle_id" field.
-func (m *FactSettlementChannelChainAssetCreateMutation) AddSettlementCycleID(i int64) {
-	if m.addsettlement_cycle_id != nil {
-		*m.addsettlement_cycle_id += i
-	} else {
-		m.addsettlement_cycle_id = &i
-	}
-}
-
-// AddedSettlementCycleID returns the value that was added to the "settlement_cycle_id" field in this mutation.
-func (m *FactSettlementChannelChainAssetCreateMutation) AddedSettlementCycleID() (r int64, exists bool) {
-	v := m.addsettlement_cycle_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetSettlementCycleID resets all changes to the "settlement_cycle_id" field.
-func (m *FactSettlementChannelChainAssetCreateMutation) ResetSettlementCycleID() {
-	m.settlement_cycle_id = nil
-	m.addsettlement_cycle_id = nil
+// ResetSettlementPaymentAttemptID resets all changes to the "settlement_payment_attempt_id" field.
+func (m *FactSettlementChannelChainAssetCreateMutation) ResetSettlementPaymentAttemptID() {
+	m.settlement_payment_attempt = nil
 }
 
 // SetTxid sets the "txid" field.
@@ -16220,6 +16204,33 @@ func (m *FactSettlementChannelChainAssetCreateMutation) ResetUpdatedAtUnix() {
 	m.addupdated_at_unix = nil
 }
 
+// ClearSettlementPaymentAttempt clears the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (m *FactSettlementChannelChainAssetCreateMutation) ClearSettlementPaymentAttempt() {
+	m.clearedsettlement_payment_attempt = true
+	m.clearedFields[factsettlementchannelchainassetcreate.FieldSettlementPaymentAttemptID] = struct{}{}
+}
+
+// SettlementPaymentAttemptCleared reports if the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity was cleared.
+func (m *FactSettlementChannelChainAssetCreateMutation) SettlementPaymentAttemptCleared() bool {
+	return m.clearedsettlement_payment_attempt
+}
+
+// SettlementPaymentAttemptIDs returns the "settlement_payment_attempt" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// SettlementPaymentAttemptID instead. It exists only for internal usage by the builders.
+func (m *FactSettlementChannelChainAssetCreateMutation) SettlementPaymentAttemptIDs() (ids []int64) {
+	if id := m.settlement_payment_attempt; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetSettlementPaymentAttempt resets all changes to the "settlement_payment_attempt" edge.
+func (m *FactSettlementChannelChainAssetCreateMutation) ResetSettlementPaymentAttempt() {
+	m.settlement_payment_attempt = nil
+	m.clearedsettlement_payment_attempt = false
+}
+
 // Where appends a list predicates to the FactSettlementChannelChainAssetCreateMutation builder.
 func (m *FactSettlementChannelChainAssetCreateMutation) Where(ps ...predicate.FactSettlementChannelChainAssetCreate) {
 	m.predicates = append(m.predicates, ps...)
@@ -16255,8 +16266,8 @@ func (m *FactSettlementChannelChainAssetCreateMutation) Type() string {
 // AddedFields().
 func (m *FactSettlementChannelChainAssetCreateMutation) Fields() []string {
 	fields := make([]string, 0, 15)
-	if m.settlement_cycle_id != nil {
-		fields = append(fields, factsettlementchannelchainassetcreate.FieldSettlementCycleID)
+	if m.settlement_payment_attempt != nil {
+		fields = append(fields, factsettlementchannelchainassetcreate.FieldSettlementPaymentAttemptID)
 	}
 	if m.txid != nil {
 		fields = append(fields, factsettlementchannelchainassetcreate.FieldTxid)
@@ -16308,8 +16319,8 @@ func (m *FactSettlementChannelChainAssetCreateMutation) Fields() []string {
 // schema.
 func (m *FactSettlementChannelChainAssetCreateMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case factsettlementchannelchainassetcreate.FieldSettlementCycleID:
-		return m.SettlementCycleID()
+	case factsettlementchannelchainassetcreate.FieldSettlementPaymentAttemptID:
+		return m.SettlementPaymentAttemptID()
 	case factsettlementchannelchainassetcreate.FieldTxid:
 		return m.Txid()
 	case factsettlementchannelchainassetcreate.FieldPaymentSubtype:
@@ -16347,8 +16358,8 @@ func (m *FactSettlementChannelChainAssetCreateMutation) Field(name string) (ent.
 // database failed.
 func (m *FactSettlementChannelChainAssetCreateMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case factsettlementchannelchainassetcreate.FieldSettlementCycleID:
-		return m.OldSettlementCycleID(ctx)
+	case factsettlementchannelchainassetcreate.FieldSettlementPaymentAttemptID:
+		return m.OldSettlementPaymentAttemptID(ctx)
 	case factsettlementchannelchainassetcreate.FieldTxid:
 		return m.OldTxid(ctx)
 	case factsettlementchannelchainassetcreate.FieldPaymentSubtype:
@@ -16386,12 +16397,12 @@ func (m *FactSettlementChannelChainAssetCreateMutation) OldField(ctx context.Con
 // type.
 func (m *FactSettlementChannelChainAssetCreateMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case factsettlementchannelchainassetcreate.FieldSettlementCycleID:
+	case factsettlementchannelchainassetcreate.FieldSettlementPaymentAttemptID:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetSettlementCycleID(v)
+		m.SetSettlementPaymentAttemptID(v)
 		return nil
 	case factsettlementchannelchainassetcreate.FieldTxid:
 		v, ok := value.(string)
@@ -16499,9 +16510,6 @@ func (m *FactSettlementChannelChainAssetCreateMutation) SetField(name string, va
 // this mutation.
 func (m *FactSettlementChannelChainAssetCreateMutation) AddedFields() []string {
 	var fields []string
-	if m.addsettlement_cycle_id != nil {
-		fields = append(fields, factsettlementchannelchainassetcreate.FieldSettlementCycleID)
-	}
 	if m.addwallet_input_satoshi != nil {
 		fields = append(fields, factsettlementchannelchainassetcreate.FieldWalletInputSatoshi)
 	}
@@ -16534,8 +16542,6 @@ func (m *FactSettlementChannelChainAssetCreateMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *FactSettlementChannelChainAssetCreateMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case factsettlementchannelchainassetcreate.FieldSettlementCycleID:
-		return m.AddedSettlementCycleID()
 	case factsettlementchannelchainassetcreate.FieldWalletInputSatoshi:
 		return m.AddedWalletInputSatoshi()
 	case factsettlementchannelchainassetcreate.FieldWalletOutputSatoshi:
@@ -16561,13 +16567,6 @@ func (m *FactSettlementChannelChainAssetCreateMutation) AddedField(name string) 
 // type.
 func (m *FactSettlementChannelChainAssetCreateMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case factsettlementchannelchainassetcreate.FieldSettlementCycleID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddSettlementCycleID(v)
-		return nil
 	case factsettlementchannelchainassetcreate.FieldWalletInputSatoshi:
 		v, ok := value.(int64)
 		if !ok {
@@ -16651,8 +16650,8 @@ func (m *FactSettlementChannelChainAssetCreateMutation) ClearField(name string) 
 // It returns an error if the field is not defined in the schema.
 func (m *FactSettlementChannelChainAssetCreateMutation) ResetField(name string) error {
 	switch name {
-	case factsettlementchannelchainassetcreate.FieldSettlementCycleID:
-		m.ResetSettlementCycleID()
+	case factsettlementchannelchainassetcreate.FieldSettlementPaymentAttemptID:
+		m.ResetSettlementPaymentAttemptID()
 		return nil
 	case factsettlementchannelchainassetcreate.FieldTxid:
 		m.ResetTxid()
@@ -16702,19 +16701,28 @@ func (m *FactSettlementChannelChainAssetCreateMutation) ResetField(name string) 
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *FactSettlementChannelChainAssetCreateMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.settlement_payment_attempt != nil {
+		edges = append(edges, factsettlementchannelchainassetcreate.EdgeSettlementPaymentAttempt)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *FactSettlementChannelChainAssetCreateMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case factsettlementchannelchainassetcreate.EdgeSettlementPaymentAttempt:
+		if id := m.settlement_payment_attempt; id != nil {
+			return []ent.Value{*id}
+		}
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *FactSettlementChannelChainAssetCreateMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
 	return edges
 }
 
@@ -16726,62 +16734,79 @@ func (m *FactSettlementChannelChainAssetCreateMutation) RemovedIDs(name string) 
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *FactSettlementChannelChainAssetCreateMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.clearedsettlement_payment_attempt {
+		edges = append(edges, factsettlementchannelchainassetcreate.EdgeSettlementPaymentAttempt)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *FactSettlementChannelChainAssetCreateMutation) EdgeCleared(name string) bool {
+	switch name {
+	case factsettlementchannelchainassetcreate.EdgeSettlementPaymentAttempt:
+		return m.clearedsettlement_payment_attempt
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *FactSettlementChannelChainAssetCreateMutation) ClearEdge(name string) error {
+	switch name {
+	case factsettlementchannelchainassetcreate.EdgeSettlementPaymentAttempt:
+		m.ClearSettlementPaymentAttempt()
+		return nil
+	}
 	return fmt.Errorf("unknown FactSettlementChannelChainAssetCreate unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *FactSettlementChannelChainAssetCreateMutation) ResetEdge(name string) error {
+	switch name {
+	case factsettlementchannelchainassetcreate.EdgeSettlementPaymentAttempt:
+		m.ResetSettlementPaymentAttempt()
+		return nil
+	}
 	return fmt.Errorf("unknown FactSettlementChannelChainAssetCreate edge %s", name)
 }
 
 // FactSettlementChannelChainDirectPayMutation represents an operation that mutates the FactSettlementChannelChainDirectPay nodes in the graph.
 type FactSettlementChannelChainDirectPayMutation struct {
 	config
-	op                         Op
-	typ                        string
-	id                         *int
-	settlement_cycle_id        *int64
-	addsettlement_cycle_id     *int64
-	txid                       *string
-	payment_subtype            *string
-	status                     *string
-	wallet_input_satoshi       *int64
-	addwallet_input_satoshi    *int64
-	wallet_output_satoshi      *int64
-	addwallet_output_satoshi   *int64
-	net_amount_satoshi         *int64
-	addnet_amount_satoshi      *int64
-	block_height               *int64
-	addblock_height            *int64
-	occurred_at_unix           *int64
-	addoccurred_at_unix        *int64
-	submitted_at_unix          *int64
-	addsubmitted_at_unix       *int64
-	wallet_observed_at_unix    *int64
-	addwallet_observed_at_unix *int64
-	from_party_id              *string
-	to_party_id                *string
-	payload_json               *string
-	updated_at_unix            *int64
-	addupdated_at_unix         *int64
-	clearedFields              map[string]struct{}
-	done                       bool
-	oldValue                   func(context.Context) (*FactSettlementChannelChainDirectPay, error)
-	predicates                 []predicate.FactSettlementChannelChainDirectPay
+	op                                Op
+	typ                               string
+	id                                *int
+	txid                              *string
+	payment_subtype                   *string
+	status                            *string
+	wallet_input_satoshi              *int64
+	addwallet_input_satoshi           *int64
+	wallet_output_satoshi             *int64
+	addwallet_output_satoshi          *int64
+	net_amount_satoshi                *int64
+	addnet_amount_satoshi             *int64
+	block_height                      *int64
+	addblock_height                   *int64
+	occurred_at_unix                  *int64
+	addoccurred_at_unix               *int64
+	submitted_at_unix                 *int64
+	addsubmitted_at_unix              *int64
+	wallet_observed_at_unix           *int64
+	addwallet_observed_at_unix        *int64
+	from_party_id                     *string
+	to_party_id                       *string
+	payload_json                      *string
+	updated_at_unix                   *int64
+	addupdated_at_unix                *int64
+	clearedFields                     map[string]struct{}
+	settlement_payment_attempt        *int64
+	clearedsettlement_payment_attempt bool
+	done                              bool
+	oldValue                          func(context.Context) (*FactSettlementChannelChainDirectPay, error)
+	predicates                        []predicate.FactSettlementChannelChainDirectPay
 }
 
 var _ ent.Mutation = (*FactSettlementChannelChainDirectPayMutation)(nil)
@@ -16882,60 +16907,40 @@ func (m *FactSettlementChannelChainDirectPayMutation) IDs(ctx context.Context) (
 	}
 }
 
-// SetSettlementCycleID sets the "settlement_cycle_id" field.
-func (m *FactSettlementChannelChainDirectPayMutation) SetSettlementCycleID(i int64) {
-	m.settlement_cycle_id = &i
-	m.addsettlement_cycle_id = nil
+// SetSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field.
+func (m *FactSettlementChannelChainDirectPayMutation) SetSettlementPaymentAttemptID(i int64) {
+	m.settlement_payment_attempt = &i
 }
 
-// SettlementCycleID returns the value of the "settlement_cycle_id" field in the mutation.
-func (m *FactSettlementChannelChainDirectPayMutation) SettlementCycleID() (r int64, exists bool) {
-	v := m.settlement_cycle_id
+// SettlementPaymentAttemptID returns the value of the "settlement_payment_attempt_id" field in the mutation.
+func (m *FactSettlementChannelChainDirectPayMutation) SettlementPaymentAttemptID() (r int64, exists bool) {
+	v := m.settlement_payment_attempt
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldSettlementCycleID returns the old "settlement_cycle_id" field's value of the FactSettlementChannelChainDirectPay entity.
+// OldSettlementPaymentAttemptID returns the old "settlement_payment_attempt_id" field's value of the FactSettlementChannelChainDirectPay entity.
 // If the FactSettlementChannelChainDirectPay object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *FactSettlementChannelChainDirectPayMutation) OldSettlementCycleID(ctx context.Context) (v int64, err error) {
+func (m *FactSettlementChannelChainDirectPayMutation) OldSettlementPaymentAttemptID(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldSettlementCycleID is only allowed on UpdateOne operations")
+		return v, errors.New("OldSettlementPaymentAttemptID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldSettlementCycleID requires an ID field in the mutation")
+		return v, errors.New("OldSettlementPaymentAttemptID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldSettlementCycleID: %w", err)
+		return v, fmt.Errorf("querying old value for OldSettlementPaymentAttemptID: %w", err)
 	}
-	return oldValue.SettlementCycleID, nil
+	return oldValue.SettlementPaymentAttemptID, nil
 }
 
-// AddSettlementCycleID adds i to the "settlement_cycle_id" field.
-func (m *FactSettlementChannelChainDirectPayMutation) AddSettlementCycleID(i int64) {
-	if m.addsettlement_cycle_id != nil {
-		*m.addsettlement_cycle_id += i
-	} else {
-		m.addsettlement_cycle_id = &i
-	}
-}
-
-// AddedSettlementCycleID returns the value that was added to the "settlement_cycle_id" field in this mutation.
-func (m *FactSettlementChannelChainDirectPayMutation) AddedSettlementCycleID() (r int64, exists bool) {
-	v := m.addsettlement_cycle_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetSettlementCycleID resets all changes to the "settlement_cycle_id" field.
-func (m *FactSettlementChannelChainDirectPayMutation) ResetSettlementCycleID() {
-	m.settlement_cycle_id = nil
-	m.addsettlement_cycle_id = nil
+// ResetSettlementPaymentAttemptID resets all changes to the "settlement_payment_attempt_id" field.
+func (m *FactSettlementChannelChainDirectPayMutation) ResetSettlementPaymentAttemptID() {
+	m.settlement_payment_attempt = nil
 }
 
 // SetTxid sets the "txid" field.
@@ -17602,6 +17607,33 @@ func (m *FactSettlementChannelChainDirectPayMutation) ResetUpdatedAtUnix() {
 	m.addupdated_at_unix = nil
 }
 
+// ClearSettlementPaymentAttempt clears the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (m *FactSettlementChannelChainDirectPayMutation) ClearSettlementPaymentAttempt() {
+	m.clearedsettlement_payment_attempt = true
+	m.clearedFields[factsettlementchannelchaindirectpay.FieldSettlementPaymentAttemptID] = struct{}{}
+}
+
+// SettlementPaymentAttemptCleared reports if the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity was cleared.
+func (m *FactSettlementChannelChainDirectPayMutation) SettlementPaymentAttemptCleared() bool {
+	return m.clearedsettlement_payment_attempt
+}
+
+// SettlementPaymentAttemptIDs returns the "settlement_payment_attempt" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// SettlementPaymentAttemptID instead. It exists only for internal usage by the builders.
+func (m *FactSettlementChannelChainDirectPayMutation) SettlementPaymentAttemptIDs() (ids []int64) {
+	if id := m.settlement_payment_attempt; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetSettlementPaymentAttempt resets all changes to the "settlement_payment_attempt" edge.
+func (m *FactSettlementChannelChainDirectPayMutation) ResetSettlementPaymentAttempt() {
+	m.settlement_payment_attempt = nil
+	m.clearedsettlement_payment_attempt = false
+}
+
 // Where appends a list predicates to the FactSettlementChannelChainDirectPayMutation builder.
 func (m *FactSettlementChannelChainDirectPayMutation) Where(ps ...predicate.FactSettlementChannelChainDirectPay) {
 	m.predicates = append(m.predicates, ps...)
@@ -17637,8 +17669,8 @@ func (m *FactSettlementChannelChainDirectPayMutation) Type() string {
 // AddedFields().
 func (m *FactSettlementChannelChainDirectPayMutation) Fields() []string {
 	fields := make([]string, 0, 15)
-	if m.settlement_cycle_id != nil {
-		fields = append(fields, factsettlementchannelchaindirectpay.FieldSettlementCycleID)
+	if m.settlement_payment_attempt != nil {
+		fields = append(fields, factsettlementchannelchaindirectpay.FieldSettlementPaymentAttemptID)
 	}
 	if m.txid != nil {
 		fields = append(fields, factsettlementchannelchaindirectpay.FieldTxid)
@@ -17690,8 +17722,8 @@ func (m *FactSettlementChannelChainDirectPayMutation) Fields() []string {
 // schema.
 func (m *FactSettlementChannelChainDirectPayMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case factsettlementchannelchaindirectpay.FieldSettlementCycleID:
-		return m.SettlementCycleID()
+	case factsettlementchannelchaindirectpay.FieldSettlementPaymentAttemptID:
+		return m.SettlementPaymentAttemptID()
 	case factsettlementchannelchaindirectpay.FieldTxid:
 		return m.Txid()
 	case factsettlementchannelchaindirectpay.FieldPaymentSubtype:
@@ -17729,8 +17761,8 @@ func (m *FactSettlementChannelChainDirectPayMutation) Field(name string) (ent.Va
 // database failed.
 func (m *FactSettlementChannelChainDirectPayMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case factsettlementchannelchaindirectpay.FieldSettlementCycleID:
-		return m.OldSettlementCycleID(ctx)
+	case factsettlementchannelchaindirectpay.FieldSettlementPaymentAttemptID:
+		return m.OldSettlementPaymentAttemptID(ctx)
 	case factsettlementchannelchaindirectpay.FieldTxid:
 		return m.OldTxid(ctx)
 	case factsettlementchannelchaindirectpay.FieldPaymentSubtype:
@@ -17768,12 +17800,12 @@ func (m *FactSettlementChannelChainDirectPayMutation) OldField(ctx context.Conte
 // type.
 func (m *FactSettlementChannelChainDirectPayMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case factsettlementchannelchaindirectpay.FieldSettlementCycleID:
+	case factsettlementchannelchaindirectpay.FieldSettlementPaymentAttemptID:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetSettlementCycleID(v)
+		m.SetSettlementPaymentAttemptID(v)
 		return nil
 	case factsettlementchannelchaindirectpay.FieldTxid:
 		v, ok := value.(string)
@@ -17881,9 +17913,6 @@ func (m *FactSettlementChannelChainDirectPayMutation) SetField(name string, valu
 // this mutation.
 func (m *FactSettlementChannelChainDirectPayMutation) AddedFields() []string {
 	var fields []string
-	if m.addsettlement_cycle_id != nil {
-		fields = append(fields, factsettlementchannelchaindirectpay.FieldSettlementCycleID)
-	}
 	if m.addwallet_input_satoshi != nil {
 		fields = append(fields, factsettlementchannelchaindirectpay.FieldWalletInputSatoshi)
 	}
@@ -17916,8 +17945,6 @@ func (m *FactSettlementChannelChainDirectPayMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *FactSettlementChannelChainDirectPayMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case factsettlementchannelchaindirectpay.FieldSettlementCycleID:
-		return m.AddedSettlementCycleID()
 	case factsettlementchannelchaindirectpay.FieldWalletInputSatoshi:
 		return m.AddedWalletInputSatoshi()
 	case factsettlementchannelchaindirectpay.FieldWalletOutputSatoshi:
@@ -17943,13 +17970,6 @@ func (m *FactSettlementChannelChainDirectPayMutation) AddedField(name string) (e
 // type.
 func (m *FactSettlementChannelChainDirectPayMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case factsettlementchannelchaindirectpay.FieldSettlementCycleID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddSettlementCycleID(v)
-		return nil
 	case factsettlementchannelchaindirectpay.FieldWalletInputSatoshi:
 		v, ok := value.(int64)
 		if !ok {
@@ -18033,8 +18053,8 @@ func (m *FactSettlementChannelChainDirectPayMutation) ClearField(name string) er
 // It returns an error if the field is not defined in the schema.
 func (m *FactSettlementChannelChainDirectPayMutation) ResetField(name string) error {
 	switch name {
-	case factsettlementchannelchaindirectpay.FieldSettlementCycleID:
-		m.ResetSettlementCycleID()
+	case factsettlementchannelchaindirectpay.FieldSettlementPaymentAttemptID:
+		m.ResetSettlementPaymentAttemptID()
 		return nil
 	case factsettlementchannelchaindirectpay.FieldTxid:
 		m.ResetTxid()
@@ -18084,19 +18104,28 @@ func (m *FactSettlementChannelChainDirectPayMutation) ResetField(name string) er
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *FactSettlementChannelChainDirectPayMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.settlement_payment_attempt != nil {
+		edges = append(edges, factsettlementchannelchaindirectpay.EdgeSettlementPaymentAttempt)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *FactSettlementChannelChainDirectPayMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case factsettlementchannelchaindirectpay.EdgeSettlementPaymentAttempt:
+		if id := m.settlement_payment_attempt; id != nil {
+			return []ent.Value{*id}
+		}
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *FactSettlementChannelChainDirectPayMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
 	return edges
 }
 
@@ -18108,62 +18137,79 @@ func (m *FactSettlementChannelChainDirectPayMutation) RemovedIDs(name string) []
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *FactSettlementChannelChainDirectPayMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.clearedsettlement_payment_attempt {
+		edges = append(edges, factsettlementchannelchaindirectpay.EdgeSettlementPaymentAttempt)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *FactSettlementChannelChainDirectPayMutation) EdgeCleared(name string) bool {
+	switch name {
+	case factsettlementchannelchaindirectpay.EdgeSettlementPaymentAttempt:
+		return m.clearedsettlement_payment_attempt
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *FactSettlementChannelChainDirectPayMutation) ClearEdge(name string) error {
+	switch name {
+	case factsettlementchannelchaindirectpay.EdgeSettlementPaymentAttempt:
+		m.ClearSettlementPaymentAttempt()
+		return nil
+	}
 	return fmt.Errorf("unknown FactSettlementChannelChainDirectPay unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *FactSettlementChannelChainDirectPayMutation) ResetEdge(name string) error {
+	switch name {
+	case factsettlementchannelchaindirectpay.EdgeSettlementPaymentAttempt:
+		m.ResetSettlementPaymentAttempt()
+		return nil
+	}
 	return fmt.Errorf("unknown FactSettlementChannelChainDirectPay edge %s", name)
 }
 
 // FactSettlementChannelChainQuotePayMutation represents an operation that mutates the FactSettlementChannelChainQuotePay nodes in the graph.
 type FactSettlementChannelChainQuotePayMutation struct {
 	config
-	op                         Op
-	typ                        string
-	id                         *int
-	settlement_cycle_id        *int64
-	addsettlement_cycle_id     *int64
-	txid                       *string
-	payment_subtype            *string
-	status                     *string
-	wallet_input_satoshi       *int64
-	addwallet_input_satoshi    *int64
-	wallet_output_satoshi      *int64
-	addwallet_output_satoshi   *int64
-	net_amount_satoshi         *int64
-	addnet_amount_satoshi      *int64
-	block_height               *int64
-	addblock_height            *int64
-	occurred_at_unix           *int64
-	addoccurred_at_unix        *int64
-	submitted_at_unix          *int64
-	addsubmitted_at_unix       *int64
-	wallet_observed_at_unix    *int64
-	addwallet_observed_at_unix *int64
-	from_party_id              *string
-	to_party_id                *string
-	payload_json               *string
-	updated_at_unix            *int64
-	addupdated_at_unix         *int64
-	clearedFields              map[string]struct{}
-	done                       bool
-	oldValue                   func(context.Context) (*FactSettlementChannelChainQuotePay, error)
-	predicates                 []predicate.FactSettlementChannelChainQuotePay
+	op                                Op
+	typ                               string
+	id                                *int
+	txid                              *string
+	payment_subtype                   *string
+	status                            *string
+	wallet_input_satoshi              *int64
+	addwallet_input_satoshi           *int64
+	wallet_output_satoshi             *int64
+	addwallet_output_satoshi          *int64
+	net_amount_satoshi                *int64
+	addnet_amount_satoshi             *int64
+	block_height                      *int64
+	addblock_height                   *int64
+	occurred_at_unix                  *int64
+	addoccurred_at_unix               *int64
+	submitted_at_unix                 *int64
+	addsubmitted_at_unix              *int64
+	wallet_observed_at_unix           *int64
+	addwallet_observed_at_unix        *int64
+	from_party_id                     *string
+	to_party_id                       *string
+	payload_json                      *string
+	updated_at_unix                   *int64
+	addupdated_at_unix                *int64
+	clearedFields                     map[string]struct{}
+	settlement_payment_attempt        *int64
+	clearedsettlement_payment_attempt bool
+	done                              bool
+	oldValue                          func(context.Context) (*FactSettlementChannelChainQuotePay, error)
+	predicates                        []predicate.FactSettlementChannelChainQuotePay
 }
 
 var _ ent.Mutation = (*FactSettlementChannelChainQuotePayMutation)(nil)
@@ -18264,60 +18310,40 @@ func (m *FactSettlementChannelChainQuotePayMutation) IDs(ctx context.Context) ([
 	}
 }
 
-// SetSettlementCycleID sets the "settlement_cycle_id" field.
-func (m *FactSettlementChannelChainQuotePayMutation) SetSettlementCycleID(i int64) {
-	m.settlement_cycle_id = &i
-	m.addsettlement_cycle_id = nil
+// SetSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field.
+func (m *FactSettlementChannelChainQuotePayMutation) SetSettlementPaymentAttemptID(i int64) {
+	m.settlement_payment_attempt = &i
 }
 
-// SettlementCycleID returns the value of the "settlement_cycle_id" field in the mutation.
-func (m *FactSettlementChannelChainQuotePayMutation) SettlementCycleID() (r int64, exists bool) {
-	v := m.settlement_cycle_id
+// SettlementPaymentAttemptID returns the value of the "settlement_payment_attempt_id" field in the mutation.
+func (m *FactSettlementChannelChainQuotePayMutation) SettlementPaymentAttemptID() (r int64, exists bool) {
+	v := m.settlement_payment_attempt
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldSettlementCycleID returns the old "settlement_cycle_id" field's value of the FactSettlementChannelChainQuotePay entity.
+// OldSettlementPaymentAttemptID returns the old "settlement_payment_attempt_id" field's value of the FactSettlementChannelChainQuotePay entity.
 // If the FactSettlementChannelChainQuotePay object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *FactSettlementChannelChainQuotePayMutation) OldSettlementCycleID(ctx context.Context) (v int64, err error) {
+func (m *FactSettlementChannelChainQuotePayMutation) OldSettlementPaymentAttemptID(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldSettlementCycleID is only allowed on UpdateOne operations")
+		return v, errors.New("OldSettlementPaymentAttemptID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldSettlementCycleID requires an ID field in the mutation")
+		return v, errors.New("OldSettlementPaymentAttemptID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldSettlementCycleID: %w", err)
+		return v, fmt.Errorf("querying old value for OldSettlementPaymentAttemptID: %w", err)
 	}
-	return oldValue.SettlementCycleID, nil
+	return oldValue.SettlementPaymentAttemptID, nil
 }
 
-// AddSettlementCycleID adds i to the "settlement_cycle_id" field.
-func (m *FactSettlementChannelChainQuotePayMutation) AddSettlementCycleID(i int64) {
-	if m.addsettlement_cycle_id != nil {
-		*m.addsettlement_cycle_id += i
-	} else {
-		m.addsettlement_cycle_id = &i
-	}
-}
-
-// AddedSettlementCycleID returns the value that was added to the "settlement_cycle_id" field in this mutation.
-func (m *FactSettlementChannelChainQuotePayMutation) AddedSettlementCycleID() (r int64, exists bool) {
-	v := m.addsettlement_cycle_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetSettlementCycleID resets all changes to the "settlement_cycle_id" field.
-func (m *FactSettlementChannelChainQuotePayMutation) ResetSettlementCycleID() {
-	m.settlement_cycle_id = nil
-	m.addsettlement_cycle_id = nil
+// ResetSettlementPaymentAttemptID resets all changes to the "settlement_payment_attempt_id" field.
+func (m *FactSettlementChannelChainQuotePayMutation) ResetSettlementPaymentAttemptID() {
+	m.settlement_payment_attempt = nil
 }
 
 // SetTxid sets the "txid" field.
@@ -18984,6 +19010,33 @@ func (m *FactSettlementChannelChainQuotePayMutation) ResetUpdatedAtUnix() {
 	m.addupdated_at_unix = nil
 }
 
+// ClearSettlementPaymentAttempt clears the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (m *FactSettlementChannelChainQuotePayMutation) ClearSettlementPaymentAttempt() {
+	m.clearedsettlement_payment_attempt = true
+	m.clearedFields[factsettlementchannelchainquotepay.FieldSettlementPaymentAttemptID] = struct{}{}
+}
+
+// SettlementPaymentAttemptCleared reports if the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity was cleared.
+func (m *FactSettlementChannelChainQuotePayMutation) SettlementPaymentAttemptCleared() bool {
+	return m.clearedsettlement_payment_attempt
+}
+
+// SettlementPaymentAttemptIDs returns the "settlement_payment_attempt" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// SettlementPaymentAttemptID instead. It exists only for internal usage by the builders.
+func (m *FactSettlementChannelChainQuotePayMutation) SettlementPaymentAttemptIDs() (ids []int64) {
+	if id := m.settlement_payment_attempt; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetSettlementPaymentAttempt resets all changes to the "settlement_payment_attempt" edge.
+func (m *FactSettlementChannelChainQuotePayMutation) ResetSettlementPaymentAttempt() {
+	m.settlement_payment_attempt = nil
+	m.clearedsettlement_payment_attempt = false
+}
+
 // Where appends a list predicates to the FactSettlementChannelChainQuotePayMutation builder.
 func (m *FactSettlementChannelChainQuotePayMutation) Where(ps ...predicate.FactSettlementChannelChainQuotePay) {
 	m.predicates = append(m.predicates, ps...)
@@ -19019,8 +19072,8 @@ func (m *FactSettlementChannelChainQuotePayMutation) Type() string {
 // AddedFields().
 func (m *FactSettlementChannelChainQuotePayMutation) Fields() []string {
 	fields := make([]string, 0, 15)
-	if m.settlement_cycle_id != nil {
-		fields = append(fields, factsettlementchannelchainquotepay.FieldSettlementCycleID)
+	if m.settlement_payment_attempt != nil {
+		fields = append(fields, factsettlementchannelchainquotepay.FieldSettlementPaymentAttemptID)
 	}
 	if m.txid != nil {
 		fields = append(fields, factsettlementchannelchainquotepay.FieldTxid)
@@ -19072,8 +19125,8 @@ func (m *FactSettlementChannelChainQuotePayMutation) Fields() []string {
 // schema.
 func (m *FactSettlementChannelChainQuotePayMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case factsettlementchannelchainquotepay.FieldSettlementCycleID:
-		return m.SettlementCycleID()
+	case factsettlementchannelchainquotepay.FieldSettlementPaymentAttemptID:
+		return m.SettlementPaymentAttemptID()
 	case factsettlementchannelchainquotepay.FieldTxid:
 		return m.Txid()
 	case factsettlementchannelchainquotepay.FieldPaymentSubtype:
@@ -19111,8 +19164,8 @@ func (m *FactSettlementChannelChainQuotePayMutation) Field(name string) (ent.Val
 // database failed.
 func (m *FactSettlementChannelChainQuotePayMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case factsettlementchannelchainquotepay.FieldSettlementCycleID:
-		return m.OldSettlementCycleID(ctx)
+	case factsettlementchannelchainquotepay.FieldSettlementPaymentAttemptID:
+		return m.OldSettlementPaymentAttemptID(ctx)
 	case factsettlementchannelchainquotepay.FieldTxid:
 		return m.OldTxid(ctx)
 	case factsettlementchannelchainquotepay.FieldPaymentSubtype:
@@ -19150,12 +19203,12 @@ func (m *FactSettlementChannelChainQuotePayMutation) OldField(ctx context.Contex
 // type.
 func (m *FactSettlementChannelChainQuotePayMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case factsettlementchannelchainquotepay.FieldSettlementCycleID:
+	case factsettlementchannelchainquotepay.FieldSettlementPaymentAttemptID:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetSettlementCycleID(v)
+		m.SetSettlementPaymentAttemptID(v)
 		return nil
 	case factsettlementchannelchainquotepay.FieldTxid:
 		v, ok := value.(string)
@@ -19263,9 +19316,6 @@ func (m *FactSettlementChannelChainQuotePayMutation) SetField(name string, value
 // this mutation.
 func (m *FactSettlementChannelChainQuotePayMutation) AddedFields() []string {
 	var fields []string
-	if m.addsettlement_cycle_id != nil {
-		fields = append(fields, factsettlementchannelchainquotepay.FieldSettlementCycleID)
-	}
 	if m.addwallet_input_satoshi != nil {
 		fields = append(fields, factsettlementchannelchainquotepay.FieldWalletInputSatoshi)
 	}
@@ -19298,8 +19348,6 @@ func (m *FactSettlementChannelChainQuotePayMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *FactSettlementChannelChainQuotePayMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case factsettlementchannelchainquotepay.FieldSettlementCycleID:
-		return m.AddedSettlementCycleID()
 	case factsettlementchannelchainquotepay.FieldWalletInputSatoshi:
 		return m.AddedWalletInputSatoshi()
 	case factsettlementchannelchainquotepay.FieldWalletOutputSatoshi:
@@ -19325,13 +19373,6 @@ func (m *FactSettlementChannelChainQuotePayMutation) AddedField(name string) (en
 // type.
 func (m *FactSettlementChannelChainQuotePayMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case factsettlementchannelchainquotepay.FieldSettlementCycleID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddSettlementCycleID(v)
-		return nil
 	case factsettlementchannelchainquotepay.FieldWalletInputSatoshi:
 		v, ok := value.(int64)
 		if !ok {
@@ -19415,8 +19456,8 @@ func (m *FactSettlementChannelChainQuotePayMutation) ClearField(name string) err
 // It returns an error if the field is not defined in the schema.
 func (m *FactSettlementChannelChainQuotePayMutation) ResetField(name string) error {
 	switch name {
-	case factsettlementchannelchainquotepay.FieldSettlementCycleID:
-		m.ResetSettlementCycleID()
+	case factsettlementchannelchainquotepay.FieldSettlementPaymentAttemptID:
+		m.ResetSettlementPaymentAttemptID()
 		return nil
 	case factsettlementchannelchainquotepay.FieldTxid:
 		m.ResetTxid()
@@ -19466,19 +19507,28 @@ func (m *FactSettlementChannelChainQuotePayMutation) ResetField(name string) err
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *FactSettlementChannelChainQuotePayMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.settlement_payment_attempt != nil {
+		edges = append(edges, factsettlementchannelchainquotepay.EdgeSettlementPaymentAttempt)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *FactSettlementChannelChainQuotePayMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case factsettlementchannelchainquotepay.EdgeSettlementPaymentAttempt:
+		if id := m.settlement_payment_attempt; id != nil {
+			return []ent.Value{*id}
+		}
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *FactSettlementChannelChainQuotePayMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
 	return edges
 }
 
@@ -19490,61 +19540,78 @@ func (m *FactSettlementChannelChainQuotePayMutation) RemovedIDs(name string) []e
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *FactSettlementChannelChainQuotePayMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.clearedsettlement_payment_attempt {
+		edges = append(edges, factsettlementchannelchainquotepay.EdgeSettlementPaymentAttempt)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *FactSettlementChannelChainQuotePayMutation) EdgeCleared(name string) bool {
+	switch name {
+	case factsettlementchannelchainquotepay.EdgeSettlementPaymentAttempt:
+		return m.clearedsettlement_payment_attempt
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *FactSettlementChannelChainQuotePayMutation) ClearEdge(name string) error {
+	switch name {
+	case factsettlementchannelchainquotepay.EdgeSettlementPaymentAttempt:
+		m.ClearSettlementPaymentAttempt()
+		return nil
+	}
 	return fmt.Errorf("unknown FactSettlementChannelChainQuotePay unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *FactSettlementChannelChainQuotePayMutation) ResetEdge(name string) error {
+	switch name {
+	case factsettlementchannelchainquotepay.EdgeSettlementPaymentAttempt:
+		m.ResetSettlementPaymentAttempt()
+		return nil
+	}
 	return fmt.Errorf("unknown FactSettlementChannelChainQuotePay edge %s", name)
 }
 
 // FactSettlementChannelPoolSessionQuotePayMutation represents an operation that mutates the FactSettlementChannelPoolSessionQuotePay nodes in the graph.
 type FactSettlementChannelPoolSessionQuotePayMutation struct {
 	config
-	op                      Op
-	typ                     string
-	id                      *int
-	settlement_cycle_id     *int64
-	addsettlement_cycle_id  *int64
-	pool_session_id         *string
-	txid                    *string
-	pool_scheme             *string
-	counterparty_pubkey_hex *string
-	seller_pubkey_hex       *string
-	arbiter_pubkey_hex      *string
-	gateway_pubkey_hex      *string
-	pool_amount_satoshi     *int64
-	addpool_amount_satoshi  *int64
-	spend_tx_fee_satoshi    *int64
-	addspend_tx_fee_satoshi *int64
-	fee_rate_sat_byte       *float64
-	addfee_rate_sat_byte    *float64
-	lock_blocks             *int64
-	addlock_blocks          *int64
-	open_base_txid          *string
-	status                  *string
-	created_at_unix         *int64
-	addcreated_at_unix      *int64
-	updated_at_unix         *int64
-	addupdated_at_unix      *int64
-	clearedFields           map[string]struct{}
-	done                    bool
-	oldValue                func(context.Context) (*FactSettlementChannelPoolSessionQuotePay, error)
-	predicates              []predicate.FactSettlementChannelPoolSessionQuotePay
+	op                                Op
+	typ                               string
+	id                                *int
+	pool_session_id                   *string
+	txid                              *string
+	pool_scheme                       *string
+	counterparty_pubkey_hex           *string
+	seller_pubkey_hex                 *string
+	arbiter_pubkey_hex                *string
+	gateway_pubkey_hex                *string
+	pool_amount_satoshi               *int64
+	addpool_amount_satoshi            *int64
+	spend_tx_fee_satoshi              *int64
+	addspend_tx_fee_satoshi           *int64
+	fee_rate_sat_byte                 *float64
+	addfee_rate_sat_byte              *float64
+	lock_blocks                       *int64
+	addlock_blocks                    *int64
+	open_base_txid                    *string
+	status                            *string
+	created_at_unix                   *int64
+	addcreated_at_unix                *int64
+	updated_at_unix                   *int64
+	addupdated_at_unix                *int64
+	clearedFields                     map[string]struct{}
+	settlement_payment_attempt        *int64
+	clearedsettlement_payment_attempt bool
+	done                              bool
+	oldValue                          func(context.Context) (*FactSettlementChannelPoolSessionQuotePay, error)
+	predicates                        []predicate.FactSettlementChannelPoolSessionQuotePay
 }
 
 var _ ent.Mutation = (*FactSettlementChannelPoolSessionQuotePayMutation)(nil)
@@ -19645,60 +19712,40 @@ func (m *FactSettlementChannelPoolSessionQuotePayMutation) IDs(ctx context.Conte
 	}
 }
 
-// SetSettlementCycleID sets the "settlement_cycle_id" field.
-func (m *FactSettlementChannelPoolSessionQuotePayMutation) SetSettlementCycleID(i int64) {
-	m.settlement_cycle_id = &i
-	m.addsettlement_cycle_id = nil
+// SetSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field.
+func (m *FactSettlementChannelPoolSessionQuotePayMutation) SetSettlementPaymentAttemptID(i int64) {
+	m.settlement_payment_attempt = &i
 }
 
-// SettlementCycleID returns the value of the "settlement_cycle_id" field in the mutation.
-func (m *FactSettlementChannelPoolSessionQuotePayMutation) SettlementCycleID() (r int64, exists bool) {
-	v := m.settlement_cycle_id
+// SettlementPaymentAttemptID returns the value of the "settlement_payment_attempt_id" field in the mutation.
+func (m *FactSettlementChannelPoolSessionQuotePayMutation) SettlementPaymentAttemptID() (r int64, exists bool) {
+	v := m.settlement_payment_attempt
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldSettlementCycleID returns the old "settlement_cycle_id" field's value of the FactSettlementChannelPoolSessionQuotePay entity.
+// OldSettlementPaymentAttemptID returns the old "settlement_payment_attempt_id" field's value of the FactSettlementChannelPoolSessionQuotePay entity.
 // If the FactSettlementChannelPoolSessionQuotePay object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *FactSettlementChannelPoolSessionQuotePayMutation) OldSettlementCycleID(ctx context.Context) (v int64, err error) {
+func (m *FactSettlementChannelPoolSessionQuotePayMutation) OldSettlementPaymentAttemptID(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldSettlementCycleID is only allowed on UpdateOne operations")
+		return v, errors.New("OldSettlementPaymentAttemptID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldSettlementCycleID requires an ID field in the mutation")
+		return v, errors.New("OldSettlementPaymentAttemptID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldSettlementCycleID: %w", err)
+		return v, fmt.Errorf("querying old value for OldSettlementPaymentAttemptID: %w", err)
 	}
-	return oldValue.SettlementCycleID, nil
+	return oldValue.SettlementPaymentAttemptID, nil
 }
 
-// AddSettlementCycleID adds i to the "settlement_cycle_id" field.
-func (m *FactSettlementChannelPoolSessionQuotePayMutation) AddSettlementCycleID(i int64) {
-	if m.addsettlement_cycle_id != nil {
-		*m.addsettlement_cycle_id += i
-	} else {
-		m.addsettlement_cycle_id = &i
-	}
-}
-
-// AddedSettlementCycleID returns the value that was added to the "settlement_cycle_id" field in this mutation.
-func (m *FactSettlementChannelPoolSessionQuotePayMutation) AddedSettlementCycleID() (r int64, exists bool) {
-	v := m.addsettlement_cycle_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetSettlementCycleID resets all changes to the "settlement_cycle_id" field.
-func (m *FactSettlementChannelPoolSessionQuotePayMutation) ResetSettlementCycleID() {
-	m.settlement_cycle_id = nil
-	m.addsettlement_cycle_id = nil
+// ResetSettlementPaymentAttemptID resets all changes to the "settlement_payment_attempt_id" field.
+func (m *FactSettlementChannelPoolSessionQuotePayMutation) ResetSettlementPaymentAttemptID() {
+	m.settlement_payment_attempt = nil
 }
 
 // SetPoolSessionID sets the "pool_session_id" field.
@@ -20361,6 +20408,33 @@ func (m *FactSettlementChannelPoolSessionQuotePayMutation) ResetUpdatedAtUnix() 
 	m.addupdated_at_unix = nil
 }
 
+// ClearSettlementPaymentAttempt clears the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (m *FactSettlementChannelPoolSessionQuotePayMutation) ClearSettlementPaymentAttempt() {
+	m.clearedsettlement_payment_attempt = true
+	m.clearedFields[factsettlementchannelpoolsessionquotepay.FieldSettlementPaymentAttemptID] = struct{}{}
+}
+
+// SettlementPaymentAttemptCleared reports if the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity was cleared.
+func (m *FactSettlementChannelPoolSessionQuotePayMutation) SettlementPaymentAttemptCleared() bool {
+	return m.clearedsettlement_payment_attempt
+}
+
+// SettlementPaymentAttemptIDs returns the "settlement_payment_attempt" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// SettlementPaymentAttemptID instead. It exists only for internal usage by the builders.
+func (m *FactSettlementChannelPoolSessionQuotePayMutation) SettlementPaymentAttemptIDs() (ids []int64) {
+	if id := m.settlement_payment_attempt; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetSettlementPaymentAttempt resets all changes to the "settlement_payment_attempt" edge.
+func (m *FactSettlementChannelPoolSessionQuotePayMutation) ResetSettlementPaymentAttempt() {
+	m.settlement_payment_attempt = nil
+	m.clearedsettlement_payment_attempt = false
+}
+
 // Where appends a list predicates to the FactSettlementChannelPoolSessionQuotePayMutation builder.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) Where(ps ...predicate.FactSettlementChannelPoolSessionQuotePay) {
 	m.predicates = append(m.predicates, ps...)
@@ -20396,8 +20470,8 @@ func (m *FactSettlementChannelPoolSessionQuotePayMutation) Type() string {
 // AddedFields().
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) Fields() []string {
 	fields := make([]string, 0, 16)
-	if m.settlement_cycle_id != nil {
-		fields = append(fields, factsettlementchannelpoolsessionquotepay.FieldSettlementCycleID)
+	if m.settlement_payment_attempt != nil {
+		fields = append(fields, factsettlementchannelpoolsessionquotepay.FieldSettlementPaymentAttemptID)
 	}
 	if m.pool_session_id != nil {
 		fields = append(fields, factsettlementchannelpoolsessionquotepay.FieldPoolSessionID)
@@ -20452,8 +20526,8 @@ func (m *FactSettlementChannelPoolSessionQuotePayMutation) Fields() []string {
 // schema.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case factsettlementchannelpoolsessionquotepay.FieldSettlementCycleID:
-		return m.SettlementCycleID()
+	case factsettlementchannelpoolsessionquotepay.FieldSettlementPaymentAttemptID:
+		return m.SettlementPaymentAttemptID()
 	case factsettlementchannelpoolsessionquotepay.FieldPoolSessionID:
 		return m.PoolSessionID()
 	case factsettlementchannelpoolsessionquotepay.FieldTxid:
@@ -20493,8 +20567,8 @@ func (m *FactSettlementChannelPoolSessionQuotePayMutation) Field(name string) (e
 // database failed.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case factsettlementchannelpoolsessionquotepay.FieldSettlementCycleID:
-		return m.OldSettlementCycleID(ctx)
+	case factsettlementchannelpoolsessionquotepay.FieldSettlementPaymentAttemptID:
+		return m.OldSettlementPaymentAttemptID(ctx)
 	case factsettlementchannelpoolsessionquotepay.FieldPoolSessionID:
 		return m.OldPoolSessionID(ctx)
 	case factsettlementchannelpoolsessionquotepay.FieldTxid:
@@ -20534,12 +20608,12 @@ func (m *FactSettlementChannelPoolSessionQuotePayMutation) OldField(ctx context.
 // type.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case factsettlementchannelpoolsessionquotepay.FieldSettlementCycleID:
+	case factsettlementchannelpoolsessionquotepay.FieldSettlementPaymentAttemptID:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetSettlementCycleID(v)
+		m.SetSettlementPaymentAttemptID(v)
 		return nil
 	case factsettlementchannelpoolsessionquotepay.FieldPoolSessionID:
 		v, ok := value.(string)
@@ -20654,9 +20728,6 @@ func (m *FactSettlementChannelPoolSessionQuotePayMutation) SetField(name string,
 // this mutation.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) AddedFields() []string {
 	var fields []string
-	if m.addsettlement_cycle_id != nil {
-		fields = append(fields, factsettlementchannelpoolsessionquotepay.FieldSettlementCycleID)
-	}
 	if m.addpool_amount_satoshi != nil {
 		fields = append(fields, factsettlementchannelpoolsessionquotepay.FieldPoolAmountSatoshi)
 	}
@@ -20683,8 +20754,6 @@ func (m *FactSettlementChannelPoolSessionQuotePayMutation) AddedFields() []strin
 // was not set, or was not defined in the schema.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case factsettlementchannelpoolsessionquotepay.FieldSettlementCycleID:
-		return m.AddedSettlementCycleID()
 	case factsettlementchannelpoolsessionquotepay.FieldPoolAmountSatoshi:
 		return m.AddedPoolAmountSatoshi()
 	case factsettlementchannelpoolsessionquotepay.FieldSpendTxFeeSatoshi:
@@ -20706,13 +20775,6 @@ func (m *FactSettlementChannelPoolSessionQuotePayMutation) AddedField(name strin
 // type.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case factsettlementchannelpoolsessionquotepay.FieldSettlementCycleID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddSettlementCycleID(v)
-		return nil
 	case factsettlementchannelpoolsessionquotepay.FieldPoolAmountSatoshi:
 		v, ok := value.(int64)
 		if !ok {
@@ -20782,8 +20844,8 @@ func (m *FactSettlementChannelPoolSessionQuotePayMutation) ClearField(name strin
 // It returns an error if the field is not defined in the schema.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) ResetField(name string) error {
 	switch name {
-	case factsettlementchannelpoolsessionquotepay.FieldSettlementCycleID:
-		m.ResetSettlementCycleID()
+	case factsettlementchannelpoolsessionquotepay.FieldSettlementPaymentAttemptID:
+		m.ResetSettlementPaymentAttemptID()
 		return nil
 	case factsettlementchannelpoolsessionquotepay.FieldPoolSessionID:
 		m.ResetPoolSessionID()
@@ -20836,19 +20898,28 @@ func (m *FactSettlementChannelPoolSessionQuotePayMutation) ResetField(name strin
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.settlement_payment_attempt != nil {
+		edges = append(edges, factsettlementchannelpoolsessionquotepay.EdgeSettlementPaymentAttempt)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case factsettlementchannelpoolsessionquotepay.EdgeSettlementPaymentAttempt:
+		if id := m.settlement_payment_attempt; id != nil {
+			return []ent.Value{*id}
+		}
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
 	return edges
 }
 
@@ -20860,25 +20931,42 @@ func (m *FactSettlementChannelPoolSessionQuotePayMutation) RemovedIDs(name strin
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.clearedsettlement_payment_attempt {
+		edges = append(edges, factsettlementchannelpoolsessionquotepay.EdgeSettlementPaymentAttempt)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) EdgeCleared(name string) bool {
+	switch name {
+	case factsettlementchannelpoolsessionquotepay.EdgeSettlementPaymentAttempt:
+		return m.clearedsettlement_payment_attempt
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) ClearEdge(name string) error {
+	switch name {
+	case factsettlementchannelpoolsessionquotepay.EdgeSettlementPaymentAttempt:
+		m.ClearSettlementPaymentAttempt()
+		return nil
+	}
 	return fmt.Errorf("unknown FactSettlementChannelPoolSessionQuotePay unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *FactSettlementChannelPoolSessionQuotePayMutation) ResetEdge(name string) error {
+	switch name {
+	case factsettlementchannelpoolsessionquotepay.EdgeSettlementPaymentAttempt:
+		m.ResetSettlementPaymentAttempt()
+		return nil
+	}
 	return fmt.Errorf("unknown FactSettlementChannelPoolSessionQuotePay edge %s", name)
 }
 
@@ -22003,33 +22091,1160 @@ func (m *FactSettlementCyclesMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown FactSettlementCycles edge %s", name)
 }
 
+// FactSettlementPaymentAttemptsMutation represents an operation that mutates the FactSettlementPaymentAttempts nodes in the graph.
+type FactSettlementPaymentAttemptsMutation struct {
+	config
+	op                      Op
+	typ                     string
+	id                      *int64
+	payment_attempt_id      *string
+	source_type             *string
+	source_id               *string
+	state                   *string
+	gross_amount_satoshi    *int64
+	addgross_amount_satoshi *int64
+	gate_fee_satoshi        *int64
+	addgate_fee_satoshi     *int64
+	net_amount_satoshi      *int64
+	addnet_amount_satoshi   *int64
+	cycle_index             *int64
+	addcycle_index          *int64
+	occurred_at_unix        *int64
+	addoccurred_at_unix     *int64
+	confirmed_at_unix       *int64
+	addconfirmed_at_unix    *int64
+	note                    *string
+	payload_json            *string
+	clearedFields           map[string]struct{}
+	done                    bool
+	oldValue                func(context.Context) (*FactSettlementPaymentAttempts, error)
+	predicates              []predicate.FactSettlementPaymentAttempts
+}
+
+var _ ent.Mutation = (*FactSettlementPaymentAttemptsMutation)(nil)
+
+// factsettlementpaymentattemptsOption allows management of the mutation configuration using functional options.
+type factsettlementpaymentattemptsOption func(*FactSettlementPaymentAttemptsMutation)
+
+// newFactSettlementPaymentAttemptsMutation creates new mutation for the FactSettlementPaymentAttempts entity.
+func newFactSettlementPaymentAttemptsMutation(c config, op Op, opts ...factsettlementpaymentattemptsOption) *FactSettlementPaymentAttemptsMutation {
+	m := &FactSettlementPaymentAttemptsMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeFactSettlementPaymentAttempts,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withFactSettlementPaymentAttemptsID sets the ID field of the mutation.
+func withFactSettlementPaymentAttemptsID(id int64) factsettlementpaymentattemptsOption {
+	return func(m *FactSettlementPaymentAttemptsMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *FactSettlementPaymentAttempts
+		)
+		m.oldValue = func(ctx context.Context) (*FactSettlementPaymentAttempts, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().FactSettlementPaymentAttempts.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withFactSettlementPaymentAttempts sets the old FactSettlementPaymentAttempts of the mutation.
+func withFactSettlementPaymentAttempts(node *FactSettlementPaymentAttempts) factsettlementpaymentattemptsOption {
+	return func(m *FactSettlementPaymentAttemptsMutation) {
+		m.oldValue = func(context.Context) (*FactSettlementPaymentAttempts, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m FactSettlementPaymentAttemptsMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m FactSettlementPaymentAttemptsMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("gen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of FactSettlementPaymentAttempts entities.
+func (m *FactSettlementPaymentAttemptsMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *FactSettlementPaymentAttemptsMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *FactSettlementPaymentAttemptsMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().FactSettlementPaymentAttempts.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetPaymentAttemptID sets the "payment_attempt_id" field.
+func (m *FactSettlementPaymentAttemptsMutation) SetPaymentAttemptID(s string) {
+	m.payment_attempt_id = &s
+}
+
+// PaymentAttemptID returns the value of the "payment_attempt_id" field in the mutation.
+func (m *FactSettlementPaymentAttemptsMutation) PaymentAttemptID() (r string, exists bool) {
+	v := m.payment_attempt_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPaymentAttemptID returns the old "payment_attempt_id" field's value of the FactSettlementPaymentAttempts entity.
+// If the FactSettlementPaymentAttempts object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FactSettlementPaymentAttemptsMutation) OldPaymentAttemptID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPaymentAttemptID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPaymentAttemptID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPaymentAttemptID: %w", err)
+	}
+	return oldValue.PaymentAttemptID, nil
+}
+
+// ResetPaymentAttemptID resets all changes to the "payment_attempt_id" field.
+func (m *FactSettlementPaymentAttemptsMutation) ResetPaymentAttemptID() {
+	m.payment_attempt_id = nil
+}
+
+// SetSourceType sets the "source_type" field.
+func (m *FactSettlementPaymentAttemptsMutation) SetSourceType(s string) {
+	m.source_type = &s
+}
+
+// SourceType returns the value of the "source_type" field in the mutation.
+func (m *FactSettlementPaymentAttemptsMutation) SourceType() (r string, exists bool) {
+	v := m.source_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSourceType returns the old "source_type" field's value of the FactSettlementPaymentAttempts entity.
+// If the FactSettlementPaymentAttempts object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FactSettlementPaymentAttemptsMutation) OldSourceType(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSourceType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSourceType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSourceType: %w", err)
+	}
+	return oldValue.SourceType, nil
+}
+
+// ResetSourceType resets all changes to the "source_type" field.
+func (m *FactSettlementPaymentAttemptsMutation) ResetSourceType() {
+	m.source_type = nil
+}
+
+// SetSourceID sets the "source_id" field.
+func (m *FactSettlementPaymentAttemptsMutation) SetSourceID(s string) {
+	m.source_id = &s
+}
+
+// SourceID returns the value of the "source_id" field in the mutation.
+func (m *FactSettlementPaymentAttemptsMutation) SourceID() (r string, exists bool) {
+	v := m.source_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSourceID returns the old "source_id" field's value of the FactSettlementPaymentAttempts entity.
+// If the FactSettlementPaymentAttempts object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FactSettlementPaymentAttemptsMutation) OldSourceID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSourceID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSourceID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSourceID: %w", err)
+	}
+	return oldValue.SourceID, nil
+}
+
+// ResetSourceID resets all changes to the "source_id" field.
+func (m *FactSettlementPaymentAttemptsMutation) ResetSourceID() {
+	m.source_id = nil
+}
+
+// SetState sets the "state" field.
+func (m *FactSettlementPaymentAttemptsMutation) SetState(s string) {
+	m.state = &s
+}
+
+// State returns the value of the "state" field in the mutation.
+func (m *FactSettlementPaymentAttemptsMutation) State() (r string, exists bool) {
+	v := m.state
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldState returns the old "state" field's value of the FactSettlementPaymentAttempts entity.
+// If the FactSettlementPaymentAttempts object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FactSettlementPaymentAttemptsMutation) OldState(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldState is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldState requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldState: %w", err)
+	}
+	return oldValue.State, nil
+}
+
+// ResetState resets all changes to the "state" field.
+func (m *FactSettlementPaymentAttemptsMutation) ResetState() {
+	m.state = nil
+}
+
+// SetGrossAmountSatoshi sets the "gross_amount_satoshi" field.
+func (m *FactSettlementPaymentAttemptsMutation) SetGrossAmountSatoshi(i int64) {
+	m.gross_amount_satoshi = &i
+	m.addgross_amount_satoshi = nil
+}
+
+// GrossAmountSatoshi returns the value of the "gross_amount_satoshi" field in the mutation.
+func (m *FactSettlementPaymentAttemptsMutation) GrossAmountSatoshi() (r int64, exists bool) {
+	v := m.gross_amount_satoshi
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGrossAmountSatoshi returns the old "gross_amount_satoshi" field's value of the FactSettlementPaymentAttempts entity.
+// If the FactSettlementPaymentAttempts object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FactSettlementPaymentAttemptsMutation) OldGrossAmountSatoshi(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGrossAmountSatoshi is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGrossAmountSatoshi requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGrossAmountSatoshi: %w", err)
+	}
+	return oldValue.GrossAmountSatoshi, nil
+}
+
+// AddGrossAmountSatoshi adds i to the "gross_amount_satoshi" field.
+func (m *FactSettlementPaymentAttemptsMutation) AddGrossAmountSatoshi(i int64) {
+	if m.addgross_amount_satoshi != nil {
+		*m.addgross_amount_satoshi += i
+	} else {
+		m.addgross_amount_satoshi = &i
+	}
+}
+
+// AddedGrossAmountSatoshi returns the value that was added to the "gross_amount_satoshi" field in this mutation.
+func (m *FactSettlementPaymentAttemptsMutation) AddedGrossAmountSatoshi() (r int64, exists bool) {
+	v := m.addgross_amount_satoshi
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetGrossAmountSatoshi resets all changes to the "gross_amount_satoshi" field.
+func (m *FactSettlementPaymentAttemptsMutation) ResetGrossAmountSatoshi() {
+	m.gross_amount_satoshi = nil
+	m.addgross_amount_satoshi = nil
+}
+
+// SetGateFeeSatoshi sets the "gate_fee_satoshi" field.
+func (m *FactSettlementPaymentAttemptsMutation) SetGateFeeSatoshi(i int64) {
+	m.gate_fee_satoshi = &i
+	m.addgate_fee_satoshi = nil
+}
+
+// GateFeeSatoshi returns the value of the "gate_fee_satoshi" field in the mutation.
+func (m *FactSettlementPaymentAttemptsMutation) GateFeeSatoshi() (r int64, exists bool) {
+	v := m.gate_fee_satoshi
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGateFeeSatoshi returns the old "gate_fee_satoshi" field's value of the FactSettlementPaymentAttempts entity.
+// If the FactSettlementPaymentAttempts object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FactSettlementPaymentAttemptsMutation) OldGateFeeSatoshi(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGateFeeSatoshi is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGateFeeSatoshi requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGateFeeSatoshi: %w", err)
+	}
+	return oldValue.GateFeeSatoshi, nil
+}
+
+// AddGateFeeSatoshi adds i to the "gate_fee_satoshi" field.
+func (m *FactSettlementPaymentAttemptsMutation) AddGateFeeSatoshi(i int64) {
+	if m.addgate_fee_satoshi != nil {
+		*m.addgate_fee_satoshi += i
+	} else {
+		m.addgate_fee_satoshi = &i
+	}
+}
+
+// AddedGateFeeSatoshi returns the value that was added to the "gate_fee_satoshi" field in this mutation.
+func (m *FactSettlementPaymentAttemptsMutation) AddedGateFeeSatoshi() (r int64, exists bool) {
+	v := m.addgate_fee_satoshi
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetGateFeeSatoshi resets all changes to the "gate_fee_satoshi" field.
+func (m *FactSettlementPaymentAttemptsMutation) ResetGateFeeSatoshi() {
+	m.gate_fee_satoshi = nil
+	m.addgate_fee_satoshi = nil
+}
+
+// SetNetAmountSatoshi sets the "net_amount_satoshi" field.
+func (m *FactSettlementPaymentAttemptsMutation) SetNetAmountSatoshi(i int64) {
+	m.net_amount_satoshi = &i
+	m.addnet_amount_satoshi = nil
+}
+
+// NetAmountSatoshi returns the value of the "net_amount_satoshi" field in the mutation.
+func (m *FactSettlementPaymentAttemptsMutation) NetAmountSatoshi() (r int64, exists bool) {
+	v := m.net_amount_satoshi
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldNetAmountSatoshi returns the old "net_amount_satoshi" field's value of the FactSettlementPaymentAttempts entity.
+// If the FactSettlementPaymentAttempts object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FactSettlementPaymentAttemptsMutation) OldNetAmountSatoshi(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldNetAmountSatoshi is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldNetAmountSatoshi requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldNetAmountSatoshi: %w", err)
+	}
+	return oldValue.NetAmountSatoshi, nil
+}
+
+// AddNetAmountSatoshi adds i to the "net_amount_satoshi" field.
+func (m *FactSettlementPaymentAttemptsMutation) AddNetAmountSatoshi(i int64) {
+	if m.addnet_amount_satoshi != nil {
+		*m.addnet_amount_satoshi += i
+	} else {
+		m.addnet_amount_satoshi = &i
+	}
+}
+
+// AddedNetAmountSatoshi returns the value that was added to the "net_amount_satoshi" field in this mutation.
+func (m *FactSettlementPaymentAttemptsMutation) AddedNetAmountSatoshi() (r int64, exists bool) {
+	v := m.addnet_amount_satoshi
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetNetAmountSatoshi resets all changes to the "net_amount_satoshi" field.
+func (m *FactSettlementPaymentAttemptsMutation) ResetNetAmountSatoshi() {
+	m.net_amount_satoshi = nil
+	m.addnet_amount_satoshi = nil
+}
+
+// SetCycleIndex sets the "cycle_index" field.
+func (m *FactSettlementPaymentAttemptsMutation) SetCycleIndex(i int64) {
+	m.cycle_index = &i
+	m.addcycle_index = nil
+}
+
+// CycleIndex returns the value of the "cycle_index" field in the mutation.
+func (m *FactSettlementPaymentAttemptsMutation) CycleIndex() (r int64, exists bool) {
+	v := m.cycle_index
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCycleIndex returns the old "cycle_index" field's value of the FactSettlementPaymentAttempts entity.
+// If the FactSettlementPaymentAttempts object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FactSettlementPaymentAttemptsMutation) OldCycleIndex(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCycleIndex is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCycleIndex requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCycleIndex: %w", err)
+	}
+	return oldValue.CycleIndex, nil
+}
+
+// AddCycleIndex adds i to the "cycle_index" field.
+func (m *FactSettlementPaymentAttemptsMutation) AddCycleIndex(i int64) {
+	if m.addcycle_index != nil {
+		*m.addcycle_index += i
+	} else {
+		m.addcycle_index = &i
+	}
+}
+
+// AddedCycleIndex returns the value that was added to the "cycle_index" field in this mutation.
+func (m *FactSettlementPaymentAttemptsMutation) AddedCycleIndex() (r int64, exists bool) {
+	v := m.addcycle_index
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetCycleIndex resets all changes to the "cycle_index" field.
+func (m *FactSettlementPaymentAttemptsMutation) ResetCycleIndex() {
+	m.cycle_index = nil
+	m.addcycle_index = nil
+}
+
+// SetOccurredAtUnix sets the "occurred_at_unix" field.
+func (m *FactSettlementPaymentAttemptsMutation) SetOccurredAtUnix(i int64) {
+	m.occurred_at_unix = &i
+	m.addoccurred_at_unix = nil
+}
+
+// OccurredAtUnix returns the value of the "occurred_at_unix" field in the mutation.
+func (m *FactSettlementPaymentAttemptsMutation) OccurredAtUnix() (r int64, exists bool) {
+	v := m.occurred_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOccurredAtUnix returns the old "occurred_at_unix" field's value of the FactSettlementPaymentAttempts entity.
+// If the FactSettlementPaymentAttempts object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FactSettlementPaymentAttemptsMutation) OldOccurredAtUnix(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOccurredAtUnix is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOccurredAtUnix requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOccurredAtUnix: %w", err)
+	}
+	return oldValue.OccurredAtUnix, nil
+}
+
+// AddOccurredAtUnix adds i to the "occurred_at_unix" field.
+func (m *FactSettlementPaymentAttemptsMutation) AddOccurredAtUnix(i int64) {
+	if m.addoccurred_at_unix != nil {
+		*m.addoccurred_at_unix += i
+	} else {
+		m.addoccurred_at_unix = &i
+	}
+}
+
+// AddedOccurredAtUnix returns the value that was added to the "occurred_at_unix" field in this mutation.
+func (m *FactSettlementPaymentAttemptsMutation) AddedOccurredAtUnix() (r int64, exists bool) {
+	v := m.addoccurred_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetOccurredAtUnix resets all changes to the "occurred_at_unix" field.
+func (m *FactSettlementPaymentAttemptsMutation) ResetOccurredAtUnix() {
+	m.occurred_at_unix = nil
+	m.addoccurred_at_unix = nil
+}
+
+// SetConfirmedAtUnix sets the "confirmed_at_unix" field.
+func (m *FactSettlementPaymentAttemptsMutation) SetConfirmedAtUnix(i int64) {
+	m.confirmed_at_unix = &i
+	m.addconfirmed_at_unix = nil
+}
+
+// ConfirmedAtUnix returns the value of the "confirmed_at_unix" field in the mutation.
+func (m *FactSettlementPaymentAttemptsMutation) ConfirmedAtUnix() (r int64, exists bool) {
+	v := m.confirmed_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldConfirmedAtUnix returns the old "confirmed_at_unix" field's value of the FactSettlementPaymentAttempts entity.
+// If the FactSettlementPaymentAttempts object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FactSettlementPaymentAttemptsMutation) OldConfirmedAtUnix(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldConfirmedAtUnix is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldConfirmedAtUnix requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldConfirmedAtUnix: %w", err)
+	}
+	return oldValue.ConfirmedAtUnix, nil
+}
+
+// AddConfirmedAtUnix adds i to the "confirmed_at_unix" field.
+func (m *FactSettlementPaymentAttemptsMutation) AddConfirmedAtUnix(i int64) {
+	if m.addconfirmed_at_unix != nil {
+		*m.addconfirmed_at_unix += i
+	} else {
+		m.addconfirmed_at_unix = &i
+	}
+}
+
+// AddedConfirmedAtUnix returns the value that was added to the "confirmed_at_unix" field in this mutation.
+func (m *FactSettlementPaymentAttemptsMutation) AddedConfirmedAtUnix() (r int64, exists bool) {
+	v := m.addconfirmed_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetConfirmedAtUnix resets all changes to the "confirmed_at_unix" field.
+func (m *FactSettlementPaymentAttemptsMutation) ResetConfirmedAtUnix() {
+	m.confirmed_at_unix = nil
+	m.addconfirmed_at_unix = nil
+}
+
+// SetNote sets the "note" field.
+func (m *FactSettlementPaymentAttemptsMutation) SetNote(s string) {
+	m.note = &s
+}
+
+// Note returns the value of the "note" field in the mutation.
+func (m *FactSettlementPaymentAttemptsMutation) Note() (r string, exists bool) {
+	v := m.note
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldNote returns the old "note" field's value of the FactSettlementPaymentAttempts entity.
+// If the FactSettlementPaymentAttempts object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FactSettlementPaymentAttemptsMutation) OldNote(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldNote is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldNote requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldNote: %w", err)
+	}
+	return oldValue.Note, nil
+}
+
+// ResetNote resets all changes to the "note" field.
+func (m *FactSettlementPaymentAttemptsMutation) ResetNote() {
+	m.note = nil
+}
+
+// SetPayloadJSON sets the "payload_json" field.
+func (m *FactSettlementPaymentAttemptsMutation) SetPayloadJSON(s string) {
+	m.payload_json = &s
+}
+
+// PayloadJSON returns the value of the "payload_json" field in the mutation.
+func (m *FactSettlementPaymentAttemptsMutation) PayloadJSON() (r string, exists bool) {
+	v := m.payload_json
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPayloadJSON returns the old "payload_json" field's value of the FactSettlementPaymentAttempts entity.
+// If the FactSettlementPaymentAttempts object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FactSettlementPaymentAttemptsMutation) OldPayloadJSON(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPayloadJSON is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPayloadJSON requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPayloadJSON: %w", err)
+	}
+	return oldValue.PayloadJSON, nil
+}
+
+// ResetPayloadJSON resets all changes to the "payload_json" field.
+func (m *FactSettlementPaymentAttemptsMutation) ResetPayloadJSON() {
+	m.payload_json = nil
+}
+
+// Where appends a list predicates to the FactSettlementPaymentAttemptsMutation builder.
+func (m *FactSettlementPaymentAttemptsMutation) Where(ps ...predicate.FactSettlementPaymentAttempts) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the FactSettlementPaymentAttemptsMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *FactSettlementPaymentAttemptsMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.FactSettlementPaymentAttempts, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *FactSettlementPaymentAttemptsMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *FactSettlementPaymentAttemptsMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (FactSettlementPaymentAttempts).
+func (m *FactSettlementPaymentAttemptsMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *FactSettlementPaymentAttemptsMutation) Fields() []string {
+	fields := make([]string, 0, 12)
+	if m.payment_attempt_id != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldPaymentAttemptID)
+	}
+	if m.source_type != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldSourceType)
+	}
+	if m.source_id != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldSourceID)
+	}
+	if m.state != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldState)
+	}
+	if m.gross_amount_satoshi != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldGrossAmountSatoshi)
+	}
+	if m.gate_fee_satoshi != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldGateFeeSatoshi)
+	}
+	if m.net_amount_satoshi != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldNetAmountSatoshi)
+	}
+	if m.cycle_index != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldCycleIndex)
+	}
+	if m.occurred_at_unix != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldOccurredAtUnix)
+	}
+	if m.confirmed_at_unix != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldConfirmedAtUnix)
+	}
+	if m.note != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldNote)
+	}
+	if m.payload_json != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldPayloadJSON)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *FactSettlementPaymentAttemptsMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case factsettlementpaymentattempts.FieldPaymentAttemptID:
+		return m.PaymentAttemptID()
+	case factsettlementpaymentattempts.FieldSourceType:
+		return m.SourceType()
+	case factsettlementpaymentattempts.FieldSourceID:
+		return m.SourceID()
+	case factsettlementpaymentattempts.FieldState:
+		return m.State()
+	case factsettlementpaymentattempts.FieldGrossAmountSatoshi:
+		return m.GrossAmountSatoshi()
+	case factsettlementpaymentattempts.FieldGateFeeSatoshi:
+		return m.GateFeeSatoshi()
+	case factsettlementpaymentattempts.FieldNetAmountSatoshi:
+		return m.NetAmountSatoshi()
+	case factsettlementpaymentattempts.FieldCycleIndex:
+		return m.CycleIndex()
+	case factsettlementpaymentattempts.FieldOccurredAtUnix:
+		return m.OccurredAtUnix()
+	case factsettlementpaymentattempts.FieldConfirmedAtUnix:
+		return m.ConfirmedAtUnix()
+	case factsettlementpaymentattempts.FieldNote:
+		return m.Note()
+	case factsettlementpaymentattempts.FieldPayloadJSON:
+		return m.PayloadJSON()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *FactSettlementPaymentAttemptsMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case factsettlementpaymentattempts.FieldPaymentAttemptID:
+		return m.OldPaymentAttemptID(ctx)
+	case factsettlementpaymentattempts.FieldSourceType:
+		return m.OldSourceType(ctx)
+	case factsettlementpaymentattempts.FieldSourceID:
+		return m.OldSourceID(ctx)
+	case factsettlementpaymentattempts.FieldState:
+		return m.OldState(ctx)
+	case factsettlementpaymentattempts.FieldGrossAmountSatoshi:
+		return m.OldGrossAmountSatoshi(ctx)
+	case factsettlementpaymentattempts.FieldGateFeeSatoshi:
+		return m.OldGateFeeSatoshi(ctx)
+	case factsettlementpaymentattempts.FieldNetAmountSatoshi:
+		return m.OldNetAmountSatoshi(ctx)
+	case factsettlementpaymentattempts.FieldCycleIndex:
+		return m.OldCycleIndex(ctx)
+	case factsettlementpaymentattempts.FieldOccurredAtUnix:
+		return m.OldOccurredAtUnix(ctx)
+	case factsettlementpaymentattempts.FieldConfirmedAtUnix:
+		return m.OldConfirmedAtUnix(ctx)
+	case factsettlementpaymentattempts.FieldNote:
+		return m.OldNote(ctx)
+	case factsettlementpaymentattempts.FieldPayloadJSON:
+		return m.OldPayloadJSON(ctx)
+	}
+	return nil, fmt.Errorf("unknown FactSettlementPaymentAttempts field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *FactSettlementPaymentAttemptsMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case factsettlementpaymentattempts.FieldPaymentAttemptID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPaymentAttemptID(v)
+		return nil
+	case factsettlementpaymentattempts.FieldSourceType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSourceType(v)
+		return nil
+	case factsettlementpaymentattempts.FieldSourceID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSourceID(v)
+		return nil
+	case factsettlementpaymentattempts.FieldState:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetState(v)
+		return nil
+	case factsettlementpaymentattempts.FieldGrossAmountSatoshi:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGrossAmountSatoshi(v)
+		return nil
+	case factsettlementpaymentattempts.FieldGateFeeSatoshi:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGateFeeSatoshi(v)
+		return nil
+	case factsettlementpaymentattempts.FieldNetAmountSatoshi:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetNetAmountSatoshi(v)
+		return nil
+	case factsettlementpaymentattempts.FieldCycleIndex:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCycleIndex(v)
+		return nil
+	case factsettlementpaymentattempts.FieldOccurredAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOccurredAtUnix(v)
+		return nil
+	case factsettlementpaymentattempts.FieldConfirmedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetConfirmedAtUnix(v)
+		return nil
+	case factsettlementpaymentattempts.FieldNote:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetNote(v)
+		return nil
+	case factsettlementpaymentattempts.FieldPayloadJSON:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPayloadJSON(v)
+		return nil
+	}
+	return fmt.Errorf("unknown FactSettlementPaymentAttempts field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *FactSettlementPaymentAttemptsMutation) AddedFields() []string {
+	var fields []string
+	if m.addgross_amount_satoshi != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldGrossAmountSatoshi)
+	}
+	if m.addgate_fee_satoshi != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldGateFeeSatoshi)
+	}
+	if m.addnet_amount_satoshi != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldNetAmountSatoshi)
+	}
+	if m.addcycle_index != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldCycleIndex)
+	}
+	if m.addoccurred_at_unix != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldOccurredAtUnix)
+	}
+	if m.addconfirmed_at_unix != nil {
+		fields = append(fields, factsettlementpaymentattempts.FieldConfirmedAtUnix)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *FactSettlementPaymentAttemptsMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case factsettlementpaymentattempts.FieldGrossAmountSatoshi:
+		return m.AddedGrossAmountSatoshi()
+	case factsettlementpaymentattempts.FieldGateFeeSatoshi:
+		return m.AddedGateFeeSatoshi()
+	case factsettlementpaymentattempts.FieldNetAmountSatoshi:
+		return m.AddedNetAmountSatoshi()
+	case factsettlementpaymentattempts.FieldCycleIndex:
+		return m.AddedCycleIndex()
+	case factsettlementpaymentattempts.FieldOccurredAtUnix:
+		return m.AddedOccurredAtUnix()
+	case factsettlementpaymentattempts.FieldConfirmedAtUnix:
+		return m.AddedConfirmedAtUnix()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *FactSettlementPaymentAttemptsMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case factsettlementpaymentattempts.FieldGrossAmountSatoshi:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddGrossAmountSatoshi(v)
+		return nil
+	case factsettlementpaymentattempts.FieldGateFeeSatoshi:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddGateFeeSatoshi(v)
+		return nil
+	case factsettlementpaymentattempts.FieldNetAmountSatoshi:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddNetAmountSatoshi(v)
+		return nil
+	case factsettlementpaymentattempts.FieldCycleIndex:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCycleIndex(v)
+		return nil
+	case factsettlementpaymentattempts.FieldOccurredAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddOccurredAtUnix(v)
+		return nil
+	case factsettlementpaymentattempts.FieldConfirmedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddConfirmedAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown FactSettlementPaymentAttempts numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *FactSettlementPaymentAttemptsMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *FactSettlementPaymentAttemptsMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *FactSettlementPaymentAttemptsMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown FactSettlementPaymentAttempts nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *FactSettlementPaymentAttemptsMutation) ResetField(name string) error {
+	switch name {
+	case factsettlementpaymentattempts.FieldPaymentAttemptID:
+		m.ResetPaymentAttemptID()
+		return nil
+	case factsettlementpaymentattempts.FieldSourceType:
+		m.ResetSourceType()
+		return nil
+	case factsettlementpaymentattempts.FieldSourceID:
+		m.ResetSourceID()
+		return nil
+	case factsettlementpaymentattempts.FieldState:
+		m.ResetState()
+		return nil
+	case factsettlementpaymentattempts.FieldGrossAmountSatoshi:
+		m.ResetGrossAmountSatoshi()
+		return nil
+	case factsettlementpaymentattempts.FieldGateFeeSatoshi:
+		m.ResetGateFeeSatoshi()
+		return nil
+	case factsettlementpaymentattempts.FieldNetAmountSatoshi:
+		m.ResetNetAmountSatoshi()
+		return nil
+	case factsettlementpaymentattempts.FieldCycleIndex:
+		m.ResetCycleIndex()
+		return nil
+	case factsettlementpaymentattempts.FieldOccurredAtUnix:
+		m.ResetOccurredAtUnix()
+		return nil
+	case factsettlementpaymentattempts.FieldConfirmedAtUnix:
+		m.ResetConfirmedAtUnix()
+		return nil
+	case factsettlementpaymentattempts.FieldNote:
+		m.ResetNote()
+		return nil
+	case factsettlementpaymentattempts.FieldPayloadJSON:
+		m.ResetPayloadJSON()
+		return nil
+	}
+	return fmt.Errorf("unknown FactSettlementPaymentAttempts field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *FactSettlementPaymentAttemptsMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *FactSettlementPaymentAttemptsMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *FactSettlementPaymentAttemptsMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *FactSettlementPaymentAttemptsMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *FactSettlementPaymentAttemptsMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *FactSettlementPaymentAttemptsMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *FactSettlementPaymentAttemptsMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown FactSettlementPaymentAttempts unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *FactSettlementPaymentAttemptsMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown FactSettlementPaymentAttempts edge %s", name)
+}
+
 // FactSettlementRecordsMutation represents an operation that mutates the FactSettlementRecords nodes in the graph.
 type FactSettlementRecordsMutation struct {
 	config
-	op                     Op
-	typ                    string
-	id                     *int
-	record_id              *string
-	settlement_cycle_id    *int64
-	addsettlement_cycle_id *int64
-	asset_type             *string
-	owner_pubkey_hex       *string
-	source_utxo_id         *string
-	source_lot_id          *string
-	used_satoshi           *int64
-	addused_satoshi        *int64
-	used_quantity_text     *string
-	state                  *string
-	occurred_at_unix       *int64
-	addoccurred_at_unix    *int64
-	confirmed_at_unix      *int64
-	addconfirmed_at_unix   *int64
-	note                   *string
-	payload_json           *string
-	clearedFields          map[string]struct{}
-	done                   bool
-	oldValue               func(context.Context) (*FactSettlementRecords, error)
-	predicates             []predicate.FactSettlementRecords
+	op                                Op
+	typ                               string
+	id                                *int
+	record_id                         *string
+	asset_type                        *string
+	owner_pubkey_hex                  *string
+	source_utxo_id                    *string
+	source_lot_id                     *string
+	used_satoshi                      *int64
+	addused_satoshi                   *int64
+	used_quantity_text                *string
+	state                             *string
+	occurred_at_unix                  *int64
+	addoccurred_at_unix               *int64
+	confirmed_at_unix                 *int64
+	addconfirmed_at_unix              *int64
+	note                              *string
+	payload_json                      *string
+	clearedFields                     map[string]struct{}
+	settlement_payment_attempt        *int64
+	clearedsettlement_payment_attempt bool
+	done                              bool
+	oldValue                          func(context.Context) (*FactSettlementRecords, error)
+	predicates                        []predicate.FactSettlementRecords
 }
 
 var _ ent.Mutation = (*FactSettlementRecordsMutation)(nil)
@@ -22172,60 +23387,40 @@ func (m *FactSettlementRecordsMutation) ResetRecordID() {
 	m.record_id = nil
 }
 
-// SetSettlementCycleID sets the "settlement_cycle_id" field.
-func (m *FactSettlementRecordsMutation) SetSettlementCycleID(i int64) {
-	m.settlement_cycle_id = &i
-	m.addsettlement_cycle_id = nil
+// SetSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field.
+func (m *FactSettlementRecordsMutation) SetSettlementPaymentAttemptID(i int64) {
+	m.settlement_payment_attempt = &i
 }
 
-// SettlementCycleID returns the value of the "settlement_cycle_id" field in the mutation.
-func (m *FactSettlementRecordsMutation) SettlementCycleID() (r int64, exists bool) {
-	v := m.settlement_cycle_id
+// SettlementPaymentAttemptID returns the value of the "settlement_payment_attempt_id" field in the mutation.
+func (m *FactSettlementRecordsMutation) SettlementPaymentAttemptID() (r int64, exists bool) {
+	v := m.settlement_payment_attempt
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldSettlementCycleID returns the old "settlement_cycle_id" field's value of the FactSettlementRecords entity.
+// OldSettlementPaymentAttemptID returns the old "settlement_payment_attempt_id" field's value of the FactSettlementRecords entity.
 // If the FactSettlementRecords object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *FactSettlementRecordsMutation) OldSettlementCycleID(ctx context.Context) (v int64, err error) {
+func (m *FactSettlementRecordsMutation) OldSettlementPaymentAttemptID(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldSettlementCycleID is only allowed on UpdateOne operations")
+		return v, errors.New("OldSettlementPaymentAttemptID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldSettlementCycleID requires an ID field in the mutation")
+		return v, errors.New("OldSettlementPaymentAttemptID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldSettlementCycleID: %w", err)
+		return v, fmt.Errorf("querying old value for OldSettlementPaymentAttemptID: %w", err)
 	}
-	return oldValue.SettlementCycleID, nil
+	return oldValue.SettlementPaymentAttemptID, nil
 }
 
-// AddSettlementCycleID adds i to the "settlement_cycle_id" field.
-func (m *FactSettlementRecordsMutation) AddSettlementCycleID(i int64) {
-	if m.addsettlement_cycle_id != nil {
-		*m.addsettlement_cycle_id += i
-	} else {
-		m.addsettlement_cycle_id = &i
-	}
-}
-
-// AddedSettlementCycleID returns the value that was added to the "settlement_cycle_id" field in this mutation.
-func (m *FactSettlementRecordsMutation) AddedSettlementCycleID() (r int64, exists bool) {
-	v := m.addsettlement_cycle_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetSettlementCycleID resets all changes to the "settlement_cycle_id" field.
-func (m *FactSettlementRecordsMutation) ResetSettlementCycleID() {
-	m.settlement_cycle_id = nil
-	m.addsettlement_cycle_id = nil
+// ResetSettlementPaymentAttemptID resets all changes to the "settlement_payment_attempt_id" field.
+func (m *FactSettlementRecordsMutation) ResetSettlementPaymentAttemptID() {
+	m.settlement_payment_attempt = nil
 }
 
 // SetAssetType sets the "asset_type" field.
@@ -22684,6 +23879,33 @@ func (m *FactSettlementRecordsMutation) ResetPayloadJSON() {
 	m.payload_json = nil
 }
 
+// ClearSettlementPaymentAttempt clears the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (m *FactSettlementRecordsMutation) ClearSettlementPaymentAttempt() {
+	m.clearedsettlement_payment_attempt = true
+	m.clearedFields[factsettlementrecords.FieldSettlementPaymentAttemptID] = struct{}{}
+}
+
+// SettlementPaymentAttemptCleared reports if the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity was cleared.
+func (m *FactSettlementRecordsMutation) SettlementPaymentAttemptCleared() bool {
+	return m.clearedsettlement_payment_attempt
+}
+
+// SettlementPaymentAttemptIDs returns the "settlement_payment_attempt" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// SettlementPaymentAttemptID instead. It exists only for internal usage by the builders.
+func (m *FactSettlementRecordsMutation) SettlementPaymentAttemptIDs() (ids []int64) {
+	if id := m.settlement_payment_attempt; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetSettlementPaymentAttempt resets all changes to the "settlement_payment_attempt" edge.
+func (m *FactSettlementRecordsMutation) ResetSettlementPaymentAttempt() {
+	m.settlement_payment_attempt = nil
+	m.clearedsettlement_payment_attempt = false
+}
+
 // Where appends a list predicates to the FactSettlementRecordsMutation builder.
 func (m *FactSettlementRecordsMutation) Where(ps ...predicate.FactSettlementRecords) {
 	m.predicates = append(m.predicates, ps...)
@@ -22722,8 +23944,8 @@ func (m *FactSettlementRecordsMutation) Fields() []string {
 	if m.record_id != nil {
 		fields = append(fields, factsettlementrecords.FieldRecordID)
 	}
-	if m.settlement_cycle_id != nil {
-		fields = append(fields, factsettlementrecords.FieldSettlementCycleID)
+	if m.settlement_payment_attempt != nil {
+		fields = append(fields, factsettlementrecords.FieldSettlementPaymentAttemptID)
 	}
 	if m.asset_type != nil {
 		fields = append(fields, factsettlementrecords.FieldAssetType)
@@ -22768,8 +23990,8 @@ func (m *FactSettlementRecordsMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case factsettlementrecords.FieldRecordID:
 		return m.RecordID()
-	case factsettlementrecords.FieldSettlementCycleID:
-		return m.SettlementCycleID()
+	case factsettlementrecords.FieldSettlementPaymentAttemptID:
+		return m.SettlementPaymentAttemptID()
 	case factsettlementrecords.FieldAssetType:
 		return m.AssetType()
 	case factsettlementrecords.FieldOwnerPubkeyHex:
@@ -22803,8 +24025,8 @@ func (m *FactSettlementRecordsMutation) OldField(ctx context.Context, name strin
 	switch name {
 	case factsettlementrecords.FieldRecordID:
 		return m.OldRecordID(ctx)
-	case factsettlementrecords.FieldSettlementCycleID:
-		return m.OldSettlementCycleID(ctx)
+	case factsettlementrecords.FieldSettlementPaymentAttemptID:
+		return m.OldSettlementPaymentAttemptID(ctx)
 	case factsettlementrecords.FieldAssetType:
 		return m.OldAssetType(ctx)
 	case factsettlementrecords.FieldOwnerPubkeyHex:
@@ -22843,12 +24065,12 @@ func (m *FactSettlementRecordsMutation) SetField(name string, value ent.Value) e
 		}
 		m.SetRecordID(v)
 		return nil
-	case factsettlementrecords.FieldSettlementCycleID:
+	case factsettlementrecords.FieldSettlementPaymentAttemptID:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetSettlementCycleID(v)
+		m.SetSettlementPaymentAttemptID(v)
 		return nil
 	case factsettlementrecords.FieldAssetType:
 		v, ok := value.(string)
@@ -22935,9 +24157,6 @@ func (m *FactSettlementRecordsMutation) SetField(name string, value ent.Value) e
 // this mutation.
 func (m *FactSettlementRecordsMutation) AddedFields() []string {
 	var fields []string
-	if m.addsettlement_cycle_id != nil {
-		fields = append(fields, factsettlementrecords.FieldSettlementCycleID)
-	}
 	if m.addused_satoshi != nil {
 		fields = append(fields, factsettlementrecords.FieldUsedSatoshi)
 	}
@@ -22955,8 +24174,6 @@ func (m *FactSettlementRecordsMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *FactSettlementRecordsMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case factsettlementrecords.FieldSettlementCycleID:
-		return m.AddedSettlementCycleID()
 	case factsettlementrecords.FieldUsedSatoshi:
 		return m.AddedUsedSatoshi()
 	case factsettlementrecords.FieldOccurredAtUnix:
@@ -22972,13 +24189,6 @@ func (m *FactSettlementRecordsMutation) AddedField(name string) (ent.Value, bool
 // type.
 func (m *FactSettlementRecordsMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case factsettlementrecords.FieldSettlementCycleID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddSettlementCycleID(v)
-		return nil
 	case factsettlementrecords.FieldUsedSatoshi:
 		v, ok := value.(int64)
 		if !ok {
@@ -23030,8 +24240,8 @@ func (m *FactSettlementRecordsMutation) ResetField(name string) error {
 	case factsettlementrecords.FieldRecordID:
 		m.ResetRecordID()
 		return nil
-	case factsettlementrecords.FieldSettlementCycleID:
-		m.ResetSettlementCycleID()
+	case factsettlementrecords.FieldSettlementPaymentAttemptID:
+		m.ResetSettlementPaymentAttemptID()
 		return nil
 	case factsettlementrecords.FieldAssetType:
 		m.ResetAssetType()
@@ -23072,19 +24282,28 @@ func (m *FactSettlementRecordsMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *FactSettlementRecordsMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.settlement_payment_attempt != nil {
+		edges = append(edges, factsettlementrecords.EdgeSettlementPaymentAttempt)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *FactSettlementRecordsMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case factsettlementrecords.EdgeSettlementPaymentAttempt:
+		if id := m.settlement_payment_attempt; id != nil {
+			return []ent.Value{*id}
+		}
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *FactSettlementRecordsMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
 	return edges
 }
 
@@ -23096,25 +24315,42 @@ func (m *FactSettlementRecordsMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *FactSettlementRecordsMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.clearedsettlement_payment_attempt {
+		edges = append(edges, factsettlementrecords.EdgeSettlementPaymentAttempt)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *FactSettlementRecordsMutation) EdgeCleared(name string) bool {
+	switch name {
+	case factsettlementrecords.EdgeSettlementPaymentAttempt:
+		return m.clearedsettlement_payment_attempt
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *FactSettlementRecordsMutation) ClearEdge(name string) error {
+	switch name {
+	case factsettlementrecords.EdgeSettlementPaymentAttempt:
+		m.ClearSettlementPaymentAttempt()
+		return nil
+	}
 	return fmt.Errorf("unknown FactSettlementRecords unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *FactSettlementRecordsMutation) ResetEdge(name string) error {
+	switch name {
+	case factsettlementrecords.EdgeSettlementPaymentAttempt:
+		m.ResetSettlementPaymentAttempt()
+		return nil
+	}
 	return fmt.Errorf("unknown FactSettlementRecords edge %s", name)
 }
 
@@ -25106,6 +26342,968 @@ func (m *FactTokenLotsMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *FactTokenLotsMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown FactTokenLots edge %s", name)
+}
+
+// OrderSettlementEventsMutation represents an operation that mutates the OrderSettlementEvents nodes in the graph.
+type OrderSettlementEventsMutation struct {
+	config
+	op                  Op
+	typ                 string
+	id                  *int64
+	process_id          *string
+	settlement_id       *string
+	source_type         *string
+	source_id           *string
+	accounting_scene    *string
+	accounting_subtype  *string
+	event_type          *string
+	status              *string
+	idempotency_key     *string
+	note                *string
+	payload_json        *string
+	occurred_at_unix    *int64
+	addoccurred_at_unix *int64
+	clearedFields       map[string]struct{}
+	done                bool
+	oldValue            func(context.Context) (*OrderSettlementEvents, error)
+	predicates          []predicate.OrderSettlementEvents
+}
+
+var _ ent.Mutation = (*OrderSettlementEventsMutation)(nil)
+
+// ordersettlementeventsOption allows management of the mutation configuration using functional options.
+type ordersettlementeventsOption func(*OrderSettlementEventsMutation)
+
+// newOrderSettlementEventsMutation creates new mutation for the OrderSettlementEvents entity.
+func newOrderSettlementEventsMutation(c config, op Op, opts ...ordersettlementeventsOption) *OrderSettlementEventsMutation {
+	m := &OrderSettlementEventsMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeOrderSettlementEvents,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withOrderSettlementEventsID sets the ID field of the mutation.
+func withOrderSettlementEventsID(id int64) ordersettlementeventsOption {
+	return func(m *OrderSettlementEventsMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *OrderSettlementEvents
+		)
+		m.oldValue = func(ctx context.Context) (*OrderSettlementEvents, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().OrderSettlementEvents.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withOrderSettlementEvents sets the old OrderSettlementEvents of the mutation.
+func withOrderSettlementEvents(node *OrderSettlementEvents) ordersettlementeventsOption {
+	return func(m *OrderSettlementEventsMutation) {
+		m.oldValue = func(context.Context) (*OrderSettlementEvents, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m OrderSettlementEventsMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m OrderSettlementEventsMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("gen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of OrderSettlementEvents entities.
+func (m *OrderSettlementEventsMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *OrderSettlementEventsMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *OrderSettlementEventsMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().OrderSettlementEvents.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetProcessID sets the "process_id" field.
+func (m *OrderSettlementEventsMutation) SetProcessID(s string) {
+	m.process_id = &s
+}
+
+// ProcessID returns the value of the "process_id" field in the mutation.
+func (m *OrderSettlementEventsMutation) ProcessID() (r string, exists bool) {
+	v := m.process_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldProcessID returns the old "process_id" field's value of the OrderSettlementEvents entity.
+// If the OrderSettlementEvents object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderSettlementEventsMutation) OldProcessID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldProcessID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldProcessID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldProcessID: %w", err)
+	}
+	return oldValue.ProcessID, nil
+}
+
+// ResetProcessID resets all changes to the "process_id" field.
+func (m *OrderSettlementEventsMutation) ResetProcessID() {
+	m.process_id = nil
+}
+
+// SetSettlementID sets the "settlement_id" field.
+func (m *OrderSettlementEventsMutation) SetSettlementID(s string) {
+	m.settlement_id = &s
+}
+
+// SettlementID returns the value of the "settlement_id" field in the mutation.
+func (m *OrderSettlementEventsMutation) SettlementID() (r string, exists bool) {
+	v := m.settlement_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSettlementID returns the old "settlement_id" field's value of the OrderSettlementEvents entity.
+// If the OrderSettlementEvents object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderSettlementEventsMutation) OldSettlementID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSettlementID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSettlementID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSettlementID: %w", err)
+	}
+	return oldValue.SettlementID, nil
+}
+
+// ResetSettlementID resets all changes to the "settlement_id" field.
+func (m *OrderSettlementEventsMutation) ResetSettlementID() {
+	m.settlement_id = nil
+}
+
+// SetSourceType sets the "source_type" field.
+func (m *OrderSettlementEventsMutation) SetSourceType(s string) {
+	m.source_type = &s
+}
+
+// SourceType returns the value of the "source_type" field in the mutation.
+func (m *OrderSettlementEventsMutation) SourceType() (r string, exists bool) {
+	v := m.source_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSourceType returns the old "source_type" field's value of the OrderSettlementEvents entity.
+// If the OrderSettlementEvents object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderSettlementEventsMutation) OldSourceType(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSourceType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSourceType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSourceType: %w", err)
+	}
+	return oldValue.SourceType, nil
+}
+
+// ResetSourceType resets all changes to the "source_type" field.
+func (m *OrderSettlementEventsMutation) ResetSourceType() {
+	m.source_type = nil
+}
+
+// SetSourceID sets the "source_id" field.
+func (m *OrderSettlementEventsMutation) SetSourceID(s string) {
+	m.source_id = &s
+}
+
+// SourceID returns the value of the "source_id" field in the mutation.
+func (m *OrderSettlementEventsMutation) SourceID() (r string, exists bool) {
+	v := m.source_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSourceID returns the old "source_id" field's value of the OrderSettlementEvents entity.
+// If the OrderSettlementEvents object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderSettlementEventsMutation) OldSourceID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSourceID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSourceID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSourceID: %w", err)
+	}
+	return oldValue.SourceID, nil
+}
+
+// ResetSourceID resets all changes to the "source_id" field.
+func (m *OrderSettlementEventsMutation) ResetSourceID() {
+	m.source_id = nil
+}
+
+// SetAccountingScene sets the "accounting_scene" field.
+func (m *OrderSettlementEventsMutation) SetAccountingScene(s string) {
+	m.accounting_scene = &s
+}
+
+// AccountingScene returns the value of the "accounting_scene" field in the mutation.
+func (m *OrderSettlementEventsMutation) AccountingScene() (r string, exists bool) {
+	v := m.accounting_scene
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAccountingScene returns the old "accounting_scene" field's value of the OrderSettlementEvents entity.
+// If the OrderSettlementEvents object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderSettlementEventsMutation) OldAccountingScene(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAccountingScene is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAccountingScene requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAccountingScene: %w", err)
+	}
+	return oldValue.AccountingScene, nil
+}
+
+// ResetAccountingScene resets all changes to the "accounting_scene" field.
+func (m *OrderSettlementEventsMutation) ResetAccountingScene() {
+	m.accounting_scene = nil
+}
+
+// SetAccountingSubtype sets the "accounting_subtype" field.
+func (m *OrderSettlementEventsMutation) SetAccountingSubtype(s string) {
+	m.accounting_subtype = &s
+}
+
+// AccountingSubtype returns the value of the "accounting_subtype" field in the mutation.
+func (m *OrderSettlementEventsMutation) AccountingSubtype() (r string, exists bool) {
+	v := m.accounting_subtype
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAccountingSubtype returns the old "accounting_subtype" field's value of the OrderSettlementEvents entity.
+// If the OrderSettlementEvents object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderSettlementEventsMutation) OldAccountingSubtype(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAccountingSubtype is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAccountingSubtype requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAccountingSubtype: %w", err)
+	}
+	return oldValue.AccountingSubtype, nil
+}
+
+// ResetAccountingSubtype resets all changes to the "accounting_subtype" field.
+func (m *OrderSettlementEventsMutation) ResetAccountingSubtype() {
+	m.accounting_subtype = nil
+}
+
+// SetEventType sets the "event_type" field.
+func (m *OrderSettlementEventsMutation) SetEventType(s string) {
+	m.event_type = &s
+}
+
+// EventType returns the value of the "event_type" field in the mutation.
+func (m *OrderSettlementEventsMutation) EventType() (r string, exists bool) {
+	v := m.event_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEventType returns the old "event_type" field's value of the OrderSettlementEvents entity.
+// If the OrderSettlementEvents object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderSettlementEventsMutation) OldEventType(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldEventType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldEventType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEventType: %w", err)
+	}
+	return oldValue.EventType, nil
+}
+
+// ResetEventType resets all changes to the "event_type" field.
+func (m *OrderSettlementEventsMutation) ResetEventType() {
+	m.event_type = nil
+}
+
+// SetStatus sets the "status" field.
+func (m *OrderSettlementEventsMutation) SetStatus(s string) {
+	m.status = &s
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *OrderSettlementEventsMutation) Status() (r string, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the OrderSettlementEvents entity.
+// If the OrderSettlementEvents object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderSettlementEventsMutation) OldStatus(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *OrderSettlementEventsMutation) ResetStatus() {
+	m.status = nil
+}
+
+// SetIdempotencyKey sets the "idempotency_key" field.
+func (m *OrderSettlementEventsMutation) SetIdempotencyKey(s string) {
+	m.idempotency_key = &s
+}
+
+// IdempotencyKey returns the value of the "idempotency_key" field in the mutation.
+func (m *OrderSettlementEventsMutation) IdempotencyKey() (r string, exists bool) {
+	v := m.idempotency_key
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIdempotencyKey returns the old "idempotency_key" field's value of the OrderSettlementEvents entity.
+// If the OrderSettlementEvents object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderSettlementEventsMutation) OldIdempotencyKey(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIdempotencyKey is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIdempotencyKey requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIdempotencyKey: %w", err)
+	}
+	return oldValue.IdempotencyKey, nil
+}
+
+// ResetIdempotencyKey resets all changes to the "idempotency_key" field.
+func (m *OrderSettlementEventsMutation) ResetIdempotencyKey() {
+	m.idempotency_key = nil
+}
+
+// SetNote sets the "note" field.
+func (m *OrderSettlementEventsMutation) SetNote(s string) {
+	m.note = &s
+}
+
+// Note returns the value of the "note" field in the mutation.
+func (m *OrderSettlementEventsMutation) Note() (r string, exists bool) {
+	v := m.note
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldNote returns the old "note" field's value of the OrderSettlementEvents entity.
+// If the OrderSettlementEvents object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderSettlementEventsMutation) OldNote(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldNote is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldNote requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldNote: %w", err)
+	}
+	return oldValue.Note, nil
+}
+
+// ResetNote resets all changes to the "note" field.
+func (m *OrderSettlementEventsMutation) ResetNote() {
+	m.note = nil
+}
+
+// SetPayloadJSON sets the "payload_json" field.
+func (m *OrderSettlementEventsMutation) SetPayloadJSON(s string) {
+	m.payload_json = &s
+}
+
+// PayloadJSON returns the value of the "payload_json" field in the mutation.
+func (m *OrderSettlementEventsMutation) PayloadJSON() (r string, exists bool) {
+	v := m.payload_json
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPayloadJSON returns the old "payload_json" field's value of the OrderSettlementEvents entity.
+// If the OrderSettlementEvents object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderSettlementEventsMutation) OldPayloadJSON(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPayloadJSON is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPayloadJSON requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPayloadJSON: %w", err)
+	}
+	return oldValue.PayloadJSON, nil
+}
+
+// ResetPayloadJSON resets all changes to the "payload_json" field.
+func (m *OrderSettlementEventsMutation) ResetPayloadJSON() {
+	m.payload_json = nil
+}
+
+// SetOccurredAtUnix sets the "occurred_at_unix" field.
+func (m *OrderSettlementEventsMutation) SetOccurredAtUnix(i int64) {
+	m.occurred_at_unix = &i
+	m.addoccurred_at_unix = nil
+}
+
+// OccurredAtUnix returns the value of the "occurred_at_unix" field in the mutation.
+func (m *OrderSettlementEventsMutation) OccurredAtUnix() (r int64, exists bool) {
+	v := m.occurred_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOccurredAtUnix returns the old "occurred_at_unix" field's value of the OrderSettlementEvents entity.
+// If the OrderSettlementEvents object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderSettlementEventsMutation) OldOccurredAtUnix(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOccurredAtUnix is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOccurredAtUnix requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOccurredAtUnix: %w", err)
+	}
+	return oldValue.OccurredAtUnix, nil
+}
+
+// AddOccurredAtUnix adds i to the "occurred_at_unix" field.
+func (m *OrderSettlementEventsMutation) AddOccurredAtUnix(i int64) {
+	if m.addoccurred_at_unix != nil {
+		*m.addoccurred_at_unix += i
+	} else {
+		m.addoccurred_at_unix = &i
+	}
+}
+
+// AddedOccurredAtUnix returns the value that was added to the "occurred_at_unix" field in this mutation.
+func (m *OrderSettlementEventsMutation) AddedOccurredAtUnix() (r int64, exists bool) {
+	v := m.addoccurred_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetOccurredAtUnix resets all changes to the "occurred_at_unix" field.
+func (m *OrderSettlementEventsMutation) ResetOccurredAtUnix() {
+	m.occurred_at_unix = nil
+	m.addoccurred_at_unix = nil
+}
+
+// Where appends a list predicates to the OrderSettlementEventsMutation builder.
+func (m *OrderSettlementEventsMutation) Where(ps ...predicate.OrderSettlementEvents) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the OrderSettlementEventsMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *OrderSettlementEventsMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.OrderSettlementEvents, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *OrderSettlementEventsMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *OrderSettlementEventsMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (OrderSettlementEvents).
+func (m *OrderSettlementEventsMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *OrderSettlementEventsMutation) Fields() []string {
+	fields := make([]string, 0, 12)
+	if m.process_id != nil {
+		fields = append(fields, ordersettlementevents.FieldProcessID)
+	}
+	if m.settlement_id != nil {
+		fields = append(fields, ordersettlementevents.FieldSettlementID)
+	}
+	if m.source_type != nil {
+		fields = append(fields, ordersettlementevents.FieldSourceType)
+	}
+	if m.source_id != nil {
+		fields = append(fields, ordersettlementevents.FieldSourceID)
+	}
+	if m.accounting_scene != nil {
+		fields = append(fields, ordersettlementevents.FieldAccountingScene)
+	}
+	if m.accounting_subtype != nil {
+		fields = append(fields, ordersettlementevents.FieldAccountingSubtype)
+	}
+	if m.event_type != nil {
+		fields = append(fields, ordersettlementevents.FieldEventType)
+	}
+	if m.status != nil {
+		fields = append(fields, ordersettlementevents.FieldStatus)
+	}
+	if m.idempotency_key != nil {
+		fields = append(fields, ordersettlementevents.FieldIdempotencyKey)
+	}
+	if m.note != nil {
+		fields = append(fields, ordersettlementevents.FieldNote)
+	}
+	if m.payload_json != nil {
+		fields = append(fields, ordersettlementevents.FieldPayloadJSON)
+	}
+	if m.occurred_at_unix != nil {
+		fields = append(fields, ordersettlementevents.FieldOccurredAtUnix)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *OrderSettlementEventsMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case ordersettlementevents.FieldProcessID:
+		return m.ProcessID()
+	case ordersettlementevents.FieldSettlementID:
+		return m.SettlementID()
+	case ordersettlementevents.FieldSourceType:
+		return m.SourceType()
+	case ordersettlementevents.FieldSourceID:
+		return m.SourceID()
+	case ordersettlementevents.FieldAccountingScene:
+		return m.AccountingScene()
+	case ordersettlementevents.FieldAccountingSubtype:
+		return m.AccountingSubtype()
+	case ordersettlementevents.FieldEventType:
+		return m.EventType()
+	case ordersettlementevents.FieldStatus:
+		return m.Status()
+	case ordersettlementevents.FieldIdempotencyKey:
+		return m.IdempotencyKey()
+	case ordersettlementevents.FieldNote:
+		return m.Note()
+	case ordersettlementevents.FieldPayloadJSON:
+		return m.PayloadJSON()
+	case ordersettlementevents.FieldOccurredAtUnix:
+		return m.OccurredAtUnix()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *OrderSettlementEventsMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case ordersettlementevents.FieldProcessID:
+		return m.OldProcessID(ctx)
+	case ordersettlementevents.FieldSettlementID:
+		return m.OldSettlementID(ctx)
+	case ordersettlementevents.FieldSourceType:
+		return m.OldSourceType(ctx)
+	case ordersettlementevents.FieldSourceID:
+		return m.OldSourceID(ctx)
+	case ordersettlementevents.FieldAccountingScene:
+		return m.OldAccountingScene(ctx)
+	case ordersettlementevents.FieldAccountingSubtype:
+		return m.OldAccountingSubtype(ctx)
+	case ordersettlementevents.FieldEventType:
+		return m.OldEventType(ctx)
+	case ordersettlementevents.FieldStatus:
+		return m.OldStatus(ctx)
+	case ordersettlementevents.FieldIdempotencyKey:
+		return m.OldIdempotencyKey(ctx)
+	case ordersettlementevents.FieldNote:
+		return m.OldNote(ctx)
+	case ordersettlementevents.FieldPayloadJSON:
+		return m.OldPayloadJSON(ctx)
+	case ordersettlementevents.FieldOccurredAtUnix:
+		return m.OldOccurredAtUnix(ctx)
+	}
+	return nil, fmt.Errorf("unknown OrderSettlementEvents field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *OrderSettlementEventsMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case ordersettlementevents.FieldProcessID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetProcessID(v)
+		return nil
+	case ordersettlementevents.FieldSettlementID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSettlementID(v)
+		return nil
+	case ordersettlementevents.FieldSourceType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSourceType(v)
+		return nil
+	case ordersettlementevents.FieldSourceID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSourceID(v)
+		return nil
+	case ordersettlementevents.FieldAccountingScene:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAccountingScene(v)
+		return nil
+	case ordersettlementevents.FieldAccountingSubtype:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAccountingSubtype(v)
+		return nil
+	case ordersettlementevents.FieldEventType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetEventType(v)
+		return nil
+	case ordersettlementevents.FieldStatus:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	case ordersettlementevents.FieldIdempotencyKey:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIdempotencyKey(v)
+		return nil
+	case ordersettlementevents.FieldNote:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetNote(v)
+		return nil
+	case ordersettlementevents.FieldPayloadJSON:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPayloadJSON(v)
+		return nil
+	case ordersettlementevents.FieldOccurredAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOccurredAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown OrderSettlementEvents field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *OrderSettlementEventsMutation) AddedFields() []string {
+	var fields []string
+	if m.addoccurred_at_unix != nil {
+		fields = append(fields, ordersettlementevents.FieldOccurredAtUnix)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *OrderSettlementEventsMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case ordersettlementevents.FieldOccurredAtUnix:
+		return m.AddedOccurredAtUnix()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *OrderSettlementEventsMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case ordersettlementevents.FieldOccurredAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddOccurredAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown OrderSettlementEvents numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *OrderSettlementEventsMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *OrderSettlementEventsMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *OrderSettlementEventsMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown OrderSettlementEvents nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *OrderSettlementEventsMutation) ResetField(name string) error {
+	switch name {
+	case ordersettlementevents.FieldProcessID:
+		m.ResetProcessID()
+		return nil
+	case ordersettlementevents.FieldSettlementID:
+		m.ResetSettlementID()
+		return nil
+	case ordersettlementevents.FieldSourceType:
+		m.ResetSourceType()
+		return nil
+	case ordersettlementevents.FieldSourceID:
+		m.ResetSourceID()
+		return nil
+	case ordersettlementevents.FieldAccountingScene:
+		m.ResetAccountingScene()
+		return nil
+	case ordersettlementevents.FieldAccountingSubtype:
+		m.ResetAccountingSubtype()
+		return nil
+	case ordersettlementevents.FieldEventType:
+		m.ResetEventType()
+		return nil
+	case ordersettlementevents.FieldStatus:
+		m.ResetStatus()
+		return nil
+	case ordersettlementevents.FieldIdempotencyKey:
+		m.ResetIdempotencyKey()
+		return nil
+	case ordersettlementevents.FieldNote:
+		m.ResetNote()
+		return nil
+	case ordersettlementevents.FieldPayloadJSON:
+		m.ResetPayloadJSON()
+		return nil
+	case ordersettlementevents.FieldOccurredAtUnix:
+		m.ResetOccurredAtUnix()
+		return nil
+	}
+	return fmt.Errorf("unknown OrderSettlementEvents field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *OrderSettlementEventsMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *OrderSettlementEventsMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *OrderSettlementEventsMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *OrderSettlementEventsMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *OrderSettlementEventsMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *OrderSettlementEventsMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *OrderSettlementEventsMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown OrderSettlementEvents unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *OrderSettlementEventsMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown OrderSettlementEvents edge %s", name)
 }
 
 // OrderSettlementsMutation represents an operation that mutates the OrderSettlements nodes in the graph.
@@ -30235,6 +32433,12 @@ func (m ProcCommandJournalMutation) Tx() (*Tx, error) {
 	tx := &Tx{config: m.config}
 	tx.init()
 	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of ProcCommandJournal entities.
+func (m *ProcCommandJournalMutation) SetID(id int) {
+	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID is only available
@@ -48274,32 +50478,36 @@ func (m *WalletLocalBroadcastTxsMutation) ResetEdge(name string) error {
 // WalletUtxoMutation represents an operation that mutates the WalletUtxo nodes in the graph.
 type WalletUtxoMutation struct {
 	config
-	op                 Op
-	typ                string
-	id                 *int
-	utxo_id            *string
-	wallet_id          *string
-	address            *string
-	txid               *string
-	vout               *int64
-	addvout            *int64
-	value_satoshi      *int64
-	addvalue_satoshi   *int64
-	state              *string
-	allocation_class   *string
-	allocation_reason  *string
-	created_txid       *string
-	spent_txid         *string
-	created_at_unix    *int64
-	addcreated_at_unix *int64
-	updated_at_unix    *int64
-	addupdated_at_unix *int64
-	spent_at_unix      *int64
-	addspent_at_unix   *int64
-	clearedFields      map[string]struct{}
-	done               bool
-	oldValue           func(context.Context) (*WalletUtxo, error)
-	predicates         []predicate.WalletUtxo
+	op                             Op
+	typ                            string
+	id                             *int
+	utxo_id                        *string
+	wallet_id                      *string
+	address                        *string
+	txid                           *string
+	vout                           *int64
+	addvout                        *int64
+	value_satoshi                  *int64
+	addvalue_satoshi               *int64
+	state                          *string
+	script_type                    *string
+	script_type_reason             *string
+	script_type_updated_at_unix    *int64
+	addscript_type_updated_at_unix *int64
+	allocation_class               *string
+	allocation_reason              *string
+	created_txid                   *string
+	spent_txid                     *string
+	created_at_unix                *int64
+	addcreated_at_unix             *int64
+	updated_at_unix                *int64
+	addupdated_at_unix             *int64
+	spent_at_unix                  *int64
+	addspent_at_unix               *int64
+	clearedFields                  map[string]struct{}
+	done                           bool
+	oldValue                       func(context.Context) (*WalletUtxo, error)
+	predicates                     []predicate.WalletUtxo
 }
 
 var _ ent.Mutation = (*WalletUtxoMutation)(nil)
@@ -48698,6 +50906,134 @@ func (m *WalletUtxoMutation) ResetState() {
 	m.state = nil
 }
 
+// SetScriptType sets the "script_type" field.
+func (m *WalletUtxoMutation) SetScriptType(s string) {
+	m.script_type = &s
+}
+
+// ScriptType returns the value of the "script_type" field in the mutation.
+func (m *WalletUtxoMutation) ScriptType() (r string, exists bool) {
+	v := m.script_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldScriptType returns the old "script_type" field's value of the WalletUtxo entity.
+// If the WalletUtxo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *WalletUtxoMutation) OldScriptType(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldScriptType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldScriptType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldScriptType: %w", err)
+	}
+	return oldValue.ScriptType, nil
+}
+
+// ResetScriptType resets all changes to the "script_type" field.
+func (m *WalletUtxoMutation) ResetScriptType() {
+	m.script_type = nil
+}
+
+// SetScriptTypeReason sets the "script_type_reason" field.
+func (m *WalletUtxoMutation) SetScriptTypeReason(s string) {
+	m.script_type_reason = &s
+}
+
+// ScriptTypeReason returns the value of the "script_type_reason" field in the mutation.
+func (m *WalletUtxoMutation) ScriptTypeReason() (r string, exists bool) {
+	v := m.script_type_reason
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldScriptTypeReason returns the old "script_type_reason" field's value of the WalletUtxo entity.
+// If the WalletUtxo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *WalletUtxoMutation) OldScriptTypeReason(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldScriptTypeReason is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldScriptTypeReason requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldScriptTypeReason: %w", err)
+	}
+	return oldValue.ScriptTypeReason, nil
+}
+
+// ResetScriptTypeReason resets all changes to the "script_type_reason" field.
+func (m *WalletUtxoMutation) ResetScriptTypeReason() {
+	m.script_type_reason = nil
+}
+
+// SetScriptTypeUpdatedAtUnix sets the "script_type_updated_at_unix" field.
+func (m *WalletUtxoMutation) SetScriptTypeUpdatedAtUnix(i int64) {
+	m.script_type_updated_at_unix = &i
+	m.addscript_type_updated_at_unix = nil
+}
+
+// ScriptTypeUpdatedAtUnix returns the value of the "script_type_updated_at_unix" field in the mutation.
+func (m *WalletUtxoMutation) ScriptTypeUpdatedAtUnix() (r int64, exists bool) {
+	v := m.script_type_updated_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldScriptTypeUpdatedAtUnix returns the old "script_type_updated_at_unix" field's value of the WalletUtxo entity.
+// If the WalletUtxo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *WalletUtxoMutation) OldScriptTypeUpdatedAtUnix(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldScriptTypeUpdatedAtUnix is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldScriptTypeUpdatedAtUnix requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldScriptTypeUpdatedAtUnix: %w", err)
+	}
+	return oldValue.ScriptTypeUpdatedAtUnix, nil
+}
+
+// AddScriptTypeUpdatedAtUnix adds i to the "script_type_updated_at_unix" field.
+func (m *WalletUtxoMutation) AddScriptTypeUpdatedAtUnix(i int64) {
+	if m.addscript_type_updated_at_unix != nil {
+		*m.addscript_type_updated_at_unix += i
+	} else {
+		m.addscript_type_updated_at_unix = &i
+	}
+}
+
+// AddedScriptTypeUpdatedAtUnix returns the value that was added to the "script_type_updated_at_unix" field in this mutation.
+func (m *WalletUtxoMutation) AddedScriptTypeUpdatedAtUnix() (r int64, exists bool) {
+	v := m.addscript_type_updated_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetScriptTypeUpdatedAtUnix resets all changes to the "script_type_updated_at_unix" field.
+func (m *WalletUtxoMutation) ResetScriptTypeUpdatedAtUnix() {
+	m.script_type_updated_at_unix = nil
+	m.addscript_type_updated_at_unix = nil
+}
+
 // SetAllocationClass sets the "allocation_class" field.
 func (m *WalletUtxoMutation) SetAllocationClass(s string) {
 	m.allocation_class = &s
@@ -49044,7 +51380,7 @@ func (m *WalletUtxoMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *WalletUtxoMutation) Fields() []string {
-	fields := make([]string, 0, 14)
+	fields := make([]string, 0, 17)
 	if m.utxo_id != nil {
 		fields = append(fields, walletutxo.FieldUtxoID)
 	}
@@ -49065,6 +51401,15 @@ func (m *WalletUtxoMutation) Fields() []string {
 	}
 	if m.state != nil {
 		fields = append(fields, walletutxo.FieldState)
+	}
+	if m.script_type != nil {
+		fields = append(fields, walletutxo.FieldScriptType)
+	}
+	if m.script_type_reason != nil {
+		fields = append(fields, walletutxo.FieldScriptTypeReason)
+	}
+	if m.script_type_updated_at_unix != nil {
+		fields = append(fields, walletutxo.FieldScriptTypeUpdatedAtUnix)
 	}
 	if m.allocation_class != nil {
 		fields = append(fields, walletutxo.FieldAllocationClass)
@@ -49109,6 +51454,12 @@ func (m *WalletUtxoMutation) Field(name string) (ent.Value, bool) {
 		return m.ValueSatoshi()
 	case walletutxo.FieldState:
 		return m.State()
+	case walletutxo.FieldScriptType:
+		return m.ScriptType()
+	case walletutxo.FieldScriptTypeReason:
+		return m.ScriptTypeReason()
+	case walletutxo.FieldScriptTypeUpdatedAtUnix:
+		return m.ScriptTypeUpdatedAtUnix()
 	case walletutxo.FieldAllocationClass:
 		return m.AllocationClass()
 	case walletutxo.FieldAllocationReason:
@@ -49146,6 +51497,12 @@ func (m *WalletUtxoMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldValueSatoshi(ctx)
 	case walletutxo.FieldState:
 		return m.OldState(ctx)
+	case walletutxo.FieldScriptType:
+		return m.OldScriptType(ctx)
+	case walletutxo.FieldScriptTypeReason:
+		return m.OldScriptTypeReason(ctx)
+	case walletutxo.FieldScriptTypeUpdatedAtUnix:
+		return m.OldScriptTypeUpdatedAtUnix(ctx)
 	case walletutxo.FieldAllocationClass:
 		return m.OldAllocationClass(ctx)
 	case walletutxo.FieldAllocationReason:
@@ -49218,6 +51575,27 @@ func (m *WalletUtxoMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetState(v)
 		return nil
+	case walletutxo.FieldScriptType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetScriptType(v)
+		return nil
+	case walletutxo.FieldScriptTypeReason:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetScriptTypeReason(v)
+		return nil
+	case walletutxo.FieldScriptTypeUpdatedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetScriptTypeUpdatedAtUnix(v)
+		return nil
 	case walletutxo.FieldAllocationClass:
 		v, ok := value.(string)
 		if !ok {
@@ -49281,6 +51659,9 @@ func (m *WalletUtxoMutation) AddedFields() []string {
 	if m.addvalue_satoshi != nil {
 		fields = append(fields, walletutxo.FieldValueSatoshi)
 	}
+	if m.addscript_type_updated_at_unix != nil {
+		fields = append(fields, walletutxo.FieldScriptTypeUpdatedAtUnix)
+	}
 	if m.addcreated_at_unix != nil {
 		fields = append(fields, walletutxo.FieldCreatedAtUnix)
 	}
@@ -49302,6 +51683,8 @@ func (m *WalletUtxoMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedVout()
 	case walletutxo.FieldValueSatoshi:
 		return m.AddedValueSatoshi()
+	case walletutxo.FieldScriptTypeUpdatedAtUnix:
+		return m.AddedScriptTypeUpdatedAtUnix()
 	case walletutxo.FieldCreatedAtUnix:
 		return m.AddedCreatedAtUnix()
 	case walletutxo.FieldUpdatedAtUnix:
@@ -49330,6 +51713,13 @@ func (m *WalletUtxoMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddValueSatoshi(v)
+		return nil
+	case walletutxo.FieldScriptTypeUpdatedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddScriptTypeUpdatedAtUnix(v)
 		return nil
 	case walletutxo.FieldCreatedAtUnix:
 		v, ok := value.(int64)
@@ -49399,6 +51789,15 @@ func (m *WalletUtxoMutation) ResetField(name string) error {
 		return nil
 	case walletutxo.FieldState:
 		m.ResetState()
+		return nil
+	case walletutxo.FieldScriptType:
+		m.ResetScriptType()
+		return nil
+	case walletutxo.FieldScriptTypeReason:
+		m.ResetScriptTypeReason()
+		return nil
+	case walletutxo.FieldScriptTypeUpdatedAtUnix:
+		m.ResetScriptTypeUpdatedAtUnix()
 		return nil
 	case walletutxo.FieldAllocationClass:
 		m.ResetAllocationClass()

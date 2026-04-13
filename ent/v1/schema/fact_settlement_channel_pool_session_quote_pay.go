@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 )
@@ -19,7 +20,7 @@ func (FactSettlementChannelPoolSessionQuotePay) Annotations() []schema.Annotatio
 
 func (FactSettlementChannelPoolSessionQuotePay) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int64("settlement_cycle_id").Unique(),
+		field.Int64("settlement_payment_attempt_id").Unique(),
 		field.String("pool_session_id").Unique(),
 		field.String("txid").Default(""),
 		field.String("pool_scheme"),
@@ -35,6 +36,14 @@ func (FactSettlementChannelPoolSessionQuotePay) Fields() []ent.Field {
 		field.String("status"),
 		field.Int64("created_at_unix"),
 		field.Int64("updated_at_unix"),
+	}
+}
+
+func (FactSettlementChannelPoolSessionQuotePay) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.To("settlement_payment_attempt", FactSettlementPaymentAttempts.Type).
+			Field("settlement_payment_attempt_id").
+			Required().Unique(),
 	}
 }
 

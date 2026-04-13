@@ -14,7 +14,10 @@ type FactBsvUtxos struct {
 }
 
 func (FactBsvUtxos) Annotations() []schema.Annotation {
-	return []schema.Annotation{entsql.Annotation{Table: "fact_bsv_utxos"}}
+	return []schema.Annotation{entsql.Annotation{
+		Table: "fact_bsv_utxos",
+		Check: "utxo_state IN ('unspent','spent') AND carrier_type IN ('plain_bsv','token_carrier','fee_change','unknown')",
+	}}
 }
 
 func (FactBsvUtxos) Fields() []ent.Field {

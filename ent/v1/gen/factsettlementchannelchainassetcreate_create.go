@@ -10,6 +10,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelchainassetcreate"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementpaymentattempts"
 )
 
 // FactSettlementChannelChainAssetCreateCreate is the builder for creating a FactSettlementChannelChainAssetCreate entity.
@@ -19,9 +20,9 @@ type FactSettlementChannelChainAssetCreateCreate struct {
 	hooks    []Hook
 }
 
-// SetSettlementCycleID sets the "settlement_cycle_id" field.
-func (_c *FactSettlementChannelChainAssetCreateCreate) SetSettlementCycleID(v int64) *FactSettlementChannelChainAssetCreateCreate {
-	_c.mutation.SetSettlementCycleID(v)
+// SetSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field.
+func (_c *FactSettlementChannelChainAssetCreateCreate) SetSettlementPaymentAttemptID(v int64) *FactSettlementChannelChainAssetCreateCreate {
+	_c.mutation.SetSettlementPaymentAttemptID(v)
 	return _c
 }
 
@@ -125,6 +126,11 @@ func (_c *FactSettlementChannelChainAssetCreateCreate) SetUpdatedAtUnix(v int64)
 	return _c
 }
 
+// SetSettlementPaymentAttempt sets the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (_c *FactSettlementChannelChainAssetCreateCreate) SetSettlementPaymentAttempt(v *FactSettlementPaymentAttempts) *FactSettlementChannelChainAssetCreateCreate {
+	return _c.SetSettlementPaymentAttemptID(v.ID)
+}
+
 // Mutation returns the FactSettlementChannelChainAssetCreateMutation object of the builder.
 func (_c *FactSettlementChannelChainAssetCreateCreate) Mutation() *FactSettlementChannelChainAssetCreateMutation {
 	return _c.mutation
@@ -172,8 +178,8 @@ func (_c *FactSettlementChannelChainAssetCreateCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (_c *FactSettlementChannelChainAssetCreateCreate) check() error {
-	if _, ok := _c.mutation.SettlementCycleID(); !ok {
-		return &ValidationError{Name: "settlement_cycle_id", err: errors.New(`gen: missing required field "FactSettlementChannelChainAssetCreate.settlement_cycle_id"`)}
+	if _, ok := _c.mutation.SettlementPaymentAttemptID(); !ok {
+		return &ValidationError{Name: "settlement_payment_attempt_id", err: errors.New(`gen: missing required field "FactSettlementChannelChainAssetCreate.settlement_payment_attempt_id"`)}
 	}
 	if _, ok := _c.mutation.Txid(); !ok {
 		return &ValidationError{Name: "txid", err: errors.New(`gen: missing required field "FactSettlementChannelChainAssetCreate.txid"`)}
@@ -217,6 +223,9 @@ func (_c *FactSettlementChannelChainAssetCreateCreate) check() error {
 	if _, ok := _c.mutation.UpdatedAtUnix(); !ok {
 		return &ValidationError{Name: "updated_at_unix", err: errors.New(`gen: missing required field "FactSettlementChannelChainAssetCreate.updated_at_unix"`)}
 	}
+	if len(_c.mutation.SettlementPaymentAttemptIDs()) == 0 {
+		return &ValidationError{Name: "settlement_payment_attempt", err: errors.New(`gen: missing required edge "FactSettlementChannelChainAssetCreate.settlement_payment_attempt"`)}
+	}
 	return nil
 }
 
@@ -243,10 +252,6 @@ func (_c *FactSettlementChannelChainAssetCreateCreate) createSpec() (*FactSettle
 		_node = &FactSettlementChannelChainAssetCreate{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(factsettlementchannelchainassetcreate.Table, sqlgraph.NewFieldSpec(factsettlementchannelchainassetcreate.FieldID, field.TypeInt))
 	)
-	if value, ok := _c.mutation.SettlementCycleID(); ok {
-		_spec.SetField(factsettlementchannelchainassetcreate.FieldSettlementCycleID, field.TypeInt64, value)
-		_node.SettlementCycleID = value
-	}
 	if value, ok := _c.mutation.Txid(); ok {
 		_spec.SetField(factsettlementchannelchainassetcreate.FieldTxid, field.TypeString, value)
 		_node.Txid = value
@@ -302,6 +307,23 @@ func (_c *FactSettlementChannelChainAssetCreateCreate) createSpec() (*FactSettle
 	if value, ok := _c.mutation.UpdatedAtUnix(); ok {
 		_spec.SetField(factsettlementchannelchainassetcreate.FieldUpdatedAtUnix, field.TypeInt64, value)
 		_node.UpdatedAtUnix = value
+	}
+	if nodes := _c.mutation.SettlementPaymentAttemptIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   factsettlementchannelchainassetcreate.SettlementPaymentAttemptTable,
+			Columns: []string{factsettlementchannelchainassetcreate.SettlementPaymentAttemptColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(factsettlementpaymentattempts.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.SettlementPaymentAttemptID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 )
@@ -19,7 +20,7 @@ func (FactSettlementChannelChainAssetCreate) Annotations() []schema.Annotation {
 
 func (FactSettlementChannelChainAssetCreate) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int64("settlement_cycle_id").Unique(),
+		field.Int64("settlement_payment_attempt_id").Unique(),
 		field.String("txid"),
 		field.String("payment_subtype"),
 		field.String("status"),
@@ -34,6 +35,14 @@ func (FactSettlementChannelChainAssetCreate) Fields() []ent.Field {
 		field.String("to_party_id"),
 		field.String("payload_json"),
 		field.Int64("updated_at_unix"),
+	}
+}
+
+func (FactSettlementChannelChainAssetCreate) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.To("settlement_payment_attempt", FactSettlementPaymentAttempts.Type).
+			Field("settlement_payment_attempt_id").
+			Required().Unique(),
 	}
 }
 

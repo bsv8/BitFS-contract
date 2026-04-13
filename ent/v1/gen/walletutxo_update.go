@@ -125,6 +125,55 @@ func (_u *WalletUtxoUpdate) SetNillableState(v *string) *WalletUtxoUpdate {
 	return _u
 }
 
+// SetScriptType sets the "script_type" field.
+func (_u *WalletUtxoUpdate) SetScriptType(v string) *WalletUtxoUpdate {
+	_u.mutation.SetScriptType(v)
+	return _u
+}
+
+// SetNillableScriptType sets the "script_type" field if the given value is not nil.
+func (_u *WalletUtxoUpdate) SetNillableScriptType(v *string) *WalletUtxoUpdate {
+	if v != nil {
+		_u.SetScriptType(*v)
+	}
+	return _u
+}
+
+// SetScriptTypeReason sets the "script_type_reason" field.
+func (_u *WalletUtxoUpdate) SetScriptTypeReason(v string) *WalletUtxoUpdate {
+	_u.mutation.SetScriptTypeReason(v)
+	return _u
+}
+
+// SetNillableScriptTypeReason sets the "script_type_reason" field if the given value is not nil.
+func (_u *WalletUtxoUpdate) SetNillableScriptTypeReason(v *string) *WalletUtxoUpdate {
+	if v != nil {
+		_u.SetScriptTypeReason(*v)
+	}
+	return _u
+}
+
+// SetScriptTypeUpdatedAtUnix sets the "script_type_updated_at_unix" field.
+func (_u *WalletUtxoUpdate) SetScriptTypeUpdatedAtUnix(v int64) *WalletUtxoUpdate {
+	_u.mutation.ResetScriptTypeUpdatedAtUnix()
+	_u.mutation.SetScriptTypeUpdatedAtUnix(v)
+	return _u
+}
+
+// SetNillableScriptTypeUpdatedAtUnix sets the "script_type_updated_at_unix" field if the given value is not nil.
+func (_u *WalletUtxoUpdate) SetNillableScriptTypeUpdatedAtUnix(v *int64) *WalletUtxoUpdate {
+	if v != nil {
+		_u.SetScriptTypeUpdatedAtUnix(*v)
+	}
+	return _u
+}
+
+// AddScriptTypeUpdatedAtUnix adds value to the "script_type_updated_at_unix" field.
+func (_u *WalletUtxoUpdate) AddScriptTypeUpdatedAtUnix(v int64) *WalletUtxoUpdate {
+	_u.mutation.AddScriptTypeUpdatedAtUnix(v)
+	return _u
+}
+
 // SetAllocationClass sets the "allocation_class" field.
 func (_u *WalletUtxoUpdate) SetAllocationClass(v string) *WalletUtxoUpdate {
 	_u.mutation.SetAllocationClass(v)
@@ -309,6 +358,18 @@ func (_u *WalletUtxoUpdate) sqlSave(ctx context.Context) (_node int, err error) 
 	if value, ok := _u.mutation.State(); ok {
 		_spec.SetField(walletutxo.FieldState, field.TypeString, value)
 	}
+	if value, ok := _u.mutation.ScriptType(); ok {
+		_spec.SetField(walletutxo.FieldScriptType, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.ScriptTypeReason(); ok {
+		_spec.SetField(walletutxo.FieldScriptTypeReason, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.ScriptTypeUpdatedAtUnix(); ok {
+		_spec.SetField(walletutxo.FieldScriptTypeUpdatedAtUnix, field.TypeInt64, value)
+	}
+	if value, ok := _u.mutation.AddedScriptTypeUpdatedAtUnix(); ok {
+		_spec.AddField(walletutxo.FieldScriptTypeUpdatedAtUnix, field.TypeInt64, value)
+	}
 	if value, ok := _u.mutation.AllocationClass(); ok {
 		_spec.SetField(walletutxo.FieldAllocationClass, field.TypeString, value)
 	}
@@ -454,6 +515,55 @@ func (_u *WalletUtxoUpdateOne) SetNillableState(v *string) *WalletUtxoUpdateOne 
 	if v != nil {
 		_u.SetState(*v)
 	}
+	return _u
+}
+
+// SetScriptType sets the "script_type" field.
+func (_u *WalletUtxoUpdateOne) SetScriptType(v string) *WalletUtxoUpdateOne {
+	_u.mutation.SetScriptType(v)
+	return _u
+}
+
+// SetNillableScriptType sets the "script_type" field if the given value is not nil.
+func (_u *WalletUtxoUpdateOne) SetNillableScriptType(v *string) *WalletUtxoUpdateOne {
+	if v != nil {
+		_u.SetScriptType(*v)
+	}
+	return _u
+}
+
+// SetScriptTypeReason sets the "script_type_reason" field.
+func (_u *WalletUtxoUpdateOne) SetScriptTypeReason(v string) *WalletUtxoUpdateOne {
+	_u.mutation.SetScriptTypeReason(v)
+	return _u
+}
+
+// SetNillableScriptTypeReason sets the "script_type_reason" field if the given value is not nil.
+func (_u *WalletUtxoUpdateOne) SetNillableScriptTypeReason(v *string) *WalletUtxoUpdateOne {
+	if v != nil {
+		_u.SetScriptTypeReason(*v)
+	}
+	return _u
+}
+
+// SetScriptTypeUpdatedAtUnix sets the "script_type_updated_at_unix" field.
+func (_u *WalletUtxoUpdateOne) SetScriptTypeUpdatedAtUnix(v int64) *WalletUtxoUpdateOne {
+	_u.mutation.ResetScriptTypeUpdatedAtUnix()
+	_u.mutation.SetScriptTypeUpdatedAtUnix(v)
+	return _u
+}
+
+// SetNillableScriptTypeUpdatedAtUnix sets the "script_type_updated_at_unix" field if the given value is not nil.
+func (_u *WalletUtxoUpdateOne) SetNillableScriptTypeUpdatedAtUnix(v *int64) *WalletUtxoUpdateOne {
+	if v != nil {
+		_u.SetScriptTypeUpdatedAtUnix(*v)
+	}
+	return _u
+}
+
+// AddScriptTypeUpdatedAtUnix adds value to the "script_type_updated_at_unix" field.
+func (_u *WalletUtxoUpdateOne) AddScriptTypeUpdatedAtUnix(v int64) *WalletUtxoUpdateOne {
+	_u.mutation.AddScriptTypeUpdatedAtUnix(v)
 	return _u
 }
 
@@ -670,6 +780,18 @@ func (_u *WalletUtxoUpdateOne) sqlSave(ctx context.Context) (_node *WalletUtxo, 
 	}
 	if value, ok := _u.mutation.State(); ok {
 		_spec.SetField(walletutxo.FieldState, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.ScriptType(); ok {
+		_spec.SetField(walletutxo.FieldScriptType, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.ScriptTypeReason(); ok {
+		_spec.SetField(walletutxo.FieldScriptTypeReason, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.ScriptTypeUpdatedAtUnix(); ok {
+		_spec.SetField(walletutxo.FieldScriptTypeUpdatedAtUnix, field.TypeInt64, value)
+	}
+	if value, ok := _u.mutation.AddedScriptTypeUpdatedAtUnix(); ok {
+		_spec.AddField(walletutxo.FieldScriptTypeUpdatedAtUnix, field.TypeInt64, value)
 	}
 	if value, ok := _u.mutation.AllocationClass(); ok {
 		_spec.SetField(walletutxo.FieldAllocationClass, field.TypeString, value)

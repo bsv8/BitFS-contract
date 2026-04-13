@@ -14,6 +14,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizbusinesstriggers"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizdemandquotearbiters"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizdemandquotes"
@@ -37,10 +38,12 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelchainquotepay"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelpoolsessionquotepay"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementcycles"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementpaymentattempts"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementrecords"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/facttokencarrierlinks"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/facttokenlots"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/orders"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/ordersettlementevents"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/ordersettlements"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procchaintipstate"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procchaintipworkerlogs"
@@ -121,12 +124,16 @@ type Client struct {
 	FactSettlementChannelPoolSessionQuotePay *FactSettlementChannelPoolSessionQuotePayClient
 	// FactSettlementCycles is the client for interacting with the FactSettlementCycles builders.
 	FactSettlementCycles *FactSettlementCyclesClient
+	// FactSettlementPaymentAttempts is the client for interacting with the FactSettlementPaymentAttempts builders.
+	FactSettlementPaymentAttempts *FactSettlementPaymentAttemptsClient
 	// FactSettlementRecords is the client for interacting with the FactSettlementRecords builders.
 	FactSettlementRecords *FactSettlementRecordsClient
 	// FactTokenCarrierLinks is the client for interacting with the FactTokenCarrierLinks builders.
 	FactTokenCarrierLinks *FactTokenCarrierLinksClient
 	// FactTokenLots is the client for interacting with the FactTokenLots builders.
 	FactTokenLots *FactTokenLotsClient
+	// OrderSettlementEvents is the client for interacting with the OrderSettlementEvents builders.
+	OrderSettlementEvents *OrderSettlementEventsClient
 	// OrderSettlements is the client for interacting with the OrderSettlements builders.
 	OrderSettlements *OrderSettlementsClient
 	// Orders is the client for interacting with the Orders builders.
@@ -217,9 +224,11 @@ func (c *Client) init() {
 	c.FactSettlementChannelChainQuotePay = NewFactSettlementChannelChainQuotePayClient(c.config)
 	c.FactSettlementChannelPoolSessionQuotePay = NewFactSettlementChannelPoolSessionQuotePayClient(c.config)
 	c.FactSettlementCycles = NewFactSettlementCyclesClient(c.config)
+	c.FactSettlementPaymentAttempts = NewFactSettlementPaymentAttemptsClient(c.config)
 	c.FactSettlementRecords = NewFactSettlementRecordsClient(c.config)
 	c.FactTokenCarrierLinks = NewFactTokenCarrierLinksClient(c.config)
 	c.FactTokenLots = NewFactTokenLotsClient(c.config)
+	c.OrderSettlementEvents = NewOrderSettlementEventsClient(c.config)
 	c.OrderSettlements = NewOrderSettlementsClient(c.config)
 	c.Orders = NewOrdersClient(c.config)
 	c.ProcChainTipState = NewProcChainTipStateClient(c.config)
@@ -363,9 +372,11 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		FactSettlementChannelChainQuotePay:       NewFactSettlementChannelChainQuotePayClient(cfg),
 		FactSettlementChannelPoolSessionQuotePay: NewFactSettlementChannelPoolSessionQuotePayClient(cfg),
 		FactSettlementCycles:                     NewFactSettlementCyclesClient(cfg),
+		FactSettlementPaymentAttempts:            NewFactSettlementPaymentAttemptsClient(cfg),
 		FactSettlementRecords:                    NewFactSettlementRecordsClient(cfg),
 		FactTokenCarrierLinks:                    NewFactTokenCarrierLinksClient(cfg),
 		FactTokenLots:                            NewFactTokenLotsClient(cfg),
+		OrderSettlementEvents:                    NewOrderSettlementEventsClient(cfg),
 		OrderSettlements:                         NewOrderSettlementsClient(cfg),
 		Orders:                                   NewOrdersClient(cfg),
 		ProcChainTipState:                        NewProcChainTipStateClient(cfg),
@@ -436,9 +447,11 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		FactSettlementChannelChainQuotePay:       NewFactSettlementChannelChainQuotePayClient(cfg),
 		FactSettlementChannelPoolSessionQuotePay: NewFactSettlementChannelPoolSessionQuotePayClient(cfg),
 		FactSettlementCycles:                     NewFactSettlementCyclesClient(cfg),
+		FactSettlementPaymentAttempts:            NewFactSettlementPaymentAttemptsClient(cfg),
 		FactSettlementRecords:                    NewFactSettlementRecordsClient(cfg),
 		FactTokenCarrierLinks:                    NewFactTokenCarrierLinksClient(cfg),
 		FactTokenLots:                            NewFactTokenLotsClient(cfg),
+		OrderSettlementEvents:                    NewOrderSettlementEventsClient(cfg),
 		OrderSettlements:                         NewOrderSettlementsClient(cfg),
 		Orders:                                   NewOrdersClient(cfg),
 		ProcChainTipState:                        NewProcChainTipStateClient(cfg),
@@ -504,7 +517,8 @@ func (c *Client) Use(hooks ...Hook) {
 		c.FactSettlementChannelChainAssetCreate, c.FactSettlementChannelChainDirectPay,
 		c.FactSettlementChannelChainQuotePay,
 		c.FactSettlementChannelPoolSessionQuotePay, c.FactSettlementCycles,
-		c.FactSettlementRecords, c.FactTokenCarrierLinks, c.FactTokenLots,
+		c.FactSettlementPaymentAttempts, c.FactSettlementRecords,
+		c.FactTokenCarrierLinks, c.FactTokenLots, c.OrderSettlementEvents,
 		c.OrderSettlements, c.Orders, c.ProcChainTipState, c.ProcChainTipWorkerLogs,
 		c.ProcChainUtxoWorkerLogs, c.ProcCommandJournal, c.ProcDirectDeals,
 		c.ProcDirectTransferPools, c.ProcDomainEvents, c.ProcEffectLogs,
@@ -532,7 +546,8 @@ func (c *Client) Intercept(interceptors ...Interceptor) {
 		c.FactSettlementChannelChainAssetCreate, c.FactSettlementChannelChainDirectPay,
 		c.FactSettlementChannelChainQuotePay,
 		c.FactSettlementChannelPoolSessionQuotePay, c.FactSettlementCycles,
-		c.FactSettlementRecords, c.FactTokenCarrierLinks, c.FactTokenLots,
+		c.FactSettlementPaymentAttempts, c.FactSettlementRecords,
+		c.FactTokenCarrierLinks, c.FactTokenLots, c.OrderSettlementEvents,
 		c.OrderSettlements, c.Orders, c.ProcChainTipState, c.ProcChainTipWorkerLogs,
 		c.ProcChainUtxoWorkerLogs, c.ProcCommandJournal, c.ProcDirectDeals,
 		c.ProcDirectTransferPools, c.ProcDomainEvents, c.ProcEffectLogs,
@@ -597,12 +612,16 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.FactSettlementChannelPoolSessionQuotePay.mutate(ctx, m)
 	case *FactSettlementCyclesMutation:
 		return c.FactSettlementCycles.mutate(ctx, m)
+	case *FactSettlementPaymentAttemptsMutation:
+		return c.FactSettlementPaymentAttempts.mutate(ctx, m)
 	case *FactSettlementRecordsMutation:
 		return c.FactSettlementRecords.mutate(ctx, m)
 	case *FactTokenCarrierLinksMutation:
 		return c.FactTokenCarrierLinks.mutate(ctx, m)
 	case *FactTokenLotsMutation:
 		return c.FactTokenLots.mutate(ctx, m)
+	case *OrderSettlementEventsMutation:
+		return c.OrderSettlementEvents.mutate(ctx, m)
 	case *OrderSettlementsMutation:
 		return c.OrderSettlements.mutate(ctx, m)
 	case *OrdersMutation:
@@ -3166,6 +3185,22 @@ func (c *FactSettlementChannelChainAssetCreateClient) GetX(ctx context.Context, 
 	return obj
 }
 
+// QuerySettlementPaymentAttempt queries the settlement_payment_attempt edge of a FactSettlementChannelChainAssetCreate.
+func (c *FactSettlementChannelChainAssetCreateClient) QuerySettlementPaymentAttempt(_m *FactSettlementChannelChainAssetCreate) *FactSettlementPaymentAttemptsQuery {
+	query := (&FactSettlementPaymentAttemptsClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(factsettlementchannelchainassetcreate.Table, factsettlementchannelchainassetcreate.FieldID, id),
+			sqlgraph.To(factsettlementpaymentattempts.Table, factsettlementpaymentattempts.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, factsettlementchannelchainassetcreate.SettlementPaymentAttemptTable, factsettlementchannelchainassetcreate.SettlementPaymentAttemptColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *FactSettlementChannelChainAssetCreateClient) Hooks() []Hook {
 	return c.hooks.FactSettlementChannelChainAssetCreate
@@ -3297,6 +3332,22 @@ func (c *FactSettlementChannelChainDirectPayClient) GetX(ctx context.Context, id
 		panic(err)
 	}
 	return obj
+}
+
+// QuerySettlementPaymentAttempt queries the settlement_payment_attempt edge of a FactSettlementChannelChainDirectPay.
+func (c *FactSettlementChannelChainDirectPayClient) QuerySettlementPaymentAttempt(_m *FactSettlementChannelChainDirectPay) *FactSettlementPaymentAttemptsQuery {
+	query := (&FactSettlementPaymentAttemptsClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(factsettlementchannelchaindirectpay.Table, factsettlementchannelchaindirectpay.FieldID, id),
+			sqlgraph.To(factsettlementpaymentattempts.Table, factsettlementpaymentattempts.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, factsettlementchannelchaindirectpay.SettlementPaymentAttemptTable, factsettlementchannelchaindirectpay.SettlementPaymentAttemptColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -3432,6 +3483,22 @@ func (c *FactSettlementChannelChainQuotePayClient) GetX(ctx context.Context, id 
 	return obj
 }
 
+// QuerySettlementPaymentAttempt queries the settlement_payment_attempt edge of a FactSettlementChannelChainQuotePay.
+func (c *FactSettlementChannelChainQuotePayClient) QuerySettlementPaymentAttempt(_m *FactSettlementChannelChainQuotePay) *FactSettlementPaymentAttemptsQuery {
+	query := (&FactSettlementPaymentAttemptsClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(factsettlementchannelchainquotepay.Table, factsettlementchannelchainquotepay.FieldID, id),
+			sqlgraph.To(factsettlementpaymentattempts.Table, factsettlementpaymentattempts.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, factsettlementchannelchainquotepay.SettlementPaymentAttemptTable, factsettlementchannelchainquotepay.SettlementPaymentAttemptColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *FactSettlementChannelChainQuotePayClient) Hooks() []Hook {
 	return c.hooks.FactSettlementChannelChainQuotePay
@@ -3563,6 +3630,22 @@ func (c *FactSettlementChannelPoolSessionQuotePayClient) GetX(ctx context.Contex
 		panic(err)
 	}
 	return obj
+}
+
+// QuerySettlementPaymentAttempt queries the settlement_payment_attempt edge of a FactSettlementChannelPoolSessionQuotePay.
+func (c *FactSettlementChannelPoolSessionQuotePayClient) QuerySettlementPaymentAttempt(_m *FactSettlementChannelPoolSessionQuotePay) *FactSettlementPaymentAttemptsQuery {
+	query := (&FactSettlementPaymentAttemptsClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(factsettlementchannelpoolsessionquotepay.Table, factsettlementchannelpoolsessionquotepay.FieldID, id),
+			sqlgraph.To(factsettlementpaymentattempts.Table, factsettlementpaymentattempts.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, factsettlementchannelpoolsessionquotepay.SettlementPaymentAttemptTable, factsettlementchannelpoolsessionquotepay.SettlementPaymentAttemptColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -3723,6 +3806,139 @@ func (c *FactSettlementCyclesClient) mutate(ctx context.Context, m *FactSettleme
 	}
 }
 
+// FactSettlementPaymentAttemptsClient is a client for the FactSettlementPaymentAttempts schema.
+type FactSettlementPaymentAttemptsClient struct {
+	config
+}
+
+// NewFactSettlementPaymentAttemptsClient returns a client for the FactSettlementPaymentAttempts from the given config.
+func NewFactSettlementPaymentAttemptsClient(c config) *FactSettlementPaymentAttemptsClient {
+	return &FactSettlementPaymentAttemptsClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `factsettlementpaymentattempts.Hooks(f(g(h())))`.
+func (c *FactSettlementPaymentAttemptsClient) Use(hooks ...Hook) {
+	c.hooks.FactSettlementPaymentAttempts = append(c.hooks.FactSettlementPaymentAttempts, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `factsettlementpaymentattempts.Intercept(f(g(h())))`.
+func (c *FactSettlementPaymentAttemptsClient) Intercept(interceptors ...Interceptor) {
+	c.inters.FactSettlementPaymentAttempts = append(c.inters.FactSettlementPaymentAttempts, interceptors...)
+}
+
+// Create returns a builder for creating a FactSettlementPaymentAttempts entity.
+func (c *FactSettlementPaymentAttemptsClient) Create() *FactSettlementPaymentAttemptsCreate {
+	mutation := newFactSettlementPaymentAttemptsMutation(c.config, OpCreate)
+	return &FactSettlementPaymentAttemptsCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of FactSettlementPaymentAttempts entities.
+func (c *FactSettlementPaymentAttemptsClient) CreateBulk(builders ...*FactSettlementPaymentAttemptsCreate) *FactSettlementPaymentAttemptsCreateBulk {
+	return &FactSettlementPaymentAttemptsCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *FactSettlementPaymentAttemptsClient) MapCreateBulk(slice any, setFunc func(*FactSettlementPaymentAttemptsCreate, int)) *FactSettlementPaymentAttemptsCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &FactSettlementPaymentAttemptsCreateBulk{err: fmt.Errorf("calling to FactSettlementPaymentAttemptsClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*FactSettlementPaymentAttemptsCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &FactSettlementPaymentAttemptsCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for FactSettlementPaymentAttempts.
+func (c *FactSettlementPaymentAttemptsClient) Update() *FactSettlementPaymentAttemptsUpdate {
+	mutation := newFactSettlementPaymentAttemptsMutation(c.config, OpUpdate)
+	return &FactSettlementPaymentAttemptsUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *FactSettlementPaymentAttemptsClient) UpdateOne(_m *FactSettlementPaymentAttempts) *FactSettlementPaymentAttemptsUpdateOne {
+	mutation := newFactSettlementPaymentAttemptsMutation(c.config, OpUpdateOne, withFactSettlementPaymentAttempts(_m))
+	return &FactSettlementPaymentAttemptsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *FactSettlementPaymentAttemptsClient) UpdateOneID(id int64) *FactSettlementPaymentAttemptsUpdateOne {
+	mutation := newFactSettlementPaymentAttemptsMutation(c.config, OpUpdateOne, withFactSettlementPaymentAttemptsID(id))
+	return &FactSettlementPaymentAttemptsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for FactSettlementPaymentAttempts.
+func (c *FactSettlementPaymentAttemptsClient) Delete() *FactSettlementPaymentAttemptsDelete {
+	mutation := newFactSettlementPaymentAttemptsMutation(c.config, OpDelete)
+	return &FactSettlementPaymentAttemptsDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *FactSettlementPaymentAttemptsClient) DeleteOne(_m *FactSettlementPaymentAttempts) *FactSettlementPaymentAttemptsDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *FactSettlementPaymentAttemptsClient) DeleteOneID(id int64) *FactSettlementPaymentAttemptsDeleteOne {
+	builder := c.Delete().Where(factsettlementpaymentattempts.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &FactSettlementPaymentAttemptsDeleteOne{builder}
+}
+
+// Query returns a query builder for FactSettlementPaymentAttempts.
+func (c *FactSettlementPaymentAttemptsClient) Query() *FactSettlementPaymentAttemptsQuery {
+	return &FactSettlementPaymentAttemptsQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeFactSettlementPaymentAttempts},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a FactSettlementPaymentAttempts entity by its id.
+func (c *FactSettlementPaymentAttemptsClient) Get(ctx context.Context, id int64) (*FactSettlementPaymentAttempts, error) {
+	return c.Query().Where(factsettlementpaymentattempts.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *FactSettlementPaymentAttemptsClient) GetX(ctx context.Context, id int64) *FactSettlementPaymentAttempts {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *FactSettlementPaymentAttemptsClient) Hooks() []Hook {
+	return c.hooks.FactSettlementPaymentAttempts
+}
+
+// Interceptors returns the client interceptors.
+func (c *FactSettlementPaymentAttemptsClient) Interceptors() []Interceptor {
+	return c.inters.FactSettlementPaymentAttempts
+}
+
+func (c *FactSettlementPaymentAttemptsClient) mutate(ctx context.Context, m *FactSettlementPaymentAttemptsMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&FactSettlementPaymentAttemptsCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&FactSettlementPaymentAttemptsUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&FactSettlementPaymentAttemptsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&FactSettlementPaymentAttemptsDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("gen: unknown FactSettlementPaymentAttempts mutation op: %q", m.Op())
+	}
+}
+
 // FactSettlementRecordsClient is a client for the FactSettlementRecords schema.
 type FactSettlementRecordsClient struct {
 	config
@@ -3829,6 +4045,22 @@ func (c *FactSettlementRecordsClient) GetX(ctx context.Context, id int) *FactSet
 		panic(err)
 	}
 	return obj
+}
+
+// QuerySettlementPaymentAttempt queries the settlement_payment_attempt edge of a FactSettlementRecords.
+func (c *FactSettlementRecordsClient) QuerySettlementPaymentAttempt(_m *FactSettlementRecords) *FactSettlementPaymentAttemptsQuery {
+	query := (&FactSettlementPaymentAttemptsClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(factsettlementrecords.Table, factsettlementrecords.FieldID, id),
+			sqlgraph.To(factsettlementpaymentattempts.Table, factsettlementpaymentattempts.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, factsettlementrecords.SettlementPaymentAttemptTable, factsettlementrecords.SettlementPaymentAttemptColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -4119,6 +4351,139 @@ func (c *FactTokenLotsClient) mutate(ctx context.Context, m *FactTokenLotsMutati
 		return (&FactTokenLotsDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("gen: unknown FactTokenLots mutation op: %q", m.Op())
+	}
+}
+
+// OrderSettlementEventsClient is a client for the OrderSettlementEvents schema.
+type OrderSettlementEventsClient struct {
+	config
+}
+
+// NewOrderSettlementEventsClient returns a client for the OrderSettlementEvents from the given config.
+func NewOrderSettlementEventsClient(c config) *OrderSettlementEventsClient {
+	return &OrderSettlementEventsClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `ordersettlementevents.Hooks(f(g(h())))`.
+func (c *OrderSettlementEventsClient) Use(hooks ...Hook) {
+	c.hooks.OrderSettlementEvents = append(c.hooks.OrderSettlementEvents, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `ordersettlementevents.Intercept(f(g(h())))`.
+func (c *OrderSettlementEventsClient) Intercept(interceptors ...Interceptor) {
+	c.inters.OrderSettlementEvents = append(c.inters.OrderSettlementEvents, interceptors...)
+}
+
+// Create returns a builder for creating a OrderSettlementEvents entity.
+func (c *OrderSettlementEventsClient) Create() *OrderSettlementEventsCreate {
+	mutation := newOrderSettlementEventsMutation(c.config, OpCreate)
+	return &OrderSettlementEventsCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of OrderSettlementEvents entities.
+func (c *OrderSettlementEventsClient) CreateBulk(builders ...*OrderSettlementEventsCreate) *OrderSettlementEventsCreateBulk {
+	return &OrderSettlementEventsCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *OrderSettlementEventsClient) MapCreateBulk(slice any, setFunc func(*OrderSettlementEventsCreate, int)) *OrderSettlementEventsCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &OrderSettlementEventsCreateBulk{err: fmt.Errorf("calling to OrderSettlementEventsClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*OrderSettlementEventsCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &OrderSettlementEventsCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for OrderSettlementEvents.
+func (c *OrderSettlementEventsClient) Update() *OrderSettlementEventsUpdate {
+	mutation := newOrderSettlementEventsMutation(c.config, OpUpdate)
+	return &OrderSettlementEventsUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *OrderSettlementEventsClient) UpdateOne(_m *OrderSettlementEvents) *OrderSettlementEventsUpdateOne {
+	mutation := newOrderSettlementEventsMutation(c.config, OpUpdateOne, withOrderSettlementEvents(_m))
+	return &OrderSettlementEventsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *OrderSettlementEventsClient) UpdateOneID(id int64) *OrderSettlementEventsUpdateOne {
+	mutation := newOrderSettlementEventsMutation(c.config, OpUpdateOne, withOrderSettlementEventsID(id))
+	return &OrderSettlementEventsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for OrderSettlementEvents.
+func (c *OrderSettlementEventsClient) Delete() *OrderSettlementEventsDelete {
+	mutation := newOrderSettlementEventsMutation(c.config, OpDelete)
+	return &OrderSettlementEventsDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *OrderSettlementEventsClient) DeleteOne(_m *OrderSettlementEvents) *OrderSettlementEventsDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *OrderSettlementEventsClient) DeleteOneID(id int64) *OrderSettlementEventsDeleteOne {
+	builder := c.Delete().Where(ordersettlementevents.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &OrderSettlementEventsDeleteOne{builder}
+}
+
+// Query returns a query builder for OrderSettlementEvents.
+func (c *OrderSettlementEventsClient) Query() *OrderSettlementEventsQuery {
+	return &OrderSettlementEventsQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeOrderSettlementEvents},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a OrderSettlementEvents entity by its id.
+func (c *OrderSettlementEventsClient) Get(ctx context.Context, id int64) (*OrderSettlementEvents, error) {
+	return c.Query().Where(ordersettlementevents.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *OrderSettlementEventsClient) GetX(ctx context.Context, id int64) *OrderSettlementEvents {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *OrderSettlementEventsClient) Hooks() []Hook {
+	return c.hooks.OrderSettlementEvents
+}
+
+// Interceptors returns the client interceptors.
+func (c *OrderSettlementEventsClient) Interceptors() []Interceptor {
+	return c.inters.OrderSettlementEvents
+}
+
+func (c *OrderSettlementEventsClient) mutate(ctx context.Context, m *OrderSettlementEventsMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&OrderSettlementEventsCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&OrderSettlementEventsUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&OrderSettlementEventsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&OrderSettlementEventsDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("gen: unknown OrderSettlementEvents mutation op: %q", m.Op())
 	}
 }
 
@@ -7855,11 +8220,11 @@ type (
 		BizWorkspaces, FactBsv21, FactBsv21Events, FactBsvUtxos, FactPoolSessionEvents,
 		FactSettlementChannelChainAssetCreate, FactSettlementChannelChainDirectPay,
 		FactSettlementChannelChainQuotePay, FactSettlementChannelPoolSessionQuotePay,
-		FactSettlementCycles, FactSettlementRecords, FactTokenCarrierLinks,
-		FactTokenLots, OrderSettlements, Orders, ProcChainTipState,
-		ProcChainTipWorkerLogs, ProcChainUtxoWorkerLogs, ProcCommandJournal,
-		ProcDirectDeals, ProcDirectTransferPools, ProcDomainEvents, ProcEffectLogs,
-		ProcFileDownloadChunks, ProcFileDownloads, ProcGatewayEvents,
+		FactSettlementCycles, FactSettlementPaymentAttempts, FactSettlementRecords,
+		FactTokenCarrierLinks, FactTokenLots, OrderSettlementEvents, OrderSettlements,
+		Orders, ProcChainTipState, ProcChainTipWorkerLogs, ProcChainUtxoWorkerLogs,
+		ProcCommandJournal, ProcDirectDeals, ProcDirectTransferPools, ProcDomainEvents,
+		ProcEffectLogs, ProcFileDownloadChunks, ProcFileDownloads, ProcGatewayEvents,
 		ProcInboxMessages, ProcLiveFollows, ProcNodeReachabilityCache,
 		ProcObservedGatewayStates, ProcOrchestratorLogs, ProcPublishedRouteIndexes,
 		ProcSchedulerTaskRuns, ProcSchedulerTasks, ProcSelfNodeReachabilityState,
@@ -7873,11 +8238,11 @@ type (
 		BizWorkspaces, FactBsv21, FactBsv21Events, FactBsvUtxos, FactPoolSessionEvents,
 		FactSettlementChannelChainAssetCreate, FactSettlementChannelChainDirectPay,
 		FactSettlementChannelChainQuotePay, FactSettlementChannelPoolSessionQuotePay,
-		FactSettlementCycles, FactSettlementRecords, FactTokenCarrierLinks,
-		FactTokenLots, OrderSettlements, Orders, ProcChainTipState,
-		ProcChainTipWorkerLogs, ProcChainUtxoWorkerLogs, ProcCommandJournal,
-		ProcDirectDeals, ProcDirectTransferPools, ProcDomainEvents, ProcEffectLogs,
-		ProcFileDownloadChunks, ProcFileDownloads, ProcGatewayEvents,
+		FactSettlementCycles, FactSettlementPaymentAttempts, FactSettlementRecords,
+		FactTokenCarrierLinks, FactTokenLots, OrderSettlementEvents, OrderSettlements,
+		Orders, ProcChainTipState, ProcChainTipWorkerLogs, ProcChainUtxoWorkerLogs,
+		ProcCommandJournal, ProcDirectDeals, ProcDirectTransferPools, ProcDomainEvents,
+		ProcEffectLogs, ProcFileDownloadChunks, ProcFileDownloads, ProcGatewayEvents,
 		ProcInboxMessages, ProcLiveFollows, ProcNodeReachabilityCache,
 		ProcObservedGatewayStates, ProcOrchestratorLogs, ProcPublishedRouteIndexes,
 		ProcSchedulerTaskRuns, ProcSchedulerTasks, ProcSelfNodeReachabilityState,

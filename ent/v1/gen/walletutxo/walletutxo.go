@@ -25,6 +25,12 @@ const (
 	FieldValueSatoshi = "value_satoshi"
 	// FieldState holds the string denoting the state field in the database.
 	FieldState = "state"
+	// FieldScriptType holds the string denoting the script_type field in the database.
+	FieldScriptType = "script_type"
+	// FieldScriptTypeReason holds the string denoting the script_type_reason field in the database.
+	FieldScriptTypeReason = "script_type_reason"
+	// FieldScriptTypeUpdatedAtUnix holds the string denoting the script_type_updated_at_unix field in the database.
+	FieldScriptTypeUpdatedAtUnix = "script_type_updated_at_unix"
 	// FieldAllocationClass holds the string denoting the allocation_class field in the database.
 	FieldAllocationClass = "allocation_class"
 	// FieldAllocationReason holds the string denoting the allocation_reason field in the database.
@@ -53,6 +59,9 @@ var Columns = []string{
 	FieldVout,
 	FieldValueSatoshi,
 	FieldState,
+	FieldScriptType,
+	FieldScriptTypeReason,
+	FieldScriptTypeUpdatedAtUnix,
 	FieldAllocationClass,
 	FieldAllocationReason,
 	FieldCreatedTxid,
@@ -73,6 +82,12 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// DefaultScriptType holds the default value on creation for the "script_type" field.
+	DefaultScriptType string
+	// DefaultScriptTypeReason holds the default value on creation for the "script_type_reason" field.
+	DefaultScriptTypeReason string
+	// DefaultScriptTypeUpdatedAtUnix holds the default value on creation for the "script_type_updated_at_unix" field.
+	DefaultScriptTypeUpdatedAtUnix int64
 	// DefaultAllocationClass holds the default value on creation for the "allocation_class" field.
 	DefaultAllocationClass string
 	// DefaultAllocationReason holds the default value on creation for the "allocation_reason" field.
@@ -120,6 +135,21 @@ func ByValueSatoshi(opts ...sql.OrderTermOption) OrderOption {
 // ByState orders the results by the state field.
 func ByState(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldState, opts...).ToFunc()
+}
+
+// ByScriptType orders the results by the script_type field.
+func ByScriptType(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldScriptType, opts...).ToFunc()
+}
+
+// ByScriptTypeReason orders the results by the script_type_reason field.
+func ByScriptTypeReason(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldScriptTypeReason, opts...).ToFunc()
+}
+
+// ByScriptTypeUpdatedAtUnix orders the results by the script_type_updated_at_unix field.
+func ByScriptTypeUpdatedAtUnix(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldScriptTypeUpdatedAtUnix, opts...).ToFunc()
 }
 
 // ByAllocationClass orders the results by the allocation_class field.

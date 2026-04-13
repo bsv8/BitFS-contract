@@ -18,10 +18,12 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelchainquotepay"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelpoolsessionquotepay"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementcycles"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementpaymentattempts"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementrecords"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/facttokencarrierlinks"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/facttokenlots"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/orders"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/ordersettlementevents"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/ordersettlements"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/proccommandjournal"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/walletlocalbroadcasttxs"
@@ -345,6 +347,36 @@ func init() {
 	factsettlementcyclesDescPayloadJSON := factsettlementcyclesFields[11].Descriptor()
 	// factsettlementcycles.DefaultPayloadJSON holds the default value on creation for the payload_json field.
 	factsettlementcycles.DefaultPayloadJSON = factsettlementcyclesDescPayloadJSON.Default.(string)
+	factsettlementpaymentattemptsFields := schema.FactSettlementPaymentAttempts{}.Fields()
+	_ = factsettlementpaymentattemptsFields
+	// factsettlementpaymentattemptsDescGrossAmountSatoshi is the schema descriptor for gross_amount_satoshi field.
+	factsettlementpaymentattemptsDescGrossAmountSatoshi := factsettlementpaymentattemptsFields[5].Descriptor()
+	// factsettlementpaymentattempts.DefaultGrossAmountSatoshi holds the default value on creation for the gross_amount_satoshi field.
+	factsettlementpaymentattempts.DefaultGrossAmountSatoshi = factsettlementpaymentattemptsDescGrossAmountSatoshi.Default.(int64)
+	// factsettlementpaymentattemptsDescGateFeeSatoshi is the schema descriptor for gate_fee_satoshi field.
+	factsettlementpaymentattemptsDescGateFeeSatoshi := factsettlementpaymentattemptsFields[6].Descriptor()
+	// factsettlementpaymentattempts.DefaultGateFeeSatoshi holds the default value on creation for the gate_fee_satoshi field.
+	factsettlementpaymentattempts.DefaultGateFeeSatoshi = factsettlementpaymentattemptsDescGateFeeSatoshi.Default.(int64)
+	// factsettlementpaymentattemptsDescNetAmountSatoshi is the schema descriptor for net_amount_satoshi field.
+	factsettlementpaymentattemptsDescNetAmountSatoshi := factsettlementpaymentattemptsFields[7].Descriptor()
+	// factsettlementpaymentattempts.DefaultNetAmountSatoshi holds the default value on creation for the net_amount_satoshi field.
+	factsettlementpaymentattempts.DefaultNetAmountSatoshi = factsettlementpaymentattemptsDescNetAmountSatoshi.Default.(int64)
+	// factsettlementpaymentattemptsDescCycleIndex is the schema descriptor for cycle_index field.
+	factsettlementpaymentattemptsDescCycleIndex := factsettlementpaymentattemptsFields[8].Descriptor()
+	// factsettlementpaymentattempts.DefaultCycleIndex holds the default value on creation for the cycle_index field.
+	factsettlementpaymentattempts.DefaultCycleIndex = factsettlementpaymentattemptsDescCycleIndex.Default.(int64)
+	// factsettlementpaymentattemptsDescConfirmedAtUnix is the schema descriptor for confirmed_at_unix field.
+	factsettlementpaymentattemptsDescConfirmedAtUnix := factsettlementpaymentattemptsFields[10].Descriptor()
+	// factsettlementpaymentattempts.DefaultConfirmedAtUnix holds the default value on creation for the confirmed_at_unix field.
+	factsettlementpaymentattempts.DefaultConfirmedAtUnix = factsettlementpaymentattemptsDescConfirmedAtUnix.Default.(int64)
+	// factsettlementpaymentattemptsDescNote is the schema descriptor for note field.
+	factsettlementpaymentattemptsDescNote := factsettlementpaymentattemptsFields[11].Descriptor()
+	// factsettlementpaymentattempts.DefaultNote holds the default value on creation for the note field.
+	factsettlementpaymentattempts.DefaultNote = factsettlementpaymentattemptsDescNote.Default.(string)
+	// factsettlementpaymentattemptsDescPayloadJSON is the schema descriptor for payload_json field.
+	factsettlementpaymentattemptsDescPayloadJSON := factsettlementpaymentattemptsFields[12].Descriptor()
+	// factsettlementpaymentattempts.DefaultPayloadJSON holds the default value on creation for the payload_json field.
+	factsettlementpaymentattempts.DefaultPayloadJSON = factsettlementpaymentattemptsDescPayloadJSON.Default.(string)
 	factsettlementrecordsFields := schema.FactSettlementRecords{}.Fields()
 	_ = factsettlementrecordsFields
 	// factsettlementrecordsDescSourceUtxoID is the schema descriptor for source_utxo_id field.
@@ -415,6 +447,16 @@ func init() {
 	facttokenlotsDescPayloadJSON := facttokenlotsFields[13].Descriptor()
 	// facttokenlots.DefaultPayloadJSON holds the default value on creation for the payload_json field.
 	facttokenlots.DefaultPayloadJSON = facttokenlotsDescPayloadJSON.Default.(string)
+	ordersettlementeventsFields := schema.OrderSettlementEvents{}.Fields()
+	_ = ordersettlementeventsFields
+	// ordersettlementeventsDescNote is the schema descriptor for note field.
+	ordersettlementeventsDescNote := ordersettlementeventsFields[10].Descriptor()
+	// ordersettlementevents.DefaultNote holds the default value on creation for the note field.
+	ordersettlementevents.DefaultNote = ordersettlementeventsDescNote.Default.(string)
+	// ordersettlementeventsDescPayloadJSON is the schema descriptor for payload_json field.
+	ordersettlementeventsDescPayloadJSON := ordersettlementeventsFields[11].Descriptor()
+	// ordersettlementevents.DefaultPayloadJSON holds the default value on creation for the payload_json field.
+	ordersettlementevents.DefaultPayloadJSON = ordersettlementeventsDescPayloadJSON.Default.(string)
 	ordersettlementsFields := schema.OrderSettlements{}.Fields()
 	_ = ordersettlementsFields
 	// ordersettlementsDescBusinessRole is the schema descriptor for business_role field.
@@ -478,7 +520,7 @@ func init() {
 	proccommandjournalFields := schema.ProcCommandJournal{}.Fields()
 	_ = proccommandjournalFields
 	// proccommandjournalDescTriggerKey is the schema descriptor for trigger_key field.
-	proccommandjournalDescTriggerKey := proccommandjournalFields[14].Descriptor()
+	proccommandjournalDescTriggerKey := proccommandjournalFields[15].Descriptor()
 	// proccommandjournal.DefaultTriggerKey holds the default value on creation for the trigger_key field.
 	proccommandjournal.DefaultTriggerKey = proccommandjournalDescTriggerKey.Default.(string)
 	walletlocalbroadcasttxsFields := schema.WalletLocalBroadcastTxs{}.Fields()
@@ -489,12 +531,24 @@ func init() {
 	walletlocalbroadcasttxs.DefaultObservedAtUnix = walletlocalbroadcasttxsDescObservedAtUnix.Default.(int64)
 	walletutxoFields := schema.WalletUtxo{}.Fields()
 	_ = walletutxoFields
+	// walletutxoDescScriptType is the schema descriptor for script_type field.
+	walletutxoDescScriptType := walletutxoFields[8].Descriptor()
+	// walletutxo.DefaultScriptType holds the default value on creation for the script_type field.
+	walletutxo.DefaultScriptType = walletutxoDescScriptType.Default.(string)
+	// walletutxoDescScriptTypeReason is the schema descriptor for script_type_reason field.
+	walletutxoDescScriptTypeReason := walletutxoFields[9].Descriptor()
+	// walletutxo.DefaultScriptTypeReason holds the default value on creation for the script_type_reason field.
+	walletutxo.DefaultScriptTypeReason = walletutxoDescScriptTypeReason.Default.(string)
+	// walletutxoDescScriptTypeUpdatedAtUnix is the schema descriptor for script_type_updated_at_unix field.
+	walletutxoDescScriptTypeUpdatedAtUnix := walletutxoFields[10].Descriptor()
+	// walletutxo.DefaultScriptTypeUpdatedAtUnix holds the default value on creation for the script_type_updated_at_unix field.
+	walletutxo.DefaultScriptTypeUpdatedAtUnix = walletutxoDescScriptTypeUpdatedAtUnix.Default.(int64)
 	// walletutxoDescAllocationClass is the schema descriptor for allocation_class field.
-	walletutxoDescAllocationClass := walletutxoFields[8].Descriptor()
+	walletutxoDescAllocationClass := walletutxoFields[11].Descriptor()
 	// walletutxo.DefaultAllocationClass holds the default value on creation for the allocation_class field.
 	walletutxo.DefaultAllocationClass = walletutxoDescAllocationClass.Default.(string)
 	// walletutxoDescAllocationReason is the schema descriptor for allocation_reason field.
-	walletutxoDescAllocationReason := walletutxoFields[9].Descriptor()
+	walletutxoDescAllocationReason := walletutxoFields[12].Descriptor()
 	// walletutxo.DefaultAllocationReason holds the default value on creation for the allocation_reason field.
 	walletutxo.DefaultAllocationReason = walletutxoDescAllocationReason.Default.(string)
 	walletutxosyncstateFields := schema.WalletUtxoSyncState{}.Fields()

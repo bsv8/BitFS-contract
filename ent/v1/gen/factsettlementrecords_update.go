@@ -10,6 +10,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementpaymentattempts"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementrecords"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/predicate"
 )
@@ -27,24 +28,17 @@ func (_u *FactSettlementRecordsUpdate) Where(ps ...predicate.FactSettlementRecor
 	return _u
 }
 
-// SetSettlementCycleID sets the "settlement_cycle_id" field.
-func (_u *FactSettlementRecordsUpdate) SetSettlementCycleID(v int64) *FactSettlementRecordsUpdate {
-	_u.mutation.ResetSettlementCycleID()
-	_u.mutation.SetSettlementCycleID(v)
+// SetSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field.
+func (_u *FactSettlementRecordsUpdate) SetSettlementPaymentAttemptID(v int64) *FactSettlementRecordsUpdate {
+	_u.mutation.SetSettlementPaymentAttemptID(v)
 	return _u
 }
 
-// SetNillableSettlementCycleID sets the "settlement_cycle_id" field if the given value is not nil.
-func (_u *FactSettlementRecordsUpdate) SetNillableSettlementCycleID(v *int64) *FactSettlementRecordsUpdate {
+// SetNillableSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field if the given value is not nil.
+func (_u *FactSettlementRecordsUpdate) SetNillableSettlementPaymentAttemptID(v *int64) *FactSettlementRecordsUpdate {
 	if v != nil {
-		_u.SetSettlementCycleID(*v)
+		_u.SetSettlementPaymentAttemptID(*v)
 	}
-	return _u
-}
-
-// AddSettlementCycleID adds value to the "settlement_cycle_id" field.
-func (_u *FactSettlementRecordsUpdate) AddSettlementCycleID(v int64) *FactSettlementRecordsUpdate {
-	_u.mutation.AddSettlementCycleID(v)
 	return _u
 }
 
@@ -223,9 +217,20 @@ func (_u *FactSettlementRecordsUpdate) SetNillablePayloadJSON(v *string) *FactSe
 	return _u
 }
 
+// SetSettlementPaymentAttempt sets the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (_u *FactSettlementRecordsUpdate) SetSettlementPaymentAttempt(v *FactSettlementPaymentAttempts) *FactSettlementRecordsUpdate {
+	return _u.SetSettlementPaymentAttemptID(v.ID)
+}
+
 // Mutation returns the FactSettlementRecordsMutation object of the builder.
 func (_u *FactSettlementRecordsUpdate) Mutation() *FactSettlementRecordsMutation {
 	return _u.mutation
+}
+
+// ClearSettlementPaymentAttempt clears the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (_u *FactSettlementRecordsUpdate) ClearSettlementPaymentAttempt() *FactSettlementRecordsUpdate {
+	_u.mutation.ClearSettlementPaymentAttempt()
+	return _u
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -255,7 +260,18 @@ func (_u *FactSettlementRecordsUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (_u *FactSettlementRecordsUpdate) check() error {
+	if _u.mutation.SettlementPaymentAttemptCleared() && len(_u.mutation.SettlementPaymentAttemptIDs()) > 0 {
+		return errors.New(`gen: clearing a required unique edge "FactSettlementRecords.settlement_payment_attempt"`)
+	}
+	return nil
+}
+
 func (_u *FactSettlementRecordsUpdate) sqlSave(ctx context.Context) (_node int, err error) {
+	if err := _u.check(); err != nil {
+		return _node, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(factsettlementrecords.Table, factsettlementrecords.Columns, sqlgraph.NewFieldSpec(factsettlementrecords.FieldID, field.TypeInt))
 	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -263,12 +279,6 @@ func (_u *FactSettlementRecordsUpdate) sqlSave(ctx context.Context) (_node int, 
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := _u.mutation.SettlementCycleID(); ok {
-		_spec.SetField(factsettlementrecords.FieldSettlementCycleID, field.TypeInt64, value)
-	}
-	if value, ok := _u.mutation.AddedSettlementCycleID(); ok {
-		_spec.AddField(factsettlementrecords.FieldSettlementCycleID, field.TypeInt64, value)
 	}
 	if value, ok := _u.mutation.AssetType(); ok {
 		_spec.SetField(factsettlementrecords.FieldAssetType, field.TypeString, value)
@@ -312,6 +322,35 @@ func (_u *FactSettlementRecordsUpdate) sqlSave(ctx context.Context) (_node int, 
 	if value, ok := _u.mutation.PayloadJSON(); ok {
 		_spec.SetField(factsettlementrecords.FieldPayloadJSON, field.TypeString, value)
 	}
+	if _u.mutation.SettlementPaymentAttemptCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   factsettlementrecords.SettlementPaymentAttemptTable,
+			Columns: []string{factsettlementrecords.SettlementPaymentAttemptColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(factsettlementpaymentattempts.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.SettlementPaymentAttemptIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   factsettlementrecords.SettlementPaymentAttemptTable,
+			Columns: []string{factsettlementrecords.SettlementPaymentAttemptColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(factsettlementpaymentattempts.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{factsettlementrecords.Label}
@@ -332,24 +371,17 @@ type FactSettlementRecordsUpdateOne struct {
 	mutation *FactSettlementRecordsMutation
 }
 
-// SetSettlementCycleID sets the "settlement_cycle_id" field.
-func (_u *FactSettlementRecordsUpdateOne) SetSettlementCycleID(v int64) *FactSettlementRecordsUpdateOne {
-	_u.mutation.ResetSettlementCycleID()
-	_u.mutation.SetSettlementCycleID(v)
+// SetSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field.
+func (_u *FactSettlementRecordsUpdateOne) SetSettlementPaymentAttemptID(v int64) *FactSettlementRecordsUpdateOne {
+	_u.mutation.SetSettlementPaymentAttemptID(v)
 	return _u
 }
 
-// SetNillableSettlementCycleID sets the "settlement_cycle_id" field if the given value is not nil.
-func (_u *FactSettlementRecordsUpdateOne) SetNillableSettlementCycleID(v *int64) *FactSettlementRecordsUpdateOne {
+// SetNillableSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field if the given value is not nil.
+func (_u *FactSettlementRecordsUpdateOne) SetNillableSettlementPaymentAttemptID(v *int64) *FactSettlementRecordsUpdateOne {
 	if v != nil {
-		_u.SetSettlementCycleID(*v)
+		_u.SetSettlementPaymentAttemptID(*v)
 	}
-	return _u
-}
-
-// AddSettlementCycleID adds value to the "settlement_cycle_id" field.
-func (_u *FactSettlementRecordsUpdateOne) AddSettlementCycleID(v int64) *FactSettlementRecordsUpdateOne {
-	_u.mutation.AddSettlementCycleID(v)
 	return _u
 }
 
@@ -528,9 +560,20 @@ func (_u *FactSettlementRecordsUpdateOne) SetNillablePayloadJSON(v *string) *Fac
 	return _u
 }
 
+// SetSettlementPaymentAttempt sets the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (_u *FactSettlementRecordsUpdateOne) SetSettlementPaymentAttempt(v *FactSettlementPaymentAttempts) *FactSettlementRecordsUpdateOne {
+	return _u.SetSettlementPaymentAttemptID(v.ID)
+}
+
 // Mutation returns the FactSettlementRecordsMutation object of the builder.
 func (_u *FactSettlementRecordsUpdateOne) Mutation() *FactSettlementRecordsMutation {
 	return _u.mutation
+}
+
+// ClearSettlementPaymentAttempt clears the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (_u *FactSettlementRecordsUpdateOne) ClearSettlementPaymentAttempt() *FactSettlementRecordsUpdateOne {
+	_u.mutation.ClearSettlementPaymentAttempt()
+	return _u
 }
 
 // Where appends a list predicates to the FactSettlementRecordsUpdate builder.
@@ -573,7 +616,18 @@ func (_u *FactSettlementRecordsUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (_u *FactSettlementRecordsUpdateOne) check() error {
+	if _u.mutation.SettlementPaymentAttemptCleared() && len(_u.mutation.SettlementPaymentAttemptIDs()) > 0 {
+		return errors.New(`gen: clearing a required unique edge "FactSettlementRecords.settlement_payment_attempt"`)
+	}
+	return nil
+}
+
 func (_u *FactSettlementRecordsUpdateOne) sqlSave(ctx context.Context) (_node *FactSettlementRecords, err error) {
+	if err := _u.check(); err != nil {
+		return _node, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(factsettlementrecords.Table, factsettlementrecords.Columns, sqlgraph.NewFieldSpec(factsettlementrecords.FieldID, field.TypeInt))
 	id, ok := _u.mutation.ID()
 	if !ok {
@@ -598,12 +652,6 @@ func (_u *FactSettlementRecordsUpdateOne) sqlSave(ctx context.Context) (_node *F
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := _u.mutation.SettlementCycleID(); ok {
-		_spec.SetField(factsettlementrecords.FieldSettlementCycleID, field.TypeInt64, value)
-	}
-	if value, ok := _u.mutation.AddedSettlementCycleID(); ok {
-		_spec.AddField(factsettlementrecords.FieldSettlementCycleID, field.TypeInt64, value)
 	}
 	if value, ok := _u.mutation.AssetType(); ok {
 		_spec.SetField(factsettlementrecords.FieldAssetType, field.TypeString, value)
@@ -646,6 +694,35 @@ func (_u *FactSettlementRecordsUpdateOne) sqlSave(ctx context.Context) (_node *F
 	}
 	if value, ok := _u.mutation.PayloadJSON(); ok {
 		_spec.SetField(factsettlementrecords.FieldPayloadJSON, field.TypeString, value)
+	}
+	if _u.mutation.SettlementPaymentAttemptCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   factsettlementrecords.SettlementPaymentAttemptTable,
+			Columns: []string{factsettlementrecords.SettlementPaymentAttemptColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(factsettlementpaymentattempts.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.SettlementPaymentAttemptIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   factsettlementrecords.SettlementPaymentAttemptTable,
+			Columns: []string{factsettlementrecords.SettlementPaymentAttemptColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(factsettlementpaymentattempts.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &FactSettlementRecords{config: _u.config}
 	_spec.Assign = _node.assignValues

@@ -14,7 +14,12 @@ type ProcEffectLogs struct {
 }
 
 func (ProcEffectLogs) Annotations() []schema.Annotation {
-	return []schema.Annotation{entsql.Annotation{Table: "proc_effect_logs"}}
+	return []schema.Annotation{
+		entsql.Annotation{
+			Table: "proc_effect_logs",
+			Check: "trim(command_id) <> ''",
+		},
+	}
 }
 
 func (ProcEffectLogs) Fields() []ent.Field {
@@ -30,9 +35,13 @@ func (ProcEffectLogs) Fields() []ent.Field {
 	}
 }
 
+func (ProcEffectLogs) Edges() []ent.Edge {
+	return nil
+}
+
 func (ProcEffectLogs) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("command_id", "id"),
+		index.Fields("command_id", "id").StorageKey("idx_proc_effect_logs_cmd_id"),
 		index.Fields("created_at_unix"),
 		index.Fields("gateway_pubkey_hex", "id"),
 	}

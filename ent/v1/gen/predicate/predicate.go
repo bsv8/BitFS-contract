@@ -75,6 +75,9 @@ type FactSettlementChannelPoolSessionQuotePay func(*sql.Selector)
 // FactSettlementCycles is the predicate function for factsettlementcycles builders.
 type FactSettlementCycles func(*sql.Selector)
 
+// FactSettlementPaymentAttempts is the predicate function for factsettlementpaymentattempts builders.
+type FactSettlementPaymentAttempts func(*sql.Selector)
+
 // FactSettlementRecords is the predicate function for factsettlementrecords builders.
 type FactSettlementRecords func(*sql.Selector)
 
@@ -83,6 +86,9 @@ type FactTokenCarrierLinks func(*sql.Selector)
 
 // FactTokenLots is the predicate function for facttokenlots builders.
 type FactTokenLots func(*sql.Selector)
+
+// OrderSettlementEvents is the predicate function for ordersettlementevents builders.
+type OrderSettlementEvents func(*sql.Selector)
 
 // OrderSettlements is the predicate function for ordersettlements builders.
 type OrderSettlements func(*sql.Selector)

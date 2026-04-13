@@ -9,6 +9,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelpoolsessionquotepay"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementpaymentattempts"
 )
 
 // FactSettlementChannelPoolSessionQuotePay is the model entity for the FactSettlementChannelPoolSessionQuotePay schema.
@@ -16,8 +17,8 @@ type FactSettlementChannelPoolSessionQuotePay struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// SettlementCycleID holds the value of the "settlement_cycle_id" field.
-	SettlementCycleID int64 `json:"settlement_cycle_id,omitempty"`
+	// SettlementPaymentAttemptID holds the value of the "settlement_payment_attempt_id" field.
+	SettlementPaymentAttemptID int64 `json:"settlement_payment_attempt_id,omitempty"`
 	// PoolSessionID holds the value of the "pool_session_id" field.
 	PoolSessionID string `json:"pool_session_id,omitempty"`
 	// Txid holds the value of the "txid" field.
@@ -48,7 +49,30 @@ type FactSettlementChannelPoolSessionQuotePay struct {
 	CreatedAtUnix int64 `json:"created_at_unix,omitempty"`
 	// UpdatedAtUnix holds the value of the "updated_at_unix" field.
 	UpdatedAtUnix int64 `json:"updated_at_unix,omitempty"`
-	selectValues  sql.SelectValues
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the FactSettlementChannelPoolSessionQuotePayQuery when eager-loading is set.
+	Edges        FactSettlementChannelPoolSessionQuotePayEdges `json:"edges"`
+	selectValues sql.SelectValues
+}
+
+// FactSettlementChannelPoolSessionQuotePayEdges holds the relations/edges for other nodes in the graph.
+type FactSettlementChannelPoolSessionQuotePayEdges struct {
+	// SettlementPaymentAttempt holds the value of the settlement_payment_attempt edge.
+	SettlementPaymentAttempt *FactSettlementPaymentAttempts `json:"settlement_payment_attempt,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// SettlementPaymentAttemptOrErr returns the SettlementPaymentAttempt value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e FactSettlementChannelPoolSessionQuotePayEdges) SettlementPaymentAttemptOrErr() (*FactSettlementPaymentAttempts, error) {
+	if e.SettlementPaymentAttempt != nil {
+		return e.SettlementPaymentAttempt, nil
+	} else if e.loadedTypes[0] {
+		return nil, &NotFoundError{label: factsettlementpaymentattempts.Label}
+	}
+	return nil, &NotLoadedError{edge: "settlement_payment_attempt"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -58,7 +82,7 @@ func (*FactSettlementChannelPoolSessionQuotePay) scanValues(columns []string) ([
 		switch columns[i] {
 		case factsettlementchannelpoolsessionquotepay.FieldFeeRateSatByte:
 			values[i] = new(sql.NullFloat64)
-		case factsettlementchannelpoolsessionquotepay.FieldID, factsettlementchannelpoolsessionquotepay.FieldSettlementCycleID, factsettlementchannelpoolsessionquotepay.FieldPoolAmountSatoshi, factsettlementchannelpoolsessionquotepay.FieldSpendTxFeeSatoshi, factsettlementchannelpoolsessionquotepay.FieldLockBlocks, factsettlementchannelpoolsessionquotepay.FieldCreatedAtUnix, factsettlementchannelpoolsessionquotepay.FieldUpdatedAtUnix:
+		case factsettlementchannelpoolsessionquotepay.FieldID, factsettlementchannelpoolsessionquotepay.FieldSettlementPaymentAttemptID, factsettlementchannelpoolsessionquotepay.FieldPoolAmountSatoshi, factsettlementchannelpoolsessionquotepay.FieldSpendTxFeeSatoshi, factsettlementchannelpoolsessionquotepay.FieldLockBlocks, factsettlementchannelpoolsessionquotepay.FieldCreatedAtUnix, factsettlementchannelpoolsessionquotepay.FieldUpdatedAtUnix:
 			values[i] = new(sql.NullInt64)
 		case factsettlementchannelpoolsessionquotepay.FieldPoolSessionID, factsettlementchannelpoolsessionquotepay.FieldTxid, factsettlementchannelpoolsessionquotepay.FieldPoolScheme, factsettlementchannelpoolsessionquotepay.FieldCounterpartyPubkeyHex, factsettlementchannelpoolsessionquotepay.FieldSellerPubkeyHex, factsettlementchannelpoolsessionquotepay.FieldArbiterPubkeyHex, factsettlementchannelpoolsessionquotepay.FieldGatewayPubkeyHex, factsettlementchannelpoolsessionquotepay.FieldOpenBaseTxid, factsettlementchannelpoolsessionquotepay.FieldStatus:
 			values[i] = new(sql.NullString)
@@ -83,11 +107,11 @@ func (_m *FactSettlementChannelPoolSessionQuotePay) assignValues(columns []strin
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			_m.ID = int(value.Int64)
-		case factsettlementchannelpoolsessionquotepay.FieldSettlementCycleID:
+		case factsettlementchannelpoolsessionquotepay.FieldSettlementPaymentAttemptID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field settlement_cycle_id", values[i])
+				return fmt.Errorf("unexpected type %T for field settlement_payment_attempt_id", values[i])
 			} else if value.Valid {
-				_m.SettlementCycleID = value.Int64
+				_m.SettlementPaymentAttemptID = value.Int64
 			}
 		case factsettlementchannelpoolsessionquotepay.FieldPoolSessionID:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -192,6 +216,11 @@ func (_m *FactSettlementChannelPoolSessionQuotePay) Value(name string) (ent.Valu
 	return _m.selectValues.Get(name)
 }
 
+// QuerySettlementPaymentAttempt queries the "settlement_payment_attempt" edge of the FactSettlementChannelPoolSessionQuotePay entity.
+func (_m *FactSettlementChannelPoolSessionQuotePay) QuerySettlementPaymentAttempt() *FactSettlementPaymentAttemptsQuery {
+	return NewFactSettlementChannelPoolSessionQuotePayClient(_m.config).QuerySettlementPaymentAttempt(_m)
+}
+
 // Update returns a builder for updating this FactSettlementChannelPoolSessionQuotePay.
 // Note that you need to call FactSettlementChannelPoolSessionQuotePay.Unwrap() before calling this method if this FactSettlementChannelPoolSessionQuotePay
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -215,8 +244,8 @@ func (_m *FactSettlementChannelPoolSessionQuotePay) String() string {
 	var builder strings.Builder
 	builder.WriteString("FactSettlementChannelPoolSessionQuotePay(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
-	builder.WriteString("settlement_cycle_id=")
-	builder.WriteString(fmt.Sprintf("%v", _m.SettlementCycleID))
+	builder.WriteString("settlement_payment_attempt_id=")
+	builder.WriteString(fmt.Sprintf("%v", _m.SettlementPaymentAttemptID))
 	builder.WriteString(", ")
 	builder.WriteString("pool_session_id=")
 	builder.WriteString(_m.PoolSessionID)

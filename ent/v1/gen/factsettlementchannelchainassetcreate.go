@@ -9,6 +9,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelchainassetcreate"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementpaymentattempts"
 )
 
 // FactSettlementChannelChainAssetCreate is the model entity for the FactSettlementChannelChainAssetCreate schema.
@@ -16,8 +17,8 @@ type FactSettlementChannelChainAssetCreate struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// SettlementCycleID holds the value of the "settlement_cycle_id" field.
-	SettlementCycleID int64 `json:"settlement_cycle_id,omitempty"`
+	// SettlementPaymentAttemptID holds the value of the "settlement_payment_attempt_id" field.
+	SettlementPaymentAttemptID int64 `json:"settlement_payment_attempt_id,omitempty"`
 	// Txid holds the value of the "txid" field.
 	Txid string `json:"txid,omitempty"`
 	// PaymentSubtype holds the value of the "payment_subtype" field.
@@ -46,7 +47,30 @@ type FactSettlementChannelChainAssetCreate struct {
 	PayloadJSON string `json:"payload_json,omitempty"`
 	// UpdatedAtUnix holds the value of the "updated_at_unix" field.
 	UpdatedAtUnix int64 `json:"updated_at_unix,omitempty"`
-	selectValues  sql.SelectValues
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the FactSettlementChannelChainAssetCreateQuery when eager-loading is set.
+	Edges        FactSettlementChannelChainAssetCreateEdges `json:"edges"`
+	selectValues sql.SelectValues
+}
+
+// FactSettlementChannelChainAssetCreateEdges holds the relations/edges for other nodes in the graph.
+type FactSettlementChannelChainAssetCreateEdges struct {
+	// SettlementPaymentAttempt holds the value of the settlement_payment_attempt edge.
+	SettlementPaymentAttempt *FactSettlementPaymentAttempts `json:"settlement_payment_attempt,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// SettlementPaymentAttemptOrErr returns the SettlementPaymentAttempt value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e FactSettlementChannelChainAssetCreateEdges) SettlementPaymentAttemptOrErr() (*FactSettlementPaymentAttempts, error) {
+	if e.SettlementPaymentAttempt != nil {
+		return e.SettlementPaymentAttempt, nil
+	} else if e.loadedTypes[0] {
+		return nil, &NotFoundError{label: factsettlementpaymentattempts.Label}
+	}
+	return nil, &NotLoadedError{edge: "settlement_payment_attempt"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -54,7 +78,7 @@ func (*FactSettlementChannelChainAssetCreate) scanValues(columns []string) ([]an
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case factsettlementchannelchainassetcreate.FieldID, factsettlementchannelchainassetcreate.FieldSettlementCycleID, factsettlementchannelchainassetcreate.FieldWalletInputSatoshi, factsettlementchannelchainassetcreate.FieldWalletOutputSatoshi, factsettlementchannelchainassetcreate.FieldNetAmountSatoshi, factsettlementchannelchainassetcreate.FieldBlockHeight, factsettlementchannelchainassetcreate.FieldOccurredAtUnix, factsettlementchannelchainassetcreate.FieldSubmittedAtUnix, factsettlementchannelchainassetcreate.FieldWalletObservedAtUnix, factsettlementchannelchainassetcreate.FieldUpdatedAtUnix:
+		case factsettlementchannelchainassetcreate.FieldID, factsettlementchannelchainassetcreate.FieldSettlementPaymentAttemptID, factsettlementchannelchainassetcreate.FieldWalletInputSatoshi, factsettlementchannelchainassetcreate.FieldWalletOutputSatoshi, factsettlementchannelchainassetcreate.FieldNetAmountSatoshi, factsettlementchannelchainassetcreate.FieldBlockHeight, factsettlementchannelchainassetcreate.FieldOccurredAtUnix, factsettlementchannelchainassetcreate.FieldSubmittedAtUnix, factsettlementchannelchainassetcreate.FieldWalletObservedAtUnix, factsettlementchannelchainassetcreate.FieldUpdatedAtUnix:
 			values[i] = new(sql.NullInt64)
 		case factsettlementchannelchainassetcreate.FieldTxid, factsettlementchannelchainassetcreate.FieldPaymentSubtype, factsettlementchannelchainassetcreate.FieldStatus, factsettlementchannelchainassetcreate.FieldFromPartyID, factsettlementchannelchainassetcreate.FieldToPartyID, factsettlementchannelchainassetcreate.FieldPayloadJSON:
 			values[i] = new(sql.NullString)
@@ -79,11 +103,11 @@ func (_m *FactSettlementChannelChainAssetCreate) assignValues(columns []string, 
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			_m.ID = int(value.Int64)
-		case factsettlementchannelchainassetcreate.FieldSettlementCycleID:
+		case factsettlementchannelchainassetcreate.FieldSettlementPaymentAttemptID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field settlement_cycle_id", values[i])
+				return fmt.Errorf("unexpected type %T for field settlement_payment_attempt_id", values[i])
 			} else if value.Valid {
-				_m.SettlementCycleID = value.Int64
+				_m.SettlementPaymentAttemptID = value.Int64
 			}
 		case factsettlementchannelchainassetcreate.FieldTxid:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -182,6 +206,11 @@ func (_m *FactSettlementChannelChainAssetCreate) Value(name string) (ent.Value, 
 	return _m.selectValues.Get(name)
 }
 
+// QuerySettlementPaymentAttempt queries the "settlement_payment_attempt" edge of the FactSettlementChannelChainAssetCreate entity.
+func (_m *FactSettlementChannelChainAssetCreate) QuerySettlementPaymentAttempt() *FactSettlementPaymentAttemptsQuery {
+	return NewFactSettlementChannelChainAssetCreateClient(_m.config).QuerySettlementPaymentAttempt(_m)
+}
+
 // Update returns a builder for updating this FactSettlementChannelChainAssetCreate.
 // Note that you need to call FactSettlementChannelChainAssetCreate.Unwrap() before calling this method if this FactSettlementChannelChainAssetCreate
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -205,8 +234,8 @@ func (_m *FactSettlementChannelChainAssetCreate) String() string {
 	var builder strings.Builder
 	builder.WriteString("FactSettlementChannelChainAssetCreate(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
-	builder.WriteString("settlement_cycle_id=")
-	builder.WriteString(fmt.Sprintf("%v", _m.SettlementCycleID))
+	builder.WriteString("settlement_payment_attempt_id=")
+	builder.WriteString(fmt.Sprintf("%v", _m.SettlementPaymentAttemptID))
 	builder.WriteString(", ")
 	builder.WriteString("txid=")
 	builder.WriteString(_m.Txid)

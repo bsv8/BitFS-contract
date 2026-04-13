@@ -4,6 +4,7 @@ package factsettlementchannelchainquotepay
 
 import (
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/predicate"
 )
 
@@ -52,9 +53,9 @@ func IDLTE(id int) predicate.FactSettlementChannelChainQuotePay {
 	return predicate.FactSettlementChannelChainQuotePay(sql.FieldLTE(FieldID, id))
 }
 
-// SettlementCycleID applies equality check predicate on the "settlement_cycle_id" field. It's identical to SettlementCycleIDEQ.
-func SettlementCycleID(v int64) predicate.FactSettlementChannelChainQuotePay {
-	return predicate.FactSettlementChannelChainQuotePay(sql.FieldEQ(FieldSettlementCycleID, v))
+// SettlementPaymentAttemptID applies equality check predicate on the "settlement_payment_attempt_id" field. It's identical to SettlementPaymentAttemptIDEQ.
+func SettlementPaymentAttemptID(v int64) predicate.FactSettlementChannelChainQuotePay {
+	return predicate.FactSettlementChannelChainQuotePay(sql.FieldEQ(FieldSettlementPaymentAttemptID, v))
 }
 
 // Txid applies equality check predicate on the "txid" field. It's identical to TxidEQ.
@@ -127,44 +128,24 @@ func UpdatedAtUnix(v int64) predicate.FactSettlementChannelChainQuotePay {
 	return predicate.FactSettlementChannelChainQuotePay(sql.FieldEQ(FieldUpdatedAtUnix, v))
 }
 
-// SettlementCycleIDEQ applies the EQ predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDEQ(v int64) predicate.FactSettlementChannelChainQuotePay {
-	return predicate.FactSettlementChannelChainQuotePay(sql.FieldEQ(FieldSettlementCycleID, v))
+// SettlementPaymentAttemptIDEQ applies the EQ predicate on the "settlement_payment_attempt_id" field.
+func SettlementPaymentAttemptIDEQ(v int64) predicate.FactSettlementChannelChainQuotePay {
+	return predicate.FactSettlementChannelChainQuotePay(sql.FieldEQ(FieldSettlementPaymentAttemptID, v))
 }
 
-// SettlementCycleIDNEQ applies the NEQ predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDNEQ(v int64) predicate.FactSettlementChannelChainQuotePay {
-	return predicate.FactSettlementChannelChainQuotePay(sql.FieldNEQ(FieldSettlementCycleID, v))
+// SettlementPaymentAttemptIDNEQ applies the NEQ predicate on the "settlement_payment_attempt_id" field.
+func SettlementPaymentAttemptIDNEQ(v int64) predicate.FactSettlementChannelChainQuotePay {
+	return predicate.FactSettlementChannelChainQuotePay(sql.FieldNEQ(FieldSettlementPaymentAttemptID, v))
 }
 
-// SettlementCycleIDIn applies the In predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDIn(vs ...int64) predicate.FactSettlementChannelChainQuotePay {
-	return predicate.FactSettlementChannelChainQuotePay(sql.FieldIn(FieldSettlementCycleID, vs...))
+// SettlementPaymentAttemptIDIn applies the In predicate on the "settlement_payment_attempt_id" field.
+func SettlementPaymentAttemptIDIn(vs ...int64) predicate.FactSettlementChannelChainQuotePay {
+	return predicate.FactSettlementChannelChainQuotePay(sql.FieldIn(FieldSettlementPaymentAttemptID, vs...))
 }
 
-// SettlementCycleIDNotIn applies the NotIn predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDNotIn(vs ...int64) predicate.FactSettlementChannelChainQuotePay {
-	return predicate.FactSettlementChannelChainQuotePay(sql.FieldNotIn(FieldSettlementCycleID, vs...))
-}
-
-// SettlementCycleIDGT applies the GT predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDGT(v int64) predicate.FactSettlementChannelChainQuotePay {
-	return predicate.FactSettlementChannelChainQuotePay(sql.FieldGT(FieldSettlementCycleID, v))
-}
-
-// SettlementCycleIDGTE applies the GTE predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDGTE(v int64) predicate.FactSettlementChannelChainQuotePay {
-	return predicate.FactSettlementChannelChainQuotePay(sql.FieldGTE(FieldSettlementCycleID, v))
-}
-
-// SettlementCycleIDLT applies the LT predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDLT(v int64) predicate.FactSettlementChannelChainQuotePay {
-	return predicate.FactSettlementChannelChainQuotePay(sql.FieldLT(FieldSettlementCycleID, v))
-}
-
-// SettlementCycleIDLTE applies the LTE predicate on the "settlement_cycle_id" field.
-func SettlementCycleIDLTE(v int64) predicate.FactSettlementChannelChainQuotePay {
-	return predicate.FactSettlementChannelChainQuotePay(sql.FieldLTE(FieldSettlementCycleID, v))
+// SettlementPaymentAttemptIDNotIn applies the NotIn predicate on the "settlement_payment_attempt_id" field.
+func SettlementPaymentAttemptIDNotIn(vs ...int64) predicate.FactSettlementChannelChainQuotePay {
+	return predicate.FactSettlementChannelChainQuotePay(sql.FieldNotIn(FieldSettlementPaymentAttemptID, vs...))
 }
 
 // TxidEQ applies the EQ predicate on the "txid" field.
@@ -875,6 +856,29 @@ func UpdatedAtUnixLT(v int64) predicate.FactSettlementChannelChainQuotePay {
 // UpdatedAtUnixLTE applies the LTE predicate on the "updated_at_unix" field.
 func UpdatedAtUnixLTE(v int64) predicate.FactSettlementChannelChainQuotePay {
 	return predicate.FactSettlementChannelChainQuotePay(sql.FieldLTE(FieldUpdatedAtUnix, v))
+}
+
+// HasSettlementPaymentAttempt applies the HasEdge predicate on the "settlement_payment_attempt" edge.
+func HasSettlementPaymentAttempt() predicate.FactSettlementChannelChainQuotePay {
+	return predicate.FactSettlementChannelChainQuotePay(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, SettlementPaymentAttemptTable, SettlementPaymentAttemptColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasSettlementPaymentAttemptWith applies the HasEdge predicate on the "settlement_payment_attempt" edge with a given conditions (other predicates).
+func HasSettlementPaymentAttemptWith(preds ...predicate.FactSettlementPaymentAttempts) predicate.FactSettlementChannelChainQuotePay {
+	return predicate.FactSettlementChannelChainQuotePay(func(s *sql.Selector) {
+		step := newSettlementPaymentAttemptStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

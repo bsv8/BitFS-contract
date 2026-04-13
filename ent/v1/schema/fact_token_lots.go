@@ -14,7 +14,10 @@ type FactTokenLots struct {
 }
 
 func (FactTokenLots) Annotations() []schema.Annotation {
-	return []schema.Annotation{entsql.Annotation{Table: "fact_token_lots"}}
+	return []schema.Annotation{entsql.Annotation{
+		Table: "fact_token_lots",
+		Check: "token_standard IN ('BSV20','BSV21') AND lot_state IN ('unspent','spent','locked')",
+	}}
 }
 
 func (FactTokenLots) Fields() []ent.Field {

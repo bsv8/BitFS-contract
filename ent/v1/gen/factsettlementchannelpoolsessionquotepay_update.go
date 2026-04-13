@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementchannelpoolsessionquotepay"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementpaymentattempts"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/predicate"
 )
 
@@ -27,24 +28,17 @@ func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) Where(ps ...predicate.
 	return _u
 }
 
-// SetSettlementCycleID sets the "settlement_cycle_id" field.
-func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) SetSettlementCycleID(v int64) *FactSettlementChannelPoolSessionQuotePayUpdate {
-	_u.mutation.ResetSettlementCycleID()
-	_u.mutation.SetSettlementCycleID(v)
+// SetSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field.
+func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) SetSettlementPaymentAttemptID(v int64) *FactSettlementChannelPoolSessionQuotePayUpdate {
+	_u.mutation.SetSettlementPaymentAttemptID(v)
 	return _u
 }
 
-// SetNillableSettlementCycleID sets the "settlement_cycle_id" field if the given value is not nil.
-func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) SetNillableSettlementCycleID(v *int64) *FactSettlementChannelPoolSessionQuotePayUpdate {
+// SetNillableSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field if the given value is not nil.
+func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) SetNillableSettlementPaymentAttemptID(v *int64) *FactSettlementChannelPoolSessionQuotePayUpdate {
 	if v != nil {
-		_u.SetSettlementCycleID(*v)
+		_u.SetSettlementPaymentAttemptID(*v)
 	}
-	return _u
-}
-
-// AddSettlementCycleID adds value to the "settlement_cycle_id" field.
-func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) AddSettlementCycleID(v int64) *FactSettlementChannelPoolSessionQuotePayUpdate {
-	_u.mutation.AddSettlementCycleID(v)
 	return _u
 }
 
@@ -300,9 +294,20 @@ func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) AddUpdatedAtUnix(v int
 	return _u
 }
 
+// SetSettlementPaymentAttempt sets the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) SetSettlementPaymentAttempt(v *FactSettlementPaymentAttempts) *FactSettlementChannelPoolSessionQuotePayUpdate {
+	return _u.SetSettlementPaymentAttemptID(v.ID)
+}
+
 // Mutation returns the FactSettlementChannelPoolSessionQuotePayMutation object of the builder.
 func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) Mutation() *FactSettlementChannelPoolSessionQuotePayMutation {
 	return _u.mutation
+}
+
+// ClearSettlementPaymentAttempt clears the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) ClearSettlementPaymentAttempt() *FactSettlementChannelPoolSessionQuotePayUpdate {
+	_u.mutation.ClearSettlementPaymentAttempt()
+	return _u
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -332,7 +337,18 @@ func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) ExecX(ctx context.Cont
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) check() error {
+	if _u.mutation.SettlementPaymentAttemptCleared() && len(_u.mutation.SettlementPaymentAttemptIDs()) > 0 {
+		return errors.New(`gen: clearing a required unique edge "FactSettlementChannelPoolSessionQuotePay.settlement_payment_attempt"`)
+	}
+	return nil
+}
+
 func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) sqlSave(ctx context.Context) (_node int, err error) {
+	if err := _u.check(); err != nil {
+		return _node, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(factsettlementchannelpoolsessionquotepay.Table, factsettlementchannelpoolsessionquotepay.Columns, sqlgraph.NewFieldSpec(factsettlementchannelpoolsessionquotepay.FieldID, field.TypeInt))
 	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -340,12 +356,6 @@ func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) sqlSave(ctx context.Co
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := _u.mutation.SettlementCycleID(); ok {
-		_spec.SetField(factsettlementchannelpoolsessionquotepay.FieldSettlementCycleID, field.TypeInt64, value)
-	}
-	if value, ok := _u.mutation.AddedSettlementCycleID(); ok {
-		_spec.AddField(factsettlementchannelpoolsessionquotepay.FieldSettlementCycleID, field.TypeInt64, value)
 	}
 	if value, ok := _u.mutation.PoolSessionID(); ok {
 		_spec.SetField(factsettlementchannelpoolsessionquotepay.FieldPoolSessionID, field.TypeString, value)
@@ -410,6 +420,35 @@ func (_u *FactSettlementChannelPoolSessionQuotePayUpdate) sqlSave(ctx context.Co
 	if value, ok := _u.mutation.AddedUpdatedAtUnix(); ok {
 		_spec.AddField(factsettlementchannelpoolsessionquotepay.FieldUpdatedAtUnix, field.TypeInt64, value)
 	}
+	if _u.mutation.SettlementPaymentAttemptCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   factsettlementchannelpoolsessionquotepay.SettlementPaymentAttemptTable,
+			Columns: []string{factsettlementchannelpoolsessionquotepay.SettlementPaymentAttemptColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(factsettlementpaymentattempts.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.SettlementPaymentAttemptIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   factsettlementchannelpoolsessionquotepay.SettlementPaymentAttemptTable,
+			Columns: []string{factsettlementchannelpoolsessionquotepay.SettlementPaymentAttemptColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(factsettlementpaymentattempts.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{factsettlementchannelpoolsessionquotepay.Label}
@@ -430,24 +469,17 @@ type FactSettlementChannelPoolSessionQuotePayUpdateOne struct {
 	mutation *FactSettlementChannelPoolSessionQuotePayMutation
 }
 
-// SetSettlementCycleID sets the "settlement_cycle_id" field.
-func (_u *FactSettlementChannelPoolSessionQuotePayUpdateOne) SetSettlementCycleID(v int64) *FactSettlementChannelPoolSessionQuotePayUpdateOne {
-	_u.mutation.ResetSettlementCycleID()
-	_u.mutation.SetSettlementCycleID(v)
+// SetSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field.
+func (_u *FactSettlementChannelPoolSessionQuotePayUpdateOne) SetSettlementPaymentAttemptID(v int64) *FactSettlementChannelPoolSessionQuotePayUpdateOne {
+	_u.mutation.SetSettlementPaymentAttemptID(v)
 	return _u
 }
 
-// SetNillableSettlementCycleID sets the "settlement_cycle_id" field if the given value is not nil.
-func (_u *FactSettlementChannelPoolSessionQuotePayUpdateOne) SetNillableSettlementCycleID(v *int64) *FactSettlementChannelPoolSessionQuotePayUpdateOne {
+// SetNillableSettlementPaymentAttemptID sets the "settlement_payment_attempt_id" field if the given value is not nil.
+func (_u *FactSettlementChannelPoolSessionQuotePayUpdateOne) SetNillableSettlementPaymentAttemptID(v *int64) *FactSettlementChannelPoolSessionQuotePayUpdateOne {
 	if v != nil {
-		_u.SetSettlementCycleID(*v)
+		_u.SetSettlementPaymentAttemptID(*v)
 	}
-	return _u
-}
-
-// AddSettlementCycleID adds value to the "settlement_cycle_id" field.
-func (_u *FactSettlementChannelPoolSessionQuotePayUpdateOne) AddSettlementCycleID(v int64) *FactSettlementChannelPoolSessionQuotePayUpdateOne {
-	_u.mutation.AddSettlementCycleID(v)
 	return _u
 }
 
@@ -703,9 +735,20 @@ func (_u *FactSettlementChannelPoolSessionQuotePayUpdateOne) AddUpdatedAtUnix(v 
 	return _u
 }
 
+// SetSettlementPaymentAttempt sets the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (_u *FactSettlementChannelPoolSessionQuotePayUpdateOne) SetSettlementPaymentAttempt(v *FactSettlementPaymentAttempts) *FactSettlementChannelPoolSessionQuotePayUpdateOne {
+	return _u.SetSettlementPaymentAttemptID(v.ID)
+}
+
 // Mutation returns the FactSettlementChannelPoolSessionQuotePayMutation object of the builder.
 func (_u *FactSettlementChannelPoolSessionQuotePayUpdateOne) Mutation() *FactSettlementChannelPoolSessionQuotePayMutation {
 	return _u.mutation
+}
+
+// ClearSettlementPaymentAttempt clears the "settlement_payment_attempt" edge to the FactSettlementPaymentAttempts entity.
+func (_u *FactSettlementChannelPoolSessionQuotePayUpdateOne) ClearSettlementPaymentAttempt() *FactSettlementChannelPoolSessionQuotePayUpdateOne {
+	_u.mutation.ClearSettlementPaymentAttempt()
+	return _u
 }
 
 // Where appends a list predicates to the FactSettlementChannelPoolSessionQuotePayUpdate builder.
@@ -748,7 +791,18 @@ func (_u *FactSettlementChannelPoolSessionQuotePayUpdateOne) ExecX(ctx context.C
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (_u *FactSettlementChannelPoolSessionQuotePayUpdateOne) check() error {
+	if _u.mutation.SettlementPaymentAttemptCleared() && len(_u.mutation.SettlementPaymentAttemptIDs()) > 0 {
+		return errors.New(`gen: clearing a required unique edge "FactSettlementChannelPoolSessionQuotePay.settlement_payment_attempt"`)
+	}
+	return nil
+}
+
 func (_u *FactSettlementChannelPoolSessionQuotePayUpdateOne) sqlSave(ctx context.Context) (_node *FactSettlementChannelPoolSessionQuotePay, err error) {
+	if err := _u.check(); err != nil {
+		return _node, err
+	}
 	_spec := sqlgraph.NewUpdateSpec(factsettlementchannelpoolsessionquotepay.Table, factsettlementchannelpoolsessionquotepay.Columns, sqlgraph.NewFieldSpec(factsettlementchannelpoolsessionquotepay.FieldID, field.TypeInt))
 	id, ok := _u.mutation.ID()
 	if !ok {
@@ -773,12 +827,6 @@ func (_u *FactSettlementChannelPoolSessionQuotePayUpdateOne) sqlSave(ctx context
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := _u.mutation.SettlementCycleID(); ok {
-		_spec.SetField(factsettlementchannelpoolsessionquotepay.FieldSettlementCycleID, field.TypeInt64, value)
-	}
-	if value, ok := _u.mutation.AddedSettlementCycleID(); ok {
-		_spec.AddField(factsettlementchannelpoolsessionquotepay.FieldSettlementCycleID, field.TypeInt64, value)
 	}
 	if value, ok := _u.mutation.PoolSessionID(); ok {
 		_spec.SetField(factsettlementchannelpoolsessionquotepay.FieldPoolSessionID, field.TypeString, value)
@@ -842,6 +890,35 @@ func (_u *FactSettlementChannelPoolSessionQuotePayUpdateOne) sqlSave(ctx context
 	}
 	if value, ok := _u.mutation.AddedUpdatedAtUnix(); ok {
 		_spec.AddField(factsettlementchannelpoolsessionquotepay.FieldUpdatedAtUnix, field.TypeInt64, value)
+	}
+	if _u.mutation.SettlementPaymentAttemptCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   factsettlementchannelpoolsessionquotepay.SettlementPaymentAttemptTable,
+			Columns: []string{factsettlementchannelpoolsessionquotepay.SettlementPaymentAttemptColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(factsettlementpaymentattempts.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.SettlementPaymentAttemptIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   factsettlementchannelpoolsessionquotepay.SettlementPaymentAttemptTable,
+			Columns: []string{factsettlementchannelpoolsessionquotepay.SettlementPaymentAttemptColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(factsettlementpaymentattempts.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &FactSettlementChannelPoolSessionQuotePay{config: _u.config}
 	_spec.Assign = _node.assignValues
