@@ -19,6 +19,7 @@ func (ProcNodeReachabilityCache) Annotations() []schema.Annotation {
 
 func (ProcNodeReachabilityCache) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("target_node_pubkey_hex").Unique().Immutable(),
 		field.String("source_gateway_pubkey_hex"),
 		field.Int64("head_height"),

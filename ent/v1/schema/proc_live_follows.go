@@ -18,6 +18,7 @@ func (ProcLiveFollows) Annotations() []schema.Annotation {
 
 func (ProcLiveFollows) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("stream_id").Unique().Immutable(),
 		field.String("stream_uri"),
 		field.String("publisher_pubkey"),

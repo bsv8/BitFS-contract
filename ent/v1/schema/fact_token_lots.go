@@ -19,6 +19,7 @@ func (FactTokenLots) Annotations() []schema.Annotation {
 
 func (FactTokenLots) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("lot_id").Unique().Immutable(),
 		field.String("owner_pubkey_hex"),
 		field.String("token_id"),

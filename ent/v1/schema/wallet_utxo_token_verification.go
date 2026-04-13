@@ -19,6 +19,7 @@ func (WalletUtxoTokenVerification) Annotations() []schema.Annotation {
 
 func (WalletUtxoTokenVerification) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("utxo_id").Unique().Immutable(),
 		field.String("wallet_id"),
 		field.String("address"),

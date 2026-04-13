@@ -19,6 +19,7 @@ func (BizSeedPricingPolicy) Annotations() []schema.Annotation {
 
 func (BizSeedPricingPolicy) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("seed_hash").Unique().Immutable(),
 		field.Int64("floor_unit_price_sat_per_64k"),
 		field.Int64("resale_discount_bps"),

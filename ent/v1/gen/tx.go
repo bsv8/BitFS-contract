@@ -64,6 +64,10 @@ type Tx struct {
 	FactTokenCarrierLinks *FactTokenCarrierLinksClient
 	// FactTokenLots is the client for interacting with the FactTokenLots builders.
 	FactTokenLots *FactTokenLotsClient
+	// OrderSettlements is the client for interacting with the OrderSettlements builders.
+	OrderSettlements *OrderSettlementsClient
+	// Orders is the client for interacting with the Orders builders.
+	Orders *OrdersClient
 	// ProcChainTipState is the client for interacting with the ProcChainTipState builders.
 	ProcChainTipState *ProcChainTipStateClient
 	// ProcChainTipWorkerLogs is the client for interacting with the ProcChainTipWorkerLogs builders.
@@ -273,6 +277,8 @@ func (tx *Tx) init() {
 	tx.FactSettlementRecords = NewFactSettlementRecordsClient(tx.config)
 	tx.FactTokenCarrierLinks = NewFactTokenCarrierLinksClient(tx.config)
 	tx.FactTokenLots = NewFactTokenLotsClient(tx.config)
+	tx.OrderSettlements = NewOrderSettlementsClient(tx.config)
+	tx.Orders = NewOrdersClient(tx.config)
 	tx.ProcChainTipState = NewProcChainTipStateClient(tx.config)
 	tx.ProcChainTipWorkerLogs = NewProcChainTipWorkerLogsClient(tx.config)
 	tx.ProcChainUtxoWorkerLogs = NewProcChainUtxoWorkerLogsClient(tx.config)

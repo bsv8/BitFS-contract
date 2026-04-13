@@ -133,6 +133,12 @@ func (_c *ProcSchedulerTasksCreate) SetMetaJSON(v string) *ProcSchedulerTasksCre
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *ProcSchedulerTasksCreate) SetID(v int) *ProcSchedulerTasksCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // Mutation returns the ProcSchedulerTasksMutation object of the builder.
 func (_c *ProcSchedulerTasksCreate) Mutation() *ProcSchedulerTasksMutation {
 	return _c.mutation
@@ -238,8 +244,10 @@ func (_c *ProcSchedulerTasksCreate) sqlSave(ctx context.Context) (*ProcScheduler
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -250,6 +258,10 @@ func (_c *ProcSchedulerTasksCreate) createSpec() (*ProcSchedulerTasks, *sqlgraph
 		_node = &ProcSchedulerTasks{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(procschedulertasks.Table, sqlgraph.NewFieldSpec(procschedulertasks.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.TaskName(); ok {
 		_spec.SetField(procschedulertasks.FieldTaskName, field.TypeString, value)
 		_node.TaskName = value
@@ -373,7 +385,7 @@ func (_c *ProcSchedulerTasksCreateBulk) Save(ctx context.Context) ([]*ProcSchedu
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

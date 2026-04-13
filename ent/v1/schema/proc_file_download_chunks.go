@@ -19,6 +19,7 @@ func (ProcFileDownloadChunks) Annotations() []schema.Annotation {
 
 func (ProcFileDownloadChunks) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("seed_hash"),
 		field.Int64("chunk_index"),
 		field.String("status"),

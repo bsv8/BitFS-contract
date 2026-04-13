@@ -19,6 +19,7 @@ func (WalletUtxoSyncCursor) Annotations() []schema.Annotation {
 
 func (WalletUtxoSyncCursor) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("address").Unique().Immutable(),
 		field.String("wallet_id"),
 		field.Int64("next_confirmed_height"),

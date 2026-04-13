@@ -69,6 +69,12 @@ func (_c *WalletLocalBroadcastTxsCreate) SetNillableObservedAtUnix(v *int64) *Wa
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *WalletLocalBroadcastTxsCreate) SetID(v int) *WalletLocalBroadcastTxsCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // Mutation returns the WalletLocalBroadcastTxsMutation object of the builder.
 func (_c *WalletLocalBroadcastTxsCreate) Mutation() *WalletLocalBroadcastTxsMutation {
 	return _c.mutation
@@ -147,8 +153,10 @@ func (_c *WalletLocalBroadcastTxsCreate) sqlSave(ctx context.Context) (*WalletLo
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -159,6 +167,10 @@ func (_c *WalletLocalBroadcastTxsCreate) createSpec() (*WalletLocalBroadcastTxs,
 		_node = &WalletLocalBroadcastTxs{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(walletlocalbroadcasttxs.Table, sqlgraph.NewFieldSpec(walletlocalbroadcasttxs.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.Txid(); ok {
 		_spec.SetField(walletlocalbroadcasttxs.FieldTxid, field.TypeString, value)
 		_node.Txid = value
@@ -235,7 +247,7 @@ func (_c *WalletLocalBroadcastTxsCreateBulk) Save(ctx context.Context) ([]*Walle
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

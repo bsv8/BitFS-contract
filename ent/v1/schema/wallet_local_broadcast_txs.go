@@ -19,6 +19,7 @@ func (WalletLocalBroadcastTxs) Annotations() []schema.Annotation {
 
 func (WalletLocalBroadcastTxs) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("txid").Unique().Immutable(),
 		field.String("wallet_id"),
 		field.String("address"),

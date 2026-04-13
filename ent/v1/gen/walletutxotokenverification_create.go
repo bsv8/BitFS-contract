@@ -145,6 +145,12 @@ func (_c *WalletUtxoTokenVerificationCreate) SetUpdatedAtUnix(v int64) *WalletUt
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *WalletUtxoTokenVerificationCreate) SetID(v int) *WalletUtxoTokenVerificationCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // Mutation returns the WalletUtxoTokenVerificationMutation object of the builder.
 func (_c *WalletUtxoTokenVerificationCreate) Mutation() *WalletUtxoTokenVerificationMutation {
 	return _c.mutation
@@ -261,8 +267,10 @@ func (_c *WalletUtxoTokenVerificationCreate) sqlSave(ctx context.Context) (*Wall
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -273,6 +281,10 @@ func (_c *WalletUtxoTokenVerificationCreate) createSpec() (*WalletUtxoTokenVerif
 		_node = &WalletUtxoTokenVerification{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(walletutxotokenverification.Table, sqlgraph.NewFieldSpec(walletutxotokenverification.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.UtxoID(); ok {
 		_spec.SetField(walletutxotokenverification.FieldUtxoID, field.TypeString, value)
 		_node.UtxoID = value
@@ -373,7 +385,7 @@ func (_c *WalletUtxoTokenVerificationCreateBulk) Save(ctx context.Context) ([]*W
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

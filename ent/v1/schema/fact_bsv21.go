@@ -18,6 +18,7 @@ func (FactBsv21) Annotations() []schema.Annotation {
 
 func (FactBsv21) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("token_id").Unique().Immutable(),
 		field.String("create_txid"),
 		field.String("wallet_id"),

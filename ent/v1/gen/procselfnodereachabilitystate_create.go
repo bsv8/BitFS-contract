@@ -43,6 +43,12 @@ func (_c *ProcSelfNodeReachabilityStateCreate) SetUpdatedAtUnix(v int64) *ProcSe
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *ProcSelfNodeReachabilityStateCreate) SetID(v int) *ProcSelfNodeReachabilityStateCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // Mutation returns the ProcSelfNodeReachabilityStateMutation object of the builder.
 func (_c *ProcSelfNodeReachabilityStateCreate) Mutation() *ProcSelfNodeReachabilityStateMutation {
 	return _c.mutation
@@ -103,8 +109,10 @@ func (_c *ProcSelfNodeReachabilityStateCreate) sqlSave(ctx context.Context) (*Pr
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -115,6 +123,10 @@ func (_c *ProcSelfNodeReachabilityStateCreate) createSpec() (*ProcSelfNodeReacha
 		_node = &ProcSelfNodeReachabilityState{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(procselfnodereachabilitystate.Table, sqlgraph.NewFieldSpec(procselfnodereachabilitystate.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.NodePubkeyHex(); ok {
 		_spec.SetField(procselfnodereachabilitystate.FieldNodePubkeyHex, field.TypeString, value)
 		_node.NodePubkeyHex = value
@@ -178,7 +190,7 @@ func (_c *ProcSelfNodeReachabilityStateCreateBulk) Save(ctx context.Context) ([]
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

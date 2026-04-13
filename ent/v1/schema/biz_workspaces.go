@@ -19,6 +19,7 @@ func (BizWorkspaces) Annotations() []schema.Annotation {
 
 func (BizWorkspaces) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("workspace_path").Unique().Immutable(),
 		field.Int64("enabled"),
 		field.Int64("max_bytes"),

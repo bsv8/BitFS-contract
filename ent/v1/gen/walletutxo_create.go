@@ -119,6 +119,12 @@ func (_c *WalletUtxoCreate) SetSpentAtUnix(v int64) *WalletUtxoCreate {
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *WalletUtxoCreate) SetID(v int) *WalletUtxoCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // Mutation returns the WalletUtxoMutation object of the builder.
 func (_c *WalletUtxoCreate) Mutation() *WalletUtxoMutation {
 	return _c.mutation
@@ -222,8 +228,10 @@ func (_c *WalletUtxoCreate) sqlSave(ctx context.Context) (*WalletUtxo, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -234,6 +242,10 @@ func (_c *WalletUtxoCreate) createSpec() (*WalletUtxo, *sqlgraph.CreateSpec) {
 		_node = &WalletUtxo{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(walletutxo.Table, sqlgraph.NewFieldSpec(walletutxo.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.UtxoID(); ok {
 		_spec.SetField(walletutxo.FieldUtxoID, field.TypeString, value)
 		_node.UtxoID = value
@@ -338,7 +350,7 @@ func (_c *WalletUtxoCreateBulk) Save(ctx context.Context) ([]*WalletUtxo, error)
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

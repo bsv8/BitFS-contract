@@ -43,6 +43,12 @@ func (_c *BizWorkspacesCreate) SetCreatedAtUnix(v int64) *BizWorkspacesCreate {
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *BizWorkspacesCreate) SetID(v int) *BizWorkspacesCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // Mutation returns the BizWorkspacesMutation object of the builder.
 func (_c *BizWorkspacesCreate) Mutation() *BizWorkspacesMutation {
 	return _c.mutation
@@ -103,8 +109,10 @@ func (_c *BizWorkspacesCreate) sqlSave(ctx context.Context) (*BizWorkspaces, err
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -115,6 +123,10 @@ func (_c *BizWorkspacesCreate) createSpec() (*BizWorkspaces, *sqlgraph.CreateSpe
 		_node = &BizWorkspaces{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(bizworkspaces.Table, sqlgraph.NewFieldSpec(bizworkspaces.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.WorkspacePath(); ok {
 		_spec.SetField(bizworkspaces.FieldWorkspacePath, field.TypeString, value)
 		_node.WorkspacePath = value
@@ -178,7 +190,7 @@ func (_c *BizWorkspacesCreateBulk) Save(ctx context.Context) ([]*BizWorkspaces, 
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

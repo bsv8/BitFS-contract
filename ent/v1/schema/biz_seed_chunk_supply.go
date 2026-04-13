@@ -19,6 +19,7 @@ func (BizSeedChunkSupply) Annotations() []schema.Annotation {
 
 func (BizSeedChunkSupply) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("seed_hash"),
 		field.Int64("chunk_index"),
 	}

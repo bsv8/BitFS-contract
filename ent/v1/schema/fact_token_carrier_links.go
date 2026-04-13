@@ -19,6 +19,7 @@ func (FactTokenCarrierLinks) Annotations() []schema.Annotation {
 
 func (FactTokenCarrierLinks) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("link_id").Unique().Immutable(),
 		field.String("lot_id"),
 		field.String("carrier_utxo_id"),

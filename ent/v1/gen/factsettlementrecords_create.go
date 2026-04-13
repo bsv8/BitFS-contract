@@ -153,6 +153,12 @@ func (_c *FactSettlementRecordsCreate) SetNillablePayloadJSON(v *string) *FactSe
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *FactSettlementRecordsCreate) SetID(v int) *FactSettlementRecordsCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // Mutation returns the FactSettlementRecordsMutation object of the builder.
 func (_c *FactSettlementRecordsCreate) Mutation() *FactSettlementRecordsMutation {
 	return _c.mutation
@@ -273,8 +279,10 @@ func (_c *FactSettlementRecordsCreate) sqlSave(ctx context.Context) (*FactSettle
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -285,6 +293,10 @@ func (_c *FactSettlementRecordsCreate) createSpec() (*FactSettlementRecords, *sq
 		_node = &FactSettlementRecords{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(factsettlementrecords.Table, sqlgraph.NewFieldSpec(factsettlementrecords.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.RecordID(); ok {
 		_spec.SetField(factsettlementrecords.FieldRecordID, field.TypeString, value)
 		_node.RecordID = value
@@ -385,7 +397,7 @@ func (_c *FactSettlementRecordsCreateBulk) Save(ctx context.Context) ([]*FactSet
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

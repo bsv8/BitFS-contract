@@ -95,6 +95,12 @@ func (_c *BizPoolAllocationsCreate) SetCreatedAtUnix(v int64) *BizPoolAllocation
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *BizPoolAllocationsCreate) SetID(v int) *BizPoolAllocationsCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // Mutation returns the BizPoolAllocationsMutation object of the builder.
 func (_c *BizPoolAllocationsCreate) Mutation() *BizPoolAllocationsMutation {
 	return _c.mutation
@@ -186,8 +192,10 @@ func (_c *BizPoolAllocationsCreate) sqlSave(ctx context.Context) (*BizPoolAlloca
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -198,6 +206,10 @@ func (_c *BizPoolAllocationsCreate) createSpec() (*BizPoolAllocations, *sqlgraph
 		_node = &BizPoolAllocations{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(bizpoolallocations.Table, sqlgraph.NewFieldSpec(bizpoolallocations.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.AllocationID(); ok {
 		_spec.SetField(bizpoolallocations.FieldAllocationID, field.TypeString, value)
 		_node.AllocationID = value
@@ -286,7 +298,7 @@ func (_c *BizPoolAllocationsCreateBulk) Save(ctx context.Context) ([]*BizPoolAll
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

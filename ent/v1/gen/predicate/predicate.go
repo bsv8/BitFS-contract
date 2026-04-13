@@ -84,6 +84,12 @@ type FactTokenCarrierLinks func(*sql.Selector)
 // FactTokenLots is the predicate function for facttokenlots builders.
 type FactTokenLots func(*sql.Selector)
 
+// OrderSettlements is the predicate function for ordersettlements builders.
+type OrderSettlements func(*sql.Selector)
+
+// Orders is the predicate function for orders builders.
+type Orders func(*sql.Selector)
+
 // ProcChainTipState is the predicate function for procchaintipstate builders.
 type ProcChainTipState func(*sql.Selector)
 

@@ -79,6 +79,12 @@ func (_c *ProcDirectDealsCreate) SetCreatedAtUnix(v int64) *ProcDirectDealsCreat
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *ProcDirectDealsCreate) SetID(v int) *ProcDirectDealsCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // Mutation returns the ProcDirectDealsMutation object of the builder.
 func (_c *ProcDirectDealsCreate) Mutation() *ProcDirectDealsMutation {
 	return _c.mutation
@@ -157,8 +163,10 @@ func (_c *ProcDirectDealsCreate) sqlSave(ctx context.Context) (*ProcDirectDeals,
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -169,6 +177,10 @@ func (_c *ProcDirectDealsCreate) createSpec() (*ProcDirectDeals, *sqlgraph.Creat
 		_node = &ProcDirectDeals{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(procdirectdeals.Table, sqlgraph.NewFieldSpec(procdirectdeals.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.DealID(); ok {
 		_spec.SetField(procdirectdeals.FieldDealID, field.TypeString, value)
 		_node.DealID = value
@@ -256,7 +268,7 @@ func (_c *ProcDirectDealsCreateBulk) Save(ctx context.Context) ([]*ProcDirectDea
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

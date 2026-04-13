@@ -18,6 +18,7 @@ func (ProcDirectDeals) Annotations() []schema.Annotation {
 
 func (ProcDirectDeals) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("deal_id").Unique().Immutable(),
 		field.String("demand_id"),
 		field.String("buyer_pubkey_hex"),

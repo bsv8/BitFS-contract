@@ -18,6 +18,7 @@ func (WalletUtxoSyncState) Annotations() []schema.Annotation {
 
 func (WalletUtxoSyncState) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("address").Unique().Immutable(),
 		field.String("wallet_id"),
 		field.Int64("utxo_count"),

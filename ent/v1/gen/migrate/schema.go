@@ -979,6 +979,115 @@ var (
 			},
 		},
 	}
+	// OrderSettlementsColumns holds the columns for the "order_settlements" table.
+	OrderSettlementsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "settlement_id", Type: field.TypeString, Unique: true},
+		{Name: "order_id", Type: field.TypeString},
+		{Name: "settlement_no", Type: field.TypeInt64},
+		{Name: "business_role", Type: field.TypeString, Default: ""},
+		{Name: "source_type", Type: field.TypeString, Default: ""},
+		{Name: "source_id", Type: field.TypeString, Default: ""},
+		{Name: "accounting_scene", Type: field.TypeString, Default: ""},
+		{Name: "accounting_subtype", Type: field.TypeString, Default: ""},
+		{Name: "settlement_method", Type: field.TypeString},
+		{Name: "status", Type: field.TypeString},
+		{Name: "settlement_status", Type: field.TypeString, Default: ""},
+		{Name: "amount_satoshi", Type: field.TypeInt64, Default: 0},
+		{Name: "from_party_id", Type: field.TypeString},
+		{Name: "to_party_id", Type: field.TypeString},
+		{Name: "target_type", Type: field.TypeString},
+		{Name: "target_id", Type: field.TypeString},
+		{Name: "idempotency_key", Type: field.TypeString, Default: ""},
+		{Name: "note", Type: field.TypeString, Default: ""},
+		{Name: "error_message", Type: field.TypeString, Default: ""},
+		{Name: "payload_json", Type: field.TypeString, Default: "{}"},
+		{Name: "settlement_payload_json", Type: field.TypeString, Default: "{}"},
+		{Name: "created_at_unix", Type: field.TypeInt64},
+		{Name: "updated_at_unix", Type: field.TypeInt64},
+	}
+	// OrderSettlementsTable holds the schema information for the "order_settlements" table.
+	OrderSettlementsTable = &schema.Table{
+		Name:       "order_settlements",
+		Columns:    OrderSettlementsColumns,
+		PrimaryKey: []*schema.Column{OrderSettlementsColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "ordersettlements_order_id_settlement_no",
+				Unique:  true,
+				Columns: []*schema.Column{OrderSettlementsColumns[2], OrderSettlementsColumns[3]},
+			},
+			{
+				Name:    "ordersettlements_order_id_created_at_unix",
+				Unique:  false,
+				Columns: []*schema.Column{OrderSettlementsColumns[2], OrderSettlementsColumns[22]},
+			},
+			{
+				Name:    "ordersettlements_status_updated_at_unix",
+				Unique:  false,
+				Columns: []*schema.Column{OrderSettlementsColumns[10], OrderSettlementsColumns[23]},
+			},
+			{
+				Name:    "ordersettlements_settlement_method_status_updated_at_unix",
+				Unique:  false,
+				Columns: []*schema.Column{OrderSettlementsColumns[9], OrderSettlementsColumns[10], OrderSettlementsColumns[23]},
+			},
+			{
+				Name:    "ordersettlements_target_type_target_id",
+				Unique:  false,
+				Columns: []*schema.Column{OrderSettlementsColumns[15], OrderSettlementsColumns[16]},
+			},
+		},
+	}
+	// OrdersColumns holds the columns for the "orders" table.
+	OrdersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "order_id", Type: field.TypeString, Unique: true},
+		{Name: "order_type", Type: field.TypeString},
+		{Name: "order_subtype", Type: field.TypeString},
+		{Name: "owner_pubkey_hex", Type: field.TypeString},
+		{Name: "target_object_type", Type: field.TypeString},
+		{Name: "target_object_id", Type: field.TypeString},
+		{Name: "status", Type: field.TypeString},
+		{Name: "idempotency_key", Type: field.TypeString},
+		{Name: "note", Type: field.TypeString, Default: ""},
+		{Name: "payload_json", Type: field.TypeString, Default: "{}"},
+		{Name: "created_at_unix", Type: field.TypeInt64},
+		{Name: "updated_at_unix", Type: field.TypeInt64},
+	}
+	// OrdersTable holds the schema information for the "orders" table.
+	OrdersTable = &schema.Table{
+		Name:       "orders",
+		Columns:    OrdersColumns,
+		PrimaryKey: []*schema.Column{OrdersColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "orders_order_type_idempotency_key",
+				Unique:  true,
+				Columns: []*schema.Column{OrdersColumns[2], OrdersColumns[8]},
+			},
+			{
+				Name:    "orders_order_type_status_updated_at_unix",
+				Unique:  false,
+				Columns: []*schema.Column{OrdersColumns[2], OrdersColumns[7], OrdersColumns[12]},
+			},
+			{
+				Name:    "orders_target_object_type_target_object_id",
+				Unique:  false,
+				Columns: []*schema.Column{OrdersColumns[5], OrdersColumns[6]},
+			},
+			{
+				Name:    "orders_owner_pubkey_hex_created_at_unix",
+				Unique:  false,
+				Columns: []*schema.Column{OrdersColumns[4], OrdersColumns[11]},
+			},
+			{
+				Name:    "orders_status_updated_at_unix",
+				Unique:  false,
+				Columns: []*schema.Column{OrdersColumns[7], OrdersColumns[12]},
+			},
+		},
+	}
 	// ProcChainTipStateColumns holds the columns for the "proc_chain_tip_state" table.
 	ProcChainTipStateColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -1817,6 +1926,8 @@ var (
 		FactSettlementRecordsTable,
 		FactTokenCarrierLinksTable,
 		FactTokenLotsTable,
+		OrderSettlementsTable,
+		OrdersTable,
 		ProcChainTipStateTable,
 		ProcChainTipWorkerLogsTable,
 		ProcChainUtxoWorkerLogsTable,
@@ -1924,6 +2035,12 @@ func init() {
 	}
 	FactTokenLotsTable.Annotation = &entsql.Annotation{
 		Table: "fact_token_lots",
+	}
+	OrderSettlementsTable.Annotation = &entsql.Annotation{
+		Table: "order_settlements",
+	}
+	OrdersTable.Annotation = &entsql.Annotation{
+		Table: "orders",
 	}
 	ProcChainTipStateTable.Annotation = &entsql.Annotation{
 		Table: "proc_chain_tip_state",

@@ -31,6 +31,12 @@ func (_c *BizSeedChunkSupplyCreate) SetChunkIndex(v int64) *BizSeedChunkSupplyCr
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *BizSeedChunkSupplyCreate) SetID(v int) *BizSeedChunkSupplyCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // Mutation returns the BizSeedChunkSupplyMutation object of the builder.
 func (_c *BizSeedChunkSupplyCreate) Mutation() *BizSeedChunkSupplyMutation {
 	return _c.mutation
@@ -85,8 +91,10 @@ func (_c *BizSeedChunkSupplyCreate) sqlSave(ctx context.Context) (*BizSeedChunkS
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -97,6 +105,10 @@ func (_c *BizSeedChunkSupplyCreate) createSpec() (*BizSeedChunkSupply, *sqlgraph
 		_node = &BizSeedChunkSupply{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(bizseedchunksupply.Table, sqlgraph.NewFieldSpec(bizseedchunksupply.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.SeedHash(); ok {
 		_spec.SetField(bizseedchunksupply.FieldSeedHash, field.TypeString, value)
 		_node.SeedHash = value
@@ -152,7 +164,7 @@ func (_c *BizSeedChunkSupplyCreateBulk) Save(ctx context.Context) ([]*BizSeedChu
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

@@ -19,6 +19,7 @@ func (FactBsvUtxos) Annotations() []schema.Annotation {
 
 func (FactBsvUtxos) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("utxo_id").Unique().Immutable(),
 		field.String("owner_pubkey_hex"),
 		field.String("address"),

@@ -19,6 +19,7 @@ func (FactSettlementRecords) Annotations() []schema.Annotation {
 
 func (FactSettlementRecords) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("record_id").Unique().Immutable(),
 		field.Int64("settlement_cycle_id"),
 		field.String("asset_type"),

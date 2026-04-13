@@ -21,6 +21,8 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementrecords"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/facttokencarrierlinks"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/facttokenlots"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/orders"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/ordersettlements"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/proccommandjournal"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/walletlocalbroadcasttxs"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/walletutxo"
@@ -56,87 +58,87 @@ func init() {
 	bizpoolFields := schema.BizPool{}.Fields()
 	_ = bizpoolFields
 	// bizpoolDescCounterpartyPubkeyHex is the schema descriptor for counterparty_pubkey_hex field.
-	bizpoolDescCounterpartyPubkeyHex := bizpoolFields[2].Descriptor()
+	bizpoolDescCounterpartyPubkeyHex := bizpoolFields[3].Descriptor()
 	// bizpool.DefaultCounterpartyPubkeyHex holds the default value on creation for the counterparty_pubkey_hex field.
 	bizpool.DefaultCounterpartyPubkeyHex = bizpoolDescCounterpartyPubkeyHex.Default.(string)
 	// bizpoolDescSellerPubkeyHex is the schema descriptor for seller_pubkey_hex field.
-	bizpoolDescSellerPubkeyHex := bizpoolFields[3].Descriptor()
+	bizpoolDescSellerPubkeyHex := bizpoolFields[4].Descriptor()
 	// bizpool.DefaultSellerPubkeyHex holds the default value on creation for the seller_pubkey_hex field.
 	bizpool.DefaultSellerPubkeyHex = bizpoolDescSellerPubkeyHex.Default.(string)
 	// bizpoolDescArbiterPubkeyHex is the schema descriptor for arbiter_pubkey_hex field.
-	bizpoolDescArbiterPubkeyHex := bizpoolFields[4].Descriptor()
+	bizpoolDescArbiterPubkeyHex := bizpoolFields[5].Descriptor()
 	// bizpool.DefaultArbiterPubkeyHex holds the default value on creation for the arbiter_pubkey_hex field.
 	bizpool.DefaultArbiterPubkeyHex = bizpoolDescArbiterPubkeyHex.Default.(string)
 	// bizpoolDescGatewayPubkeyHex is the schema descriptor for gateway_pubkey_hex field.
-	bizpoolDescGatewayPubkeyHex := bizpoolFields[5].Descriptor()
+	bizpoolDescGatewayPubkeyHex := bizpoolFields[6].Descriptor()
 	// bizpool.DefaultGatewayPubkeyHex holds the default value on creation for the gateway_pubkey_hex field.
 	bizpool.DefaultGatewayPubkeyHex = bizpoolDescGatewayPubkeyHex.Default.(string)
 	// bizpoolDescPoolAmountSatoshi is the schema descriptor for pool_amount_satoshi field.
-	bizpoolDescPoolAmountSatoshi := bizpoolFields[6].Descriptor()
+	bizpoolDescPoolAmountSatoshi := bizpoolFields[7].Descriptor()
 	// bizpool.DefaultPoolAmountSatoshi holds the default value on creation for the pool_amount_satoshi field.
 	bizpool.DefaultPoolAmountSatoshi = bizpoolDescPoolAmountSatoshi.Default.(int64)
 	// bizpoolDescSpendTxFeeSatoshi is the schema descriptor for spend_tx_fee_satoshi field.
-	bizpoolDescSpendTxFeeSatoshi := bizpoolFields[7].Descriptor()
+	bizpoolDescSpendTxFeeSatoshi := bizpoolFields[8].Descriptor()
 	// bizpool.DefaultSpendTxFeeSatoshi holds the default value on creation for the spend_tx_fee_satoshi field.
 	bizpool.DefaultSpendTxFeeSatoshi = bizpoolDescSpendTxFeeSatoshi.Default.(int64)
 	// bizpoolDescAllocatedSatoshi is the schema descriptor for allocated_satoshi field.
-	bizpoolDescAllocatedSatoshi := bizpoolFields[8].Descriptor()
+	bizpoolDescAllocatedSatoshi := bizpoolFields[9].Descriptor()
 	// bizpool.DefaultAllocatedSatoshi holds the default value on creation for the allocated_satoshi field.
 	bizpool.DefaultAllocatedSatoshi = bizpoolDescAllocatedSatoshi.Default.(int64)
 	// bizpoolDescCycleFeeSatoshi is the schema descriptor for cycle_fee_satoshi field.
-	bizpoolDescCycleFeeSatoshi := bizpoolFields[9].Descriptor()
+	bizpoolDescCycleFeeSatoshi := bizpoolFields[10].Descriptor()
 	// bizpool.DefaultCycleFeeSatoshi holds the default value on creation for the cycle_fee_satoshi field.
 	bizpool.DefaultCycleFeeSatoshi = bizpoolDescCycleFeeSatoshi.Default.(int64)
 	// bizpoolDescAvailableSatoshi is the schema descriptor for available_satoshi field.
-	bizpoolDescAvailableSatoshi := bizpoolFields[10].Descriptor()
+	bizpoolDescAvailableSatoshi := bizpoolFields[11].Descriptor()
 	// bizpool.DefaultAvailableSatoshi holds the default value on creation for the available_satoshi field.
 	bizpool.DefaultAvailableSatoshi = bizpoolDescAvailableSatoshi.Default.(int64)
 	// bizpoolDescNextSequenceNum is the schema descriptor for next_sequence_num field.
-	bizpoolDescNextSequenceNum := bizpoolFields[11].Descriptor()
+	bizpoolDescNextSequenceNum := bizpoolFields[12].Descriptor()
 	// bizpool.DefaultNextSequenceNum holds the default value on creation for the next_sequence_num field.
 	bizpool.DefaultNextSequenceNum = bizpoolDescNextSequenceNum.Default.(int64)
 	// bizpoolDescOpenBaseTxid is the schema descriptor for open_base_txid field.
-	bizpoolDescOpenBaseTxid := bizpoolFields[13].Descriptor()
+	bizpoolDescOpenBaseTxid := bizpoolFields[14].Descriptor()
 	// bizpool.DefaultOpenBaseTxid holds the default value on creation for the open_base_txid field.
 	bizpool.DefaultOpenBaseTxid = bizpoolDescOpenBaseTxid.Default.(string)
 	// bizpoolDescOpenAllocationID is the schema descriptor for open_allocation_id field.
-	bizpoolDescOpenAllocationID := bizpoolFields[14].Descriptor()
+	bizpoolDescOpenAllocationID := bizpoolFields[15].Descriptor()
 	// bizpool.DefaultOpenAllocationID holds the default value on creation for the open_allocation_id field.
 	bizpool.DefaultOpenAllocationID = bizpoolDescOpenAllocationID.Default.(string)
 	// bizpoolDescCloseAllocationID is the schema descriptor for close_allocation_id field.
-	bizpoolDescCloseAllocationID := bizpoolFields[15].Descriptor()
+	bizpoolDescCloseAllocationID := bizpoolFields[16].Descriptor()
 	// bizpool.DefaultCloseAllocationID holds the default value on creation for the close_allocation_id field.
 	bizpool.DefaultCloseAllocationID = bizpoolDescCloseAllocationID.Default.(string)
 	bizpoolallocationsFields := schema.BizPoolAllocations{}.Fields()
 	_ = bizpoolallocationsFields
 	// bizpoolallocationsDescPayeeAmountAfter is the schema descriptor for payee_amount_after field.
-	bizpoolallocationsDescPayeeAmountAfter := bizpoolallocationsFields[5].Descriptor()
+	bizpoolallocationsDescPayeeAmountAfter := bizpoolallocationsFields[6].Descriptor()
 	// bizpoolallocations.DefaultPayeeAmountAfter holds the default value on creation for the payee_amount_after field.
 	bizpoolallocations.DefaultPayeeAmountAfter = bizpoolallocationsDescPayeeAmountAfter.Default.(int64)
 	// bizpoolallocationsDescPayerAmountAfter is the schema descriptor for payer_amount_after field.
-	bizpoolallocationsDescPayerAmountAfter := bizpoolallocationsFields[6].Descriptor()
+	bizpoolallocationsDescPayerAmountAfter := bizpoolallocationsFields[7].Descriptor()
 	// bizpoolallocations.DefaultPayerAmountAfter holds the default value on creation for the payer_amount_after field.
 	bizpoolallocations.DefaultPayerAmountAfter = bizpoolallocationsDescPayerAmountAfter.Default.(int64)
 	bizseedsFields := schema.BizSeeds{}.Fields()
 	_ = bizseedsFields
 	// bizseedsDescRecommendedFileName is the schema descriptor for recommended_file_name field.
-	bizseedsDescRecommendedFileName := bizseedsFields[4].Descriptor()
+	bizseedsDescRecommendedFileName := bizseedsFields[5].Descriptor()
 	// bizseeds.DefaultRecommendedFileName holds the default value on creation for the recommended_file_name field.
 	bizseeds.DefaultRecommendedFileName = bizseedsDescRecommendedFileName.Default.(string)
 	// bizseedsDescMimeHint is the schema descriptor for mime_hint field.
-	bizseedsDescMimeHint := bizseedsFields[5].Descriptor()
+	bizseedsDescMimeHint := bizseedsFields[6].Descriptor()
 	// bizseeds.DefaultMimeHint holds the default value on creation for the mime_hint field.
 	bizseeds.DefaultMimeHint = bizseedsDescMimeHint.Default.(string)
 	bizworkspacefilesFields := schema.BizWorkspaceFiles{}.Fields()
 	_ = bizworkspacefilesFields
 	// bizworkspacefilesDescSeedLocked is the schema descriptor for seed_locked field.
-	bizworkspacefilesDescSeedLocked := bizworkspacefilesFields[3].Descriptor()
+	bizworkspacefilesDescSeedLocked := bizworkspacefilesFields[4].Descriptor()
 	// bizworkspacefiles.DefaultSeedLocked holds the default value on creation for the seed_locked field.
 	bizworkspacefiles.DefaultSeedLocked = bizworkspacefilesDescSeedLocked.Default.(int64)
 	factbsv21Fields := schema.FactBsv21{}.Fields()
 	_ = factbsv21Fields
 	// factbsv21DescPayloadJSON is the schema descriptor for payload_json field.
-	factbsv21DescPayloadJSON := factbsv21Fields[12].Descriptor()
+	factbsv21DescPayloadJSON := factbsv21Fields[13].Descriptor()
 	// factbsv21.DefaultPayloadJSON holds the default value on creation for the payload_json field.
 	factbsv21.DefaultPayloadJSON = factbsv21DescPayloadJSON.Default.(string)
 	factbsv21eventsFields := schema.FactBsv21Events{}.Fields()
@@ -156,19 +158,19 @@ func init() {
 	factbsvutxosFields := schema.FactBsvUtxos{}.Fields()
 	_ = factbsvutxosFields
 	// factbsvutxosDescSpentByTxid is the schema descriptor for spent_by_txid field.
-	factbsvutxosDescSpentByTxid := factbsvutxosFields[8].Descriptor()
+	factbsvutxosDescSpentByTxid := factbsvutxosFields[9].Descriptor()
 	// factbsvutxos.DefaultSpentByTxid holds the default value on creation for the spent_by_txid field.
 	factbsvutxos.DefaultSpentByTxid = factbsvutxosDescSpentByTxid.Default.(string)
 	// factbsvutxosDescSpentAtUnix is the schema descriptor for spent_at_unix field.
-	factbsvutxosDescSpentAtUnix := factbsvutxosFields[11].Descriptor()
+	factbsvutxosDescSpentAtUnix := factbsvutxosFields[12].Descriptor()
 	// factbsvutxos.DefaultSpentAtUnix holds the default value on creation for the spent_at_unix field.
 	factbsvutxos.DefaultSpentAtUnix = factbsvutxosDescSpentAtUnix.Default.(int64)
 	// factbsvutxosDescNote is the schema descriptor for note field.
-	factbsvutxosDescNote := factbsvutxosFields[12].Descriptor()
+	factbsvutxosDescNote := factbsvutxosFields[13].Descriptor()
 	// factbsvutxos.DefaultNote holds the default value on creation for the note field.
 	factbsvutxos.DefaultNote = factbsvutxosDescNote.Default.(string)
 	// factbsvutxosDescPayloadJSON is the schema descriptor for payload_json field.
-	factbsvutxosDescPayloadJSON := factbsvutxosFields[13].Descriptor()
+	factbsvutxosDescPayloadJSON := factbsvutxosFields[14].Descriptor()
 	// factbsvutxos.DefaultPayloadJSON holds the default value on creation for the payload_json field.
 	factbsvutxos.DefaultPayloadJSON = factbsvutxosDescPayloadJSON.Default.(string)
 	factpoolsessioneventsFields := schema.FactPoolSessionEvents{}.Fields()
@@ -346,73 +348,133 @@ func init() {
 	factsettlementrecordsFields := schema.FactSettlementRecords{}.Fields()
 	_ = factsettlementrecordsFields
 	// factsettlementrecordsDescSourceUtxoID is the schema descriptor for source_utxo_id field.
-	factsettlementrecordsDescSourceUtxoID := factsettlementrecordsFields[4].Descriptor()
+	factsettlementrecordsDescSourceUtxoID := factsettlementrecordsFields[5].Descriptor()
 	// factsettlementrecords.DefaultSourceUtxoID holds the default value on creation for the source_utxo_id field.
 	factsettlementrecords.DefaultSourceUtxoID = factsettlementrecordsDescSourceUtxoID.Default.(string)
 	// factsettlementrecordsDescSourceLotID is the schema descriptor for source_lot_id field.
-	factsettlementrecordsDescSourceLotID := factsettlementrecordsFields[5].Descriptor()
+	factsettlementrecordsDescSourceLotID := factsettlementrecordsFields[6].Descriptor()
 	// factsettlementrecords.DefaultSourceLotID holds the default value on creation for the source_lot_id field.
 	factsettlementrecords.DefaultSourceLotID = factsettlementrecordsDescSourceLotID.Default.(string)
 	// factsettlementrecordsDescUsedSatoshi is the schema descriptor for used_satoshi field.
-	factsettlementrecordsDescUsedSatoshi := factsettlementrecordsFields[6].Descriptor()
+	factsettlementrecordsDescUsedSatoshi := factsettlementrecordsFields[7].Descriptor()
 	// factsettlementrecords.DefaultUsedSatoshi holds the default value on creation for the used_satoshi field.
 	factsettlementrecords.DefaultUsedSatoshi = factsettlementrecordsDescUsedSatoshi.Default.(int64)
 	// factsettlementrecordsDescUsedQuantityText is the schema descriptor for used_quantity_text field.
-	factsettlementrecordsDescUsedQuantityText := factsettlementrecordsFields[7].Descriptor()
+	factsettlementrecordsDescUsedQuantityText := factsettlementrecordsFields[8].Descriptor()
 	// factsettlementrecords.DefaultUsedQuantityText holds the default value on creation for the used_quantity_text field.
 	factsettlementrecords.DefaultUsedQuantityText = factsettlementrecordsDescUsedQuantityText.Default.(string)
 	// factsettlementrecordsDescConfirmedAtUnix is the schema descriptor for confirmed_at_unix field.
-	factsettlementrecordsDescConfirmedAtUnix := factsettlementrecordsFields[10].Descriptor()
+	factsettlementrecordsDescConfirmedAtUnix := factsettlementrecordsFields[11].Descriptor()
 	// factsettlementrecords.DefaultConfirmedAtUnix holds the default value on creation for the confirmed_at_unix field.
 	factsettlementrecords.DefaultConfirmedAtUnix = factsettlementrecordsDescConfirmedAtUnix.Default.(int64)
 	// factsettlementrecordsDescNote is the schema descriptor for note field.
-	factsettlementrecordsDescNote := factsettlementrecordsFields[11].Descriptor()
+	factsettlementrecordsDescNote := factsettlementrecordsFields[12].Descriptor()
 	// factsettlementrecords.DefaultNote holds the default value on creation for the note field.
 	factsettlementrecords.DefaultNote = factsettlementrecordsDescNote.Default.(string)
 	// factsettlementrecordsDescPayloadJSON is the schema descriptor for payload_json field.
-	factsettlementrecordsDescPayloadJSON := factsettlementrecordsFields[12].Descriptor()
+	factsettlementrecordsDescPayloadJSON := factsettlementrecordsFields[13].Descriptor()
 	// factsettlementrecords.DefaultPayloadJSON holds the default value on creation for the payload_json field.
 	factsettlementrecords.DefaultPayloadJSON = factsettlementrecordsDescPayloadJSON.Default.(string)
 	facttokencarrierlinksFields := schema.FactTokenCarrierLinks{}.Fields()
 	_ = facttokencarrierlinksFields
 	// facttokencarrierlinksDescBindTxid is the schema descriptor for bind_txid field.
-	facttokencarrierlinksDescBindTxid := facttokencarrierlinksFields[5].Descriptor()
+	facttokencarrierlinksDescBindTxid := facttokencarrierlinksFields[6].Descriptor()
 	// facttokencarrierlinks.DefaultBindTxid holds the default value on creation for the bind_txid field.
 	facttokencarrierlinks.DefaultBindTxid = facttokencarrierlinksDescBindTxid.Default.(string)
 	// facttokencarrierlinksDescUnbindTxid is the schema descriptor for unbind_txid field.
-	facttokencarrierlinksDescUnbindTxid := facttokencarrierlinksFields[6].Descriptor()
+	facttokencarrierlinksDescUnbindTxid := facttokencarrierlinksFields[7].Descriptor()
 	// facttokencarrierlinks.DefaultUnbindTxid holds the default value on creation for the unbind_txid field.
 	facttokencarrierlinks.DefaultUnbindTxid = facttokencarrierlinksDescUnbindTxid.Default.(string)
 	// facttokencarrierlinksDescNote is the schema descriptor for note field.
-	facttokencarrierlinksDescNote := facttokencarrierlinksFields[9].Descriptor()
+	facttokencarrierlinksDescNote := facttokencarrierlinksFields[10].Descriptor()
 	// facttokencarrierlinks.DefaultNote holds the default value on creation for the note field.
 	facttokencarrierlinks.DefaultNote = facttokencarrierlinksDescNote.Default.(string)
 	// facttokencarrierlinksDescPayloadJSON is the schema descriptor for payload_json field.
-	facttokencarrierlinksDescPayloadJSON := facttokencarrierlinksFields[10].Descriptor()
+	facttokencarrierlinksDescPayloadJSON := facttokencarrierlinksFields[11].Descriptor()
 	// facttokencarrierlinks.DefaultPayloadJSON holds the default value on creation for the payload_json field.
 	facttokencarrierlinks.DefaultPayloadJSON = facttokencarrierlinksDescPayloadJSON.Default.(string)
 	facttokenlotsFields := schema.FactTokenLots{}.Fields()
 	_ = facttokenlotsFields
 	// facttokenlotsDescUsedQuantityText is the schema descriptor for used_quantity_text field.
-	facttokenlotsDescUsedQuantityText := facttokenlotsFields[5].Descriptor()
+	facttokenlotsDescUsedQuantityText := facttokenlotsFields[6].Descriptor()
 	// facttokenlots.DefaultUsedQuantityText holds the default value on creation for the used_quantity_text field.
 	facttokenlots.DefaultUsedQuantityText = facttokenlotsDescUsedQuantityText.Default.(string)
 	// facttokenlotsDescMintTxid is the schema descriptor for mint_txid field.
-	facttokenlotsDescMintTxid := facttokenlotsFields[7].Descriptor()
+	facttokenlotsDescMintTxid := facttokenlotsFields[8].Descriptor()
 	// facttokenlots.DefaultMintTxid holds the default value on creation for the mint_txid field.
 	facttokenlots.DefaultMintTxid = facttokenlotsDescMintTxid.Default.(string)
 	// facttokenlotsDescLastSpendTxid is the schema descriptor for last_spend_txid field.
-	facttokenlotsDescLastSpendTxid := facttokenlotsFields[8].Descriptor()
+	facttokenlotsDescLastSpendTxid := facttokenlotsFields[9].Descriptor()
 	// facttokenlots.DefaultLastSpendTxid holds the default value on creation for the last_spend_txid field.
 	facttokenlots.DefaultLastSpendTxid = facttokenlotsDescLastSpendTxid.Default.(string)
 	// facttokenlotsDescNote is the schema descriptor for note field.
-	facttokenlotsDescNote := facttokenlotsFields[11].Descriptor()
+	facttokenlotsDescNote := facttokenlotsFields[12].Descriptor()
 	// facttokenlots.DefaultNote holds the default value on creation for the note field.
 	facttokenlots.DefaultNote = facttokenlotsDescNote.Default.(string)
 	// facttokenlotsDescPayloadJSON is the schema descriptor for payload_json field.
-	facttokenlotsDescPayloadJSON := facttokenlotsFields[12].Descriptor()
+	facttokenlotsDescPayloadJSON := facttokenlotsFields[13].Descriptor()
 	// facttokenlots.DefaultPayloadJSON holds the default value on creation for the payload_json field.
 	facttokenlots.DefaultPayloadJSON = facttokenlotsDescPayloadJSON.Default.(string)
+	ordersettlementsFields := schema.OrderSettlements{}.Fields()
+	_ = ordersettlementsFields
+	// ordersettlementsDescBusinessRole is the schema descriptor for business_role field.
+	ordersettlementsDescBusinessRole := ordersettlementsFields[4].Descriptor()
+	// ordersettlements.DefaultBusinessRole holds the default value on creation for the business_role field.
+	ordersettlements.DefaultBusinessRole = ordersettlementsDescBusinessRole.Default.(string)
+	// ordersettlementsDescSourceType is the schema descriptor for source_type field.
+	ordersettlementsDescSourceType := ordersettlementsFields[5].Descriptor()
+	// ordersettlements.DefaultSourceType holds the default value on creation for the source_type field.
+	ordersettlements.DefaultSourceType = ordersettlementsDescSourceType.Default.(string)
+	// ordersettlementsDescSourceID is the schema descriptor for source_id field.
+	ordersettlementsDescSourceID := ordersettlementsFields[6].Descriptor()
+	// ordersettlements.DefaultSourceID holds the default value on creation for the source_id field.
+	ordersettlements.DefaultSourceID = ordersettlementsDescSourceID.Default.(string)
+	// ordersettlementsDescAccountingScene is the schema descriptor for accounting_scene field.
+	ordersettlementsDescAccountingScene := ordersettlementsFields[7].Descriptor()
+	// ordersettlements.DefaultAccountingScene holds the default value on creation for the accounting_scene field.
+	ordersettlements.DefaultAccountingScene = ordersettlementsDescAccountingScene.Default.(string)
+	// ordersettlementsDescAccountingSubtype is the schema descriptor for accounting_subtype field.
+	ordersettlementsDescAccountingSubtype := ordersettlementsFields[8].Descriptor()
+	// ordersettlements.DefaultAccountingSubtype holds the default value on creation for the accounting_subtype field.
+	ordersettlements.DefaultAccountingSubtype = ordersettlementsDescAccountingSubtype.Default.(string)
+	// ordersettlementsDescSettlementStatus is the schema descriptor for settlement_status field.
+	ordersettlementsDescSettlementStatus := ordersettlementsFields[11].Descriptor()
+	// ordersettlements.DefaultSettlementStatus holds the default value on creation for the settlement_status field.
+	ordersettlements.DefaultSettlementStatus = ordersettlementsDescSettlementStatus.Default.(string)
+	// ordersettlementsDescAmountSatoshi is the schema descriptor for amount_satoshi field.
+	ordersettlementsDescAmountSatoshi := ordersettlementsFields[12].Descriptor()
+	// ordersettlements.DefaultAmountSatoshi holds the default value on creation for the amount_satoshi field.
+	ordersettlements.DefaultAmountSatoshi = ordersettlementsDescAmountSatoshi.Default.(int64)
+	// ordersettlementsDescIdempotencyKey is the schema descriptor for idempotency_key field.
+	ordersettlementsDescIdempotencyKey := ordersettlementsFields[17].Descriptor()
+	// ordersettlements.DefaultIdempotencyKey holds the default value on creation for the idempotency_key field.
+	ordersettlements.DefaultIdempotencyKey = ordersettlementsDescIdempotencyKey.Default.(string)
+	// ordersettlementsDescNote is the schema descriptor for note field.
+	ordersettlementsDescNote := ordersettlementsFields[18].Descriptor()
+	// ordersettlements.DefaultNote holds the default value on creation for the note field.
+	ordersettlements.DefaultNote = ordersettlementsDescNote.Default.(string)
+	// ordersettlementsDescErrorMessage is the schema descriptor for error_message field.
+	ordersettlementsDescErrorMessage := ordersettlementsFields[19].Descriptor()
+	// ordersettlements.DefaultErrorMessage holds the default value on creation for the error_message field.
+	ordersettlements.DefaultErrorMessage = ordersettlementsDescErrorMessage.Default.(string)
+	// ordersettlementsDescPayloadJSON is the schema descriptor for payload_json field.
+	ordersettlementsDescPayloadJSON := ordersettlementsFields[20].Descriptor()
+	// ordersettlements.DefaultPayloadJSON holds the default value on creation for the payload_json field.
+	ordersettlements.DefaultPayloadJSON = ordersettlementsDescPayloadJSON.Default.(string)
+	// ordersettlementsDescSettlementPayloadJSON is the schema descriptor for settlement_payload_json field.
+	ordersettlementsDescSettlementPayloadJSON := ordersettlementsFields[21].Descriptor()
+	// ordersettlements.DefaultSettlementPayloadJSON holds the default value on creation for the settlement_payload_json field.
+	ordersettlements.DefaultSettlementPayloadJSON = ordersettlementsDescSettlementPayloadJSON.Default.(string)
+	ordersFields := schema.Orders{}.Fields()
+	_ = ordersFields
+	// ordersDescNote is the schema descriptor for note field.
+	ordersDescNote := ordersFields[9].Descriptor()
+	// orders.DefaultNote holds the default value on creation for the note field.
+	orders.DefaultNote = ordersDescNote.Default.(string)
+	// ordersDescPayloadJSON is the schema descriptor for payload_json field.
+	ordersDescPayloadJSON := ordersFields[10].Descriptor()
+	// orders.DefaultPayloadJSON holds the default value on creation for the payload_json field.
+	orders.DefaultPayloadJSON = ordersDescPayloadJSON.Default.(string)
 	proccommandjournalFields := schema.ProcCommandJournal{}.Fields()
 	_ = proccommandjournalFields
 	// proccommandjournalDescTriggerKey is the schema descriptor for trigger_key field.
@@ -422,85 +484,85 @@ func init() {
 	walletlocalbroadcasttxsFields := schema.WalletLocalBroadcastTxs{}.Fields()
 	_ = walletlocalbroadcasttxsFields
 	// walletlocalbroadcasttxsDescObservedAtUnix is the schema descriptor for observed_at_unix field.
-	walletlocalbroadcasttxsDescObservedAtUnix := walletlocalbroadcasttxsFields[6].Descriptor()
+	walletlocalbroadcasttxsDescObservedAtUnix := walletlocalbroadcasttxsFields[7].Descriptor()
 	// walletlocalbroadcasttxs.DefaultObservedAtUnix holds the default value on creation for the observed_at_unix field.
 	walletlocalbroadcasttxs.DefaultObservedAtUnix = walletlocalbroadcasttxsDescObservedAtUnix.Default.(int64)
 	walletutxoFields := schema.WalletUtxo{}.Fields()
 	_ = walletutxoFields
 	// walletutxoDescAllocationClass is the schema descriptor for allocation_class field.
-	walletutxoDescAllocationClass := walletutxoFields[7].Descriptor()
+	walletutxoDescAllocationClass := walletutxoFields[8].Descriptor()
 	// walletutxo.DefaultAllocationClass holds the default value on creation for the allocation_class field.
 	walletutxo.DefaultAllocationClass = walletutxoDescAllocationClass.Default.(string)
 	// walletutxoDescAllocationReason is the schema descriptor for allocation_reason field.
-	walletutxoDescAllocationReason := walletutxoFields[8].Descriptor()
+	walletutxoDescAllocationReason := walletutxoFields[9].Descriptor()
 	// walletutxo.DefaultAllocationReason holds the default value on creation for the allocation_reason field.
 	walletutxo.DefaultAllocationReason = walletutxoDescAllocationReason.Default.(string)
 	walletutxosyncstateFields := schema.WalletUtxoSyncState{}.Fields()
 	_ = walletutxosyncstateFields
 	// walletutxosyncstateDescPlainBsvUtxoCount is the schema descriptor for plain_bsv_utxo_count field.
-	walletutxosyncstateDescPlainBsvUtxoCount := walletutxosyncstateFields[4].Descriptor()
+	walletutxosyncstateDescPlainBsvUtxoCount := walletutxosyncstateFields[5].Descriptor()
 	// walletutxosyncstate.DefaultPlainBsvUtxoCount holds the default value on creation for the plain_bsv_utxo_count field.
 	walletutxosyncstate.DefaultPlainBsvUtxoCount = walletutxosyncstateDescPlainBsvUtxoCount.Default.(int64)
 	// walletutxosyncstateDescPlainBsvBalanceSatoshi is the schema descriptor for plain_bsv_balance_satoshi field.
-	walletutxosyncstateDescPlainBsvBalanceSatoshi := walletutxosyncstateFields[5].Descriptor()
+	walletutxosyncstateDescPlainBsvBalanceSatoshi := walletutxosyncstateFields[6].Descriptor()
 	// walletutxosyncstate.DefaultPlainBsvBalanceSatoshi holds the default value on creation for the plain_bsv_balance_satoshi field.
 	walletutxosyncstate.DefaultPlainBsvBalanceSatoshi = walletutxosyncstateDescPlainBsvBalanceSatoshi.Default.(int64)
 	// walletutxosyncstateDescProtectedUtxoCount is the schema descriptor for protected_utxo_count field.
-	walletutxosyncstateDescProtectedUtxoCount := walletutxosyncstateFields[6].Descriptor()
+	walletutxosyncstateDescProtectedUtxoCount := walletutxosyncstateFields[7].Descriptor()
 	// walletutxosyncstate.DefaultProtectedUtxoCount holds the default value on creation for the protected_utxo_count field.
 	walletutxosyncstate.DefaultProtectedUtxoCount = walletutxosyncstateDescProtectedUtxoCount.Default.(int64)
 	// walletutxosyncstateDescProtectedBalanceSatoshi is the schema descriptor for protected_balance_satoshi field.
-	walletutxosyncstateDescProtectedBalanceSatoshi := walletutxosyncstateFields[7].Descriptor()
+	walletutxosyncstateDescProtectedBalanceSatoshi := walletutxosyncstateFields[8].Descriptor()
 	// walletutxosyncstate.DefaultProtectedBalanceSatoshi holds the default value on creation for the protected_balance_satoshi field.
 	walletutxosyncstate.DefaultProtectedBalanceSatoshi = walletutxosyncstateDescProtectedBalanceSatoshi.Default.(int64)
 	// walletutxosyncstateDescUnknownUtxoCount is the schema descriptor for unknown_utxo_count field.
-	walletutxosyncstateDescUnknownUtxoCount := walletutxosyncstateFields[8].Descriptor()
+	walletutxosyncstateDescUnknownUtxoCount := walletutxosyncstateFields[9].Descriptor()
 	// walletutxosyncstate.DefaultUnknownUtxoCount holds the default value on creation for the unknown_utxo_count field.
 	walletutxosyncstate.DefaultUnknownUtxoCount = walletutxosyncstateDescUnknownUtxoCount.Default.(int64)
 	// walletutxosyncstateDescUnknownBalanceSatoshi is the schema descriptor for unknown_balance_satoshi field.
-	walletutxosyncstateDescUnknownBalanceSatoshi := walletutxosyncstateFields[9].Descriptor()
+	walletutxosyncstateDescUnknownBalanceSatoshi := walletutxosyncstateFields[10].Descriptor()
 	// walletutxosyncstate.DefaultUnknownBalanceSatoshi holds the default value on creation for the unknown_balance_satoshi field.
 	walletutxosyncstate.DefaultUnknownBalanceSatoshi = walletutxosyncstateDescUnknownBalanceSatoshi.Default.(int64)
 	// walletutxosyncstateDescLastSyncRoundID is the schema descriptor for last_sync_round_id field.
-	walletutxosyncstateDescLastSyncRoundID := walletutxosyncstateFields[15].Descriptor()
+	walletutxosyncstateDescLastSyncRoundID := walletutxosyncstateFields[16].Descriptor()
 	// walletutxosyncstate.DefaultLastSyncRoundID holds the default value on creation for the last_sync_round_id field.
 	walletutxosyncstate.DefaultLastSyncRoundID = walletutxosyncstateDescLastSyncRoundID.Default.(string)
 	// walletutxosyncstateDescLastFailedStep is the schema descriptor for last_failed_step field.
-	walletutxosyncstateDescLastFailedStep := walletutxosyncstateFields[16].Descriptor()
+	walletutxosyncstateDescLastFailedStep := walletutxosyncstateFields[17].Descriptor()
 	// walletutxosyncstate.DefaultLastFailedStep holds the default value on creation for the last_failed_step field.
 	walletutxosyncstate.DefaultLastFailedStep = walletutxosyncstateDescLastFailedStep.Default.(string)
 	// walletutxosyncstateDescLastUpstreamPath is the schema descriptor for last_upstream_path field.
-	walletutxosyncstateDescLastUpstreamPath := walletutxosyncstateFields[17].Descriptor()
+	walletutxosyncstateDescLastUpstreamPath := walletutxosyncstateFields[18].Descriptor()
 	// walletutxosyncstate.DefaultLastUpstreamPath holds the default value on creation for the last_upstream_path field.
 	walletutxosyncstate.DefaultLastUpstreamPath = walletutxosyncstateDescLastUpstreamPath.Default.(string)
 	// walletutxosyncstateDescLastHTTPStatus is the schema descriptor for last_http_status field.
-	walletutxosyncstateDescLastHTTPStatus := walletutxosyncstateFields[18].Descriptor()
+	walletutxosyncstateDescLastHTTPStatus := walletutxosyncstateFields[19].Descriptor()
 	// walletutxosyncstate.DefaultLastHTTPStatus holds the default value on creation for the last_http_status field.
 	walletutxosyncstate.DefaultLastHTTPStatus = walletutxosyncstateDescLastHTTPStatus.Default.(int64)
 	walletutxotokenverificationFields := schema.WalletUtxoTokenVerification{}.Fields()
 	_ = walletutxotokenverificationFields
 	// walletutxotokenverificationDescStatus is the schema descriptor for status field.
-	walletutxotokenverificationDescStatus := walletutxotokenverificationFields[6].Descriptor()
+	walletutxotokenverificationDescStatus := walletutxotokenverificationFields[7].Descriptor()
 	// walletutxotokenverification.DefaultStatus holds the default value on creation for the status field.
 	walletutxotokenverification.DefaultStatus = walletutxotokenverificationDescStatus.Default.(string)
 	// walletutxotokenverificationDescWocResponseJSON is the schema descriptor for woc_response_json field.
-	walletutxotokenverificationDescWocResponseJSON := walletutxotokenverificationFields[7].Descriptor()
+	walletutxotokenverificationDescWocResponseJSON := walletutxotokenverificationFields[8].Descriptor()
 	// walletutxotokenverification.DefaultWocResponseJSON holds the default value on creation for the woc_response_json field.
 	walletutxotokenverification.DefaultWocResponseJSON = walletutxotokenverificationDescWocResponseJSON.Default.(string)
 	// walletutxotokenverificationDescLastCheckAtUnix is the schema descriptor for last_check_at_unix field.
-	walletutxotokenverificationDescLastCheckAtUnix := walletutxotokenverificationFields[8].Descriptor()
+	walletutxotokenverificationDescLastCheckAtUnix := walletutxotokenverificationFields[9].Descriptor()
 	// walletutxotokenverification.DefaultLastCheckAtUnix holds the default value on creation for the last_check_at_unix field.
 	walletutxotokenverification.DefaultLastCheckAtUnix = walletutxotokenverificationDescLastCheckAtUnix.Default.(int64)
 	// walletutxotokenverificationDescNextRetryAtUnix is the schema descriptor for next_retry_at_unix field.
-	walletutxotokenverificationDescNextRetryAtUnix := walletutxotokenverificationFields[9].Descriptor()
+	walletutxotokenverificationDescNextRetryAtUnix := walletutxotokenverificationFields[10].Descriptor()
 	// walletutxotokenverification.DefaultNextRetryAtUnix holds the default value on creation for the next_retry_at_unix field.
 	walletutxotokenverification.DefaultNextRetryAtUnix = walletutxotokenverificationDescNextRetryAtUnix.Default.(int64)
 	// walletutxotokenverificationDescRetryCount is the schema descriptor for retry_count field.
-	walletutxotokenverificationDescRetryCount := walletutxotokenverificationFields[10].Descriptor()
+	walletutxotokenverificationDescRetryCount := walletutxotokenverificationFields[11].Descriptor()
 	// walletutxotokenverification.DefaultRetryCount holds the default value on creation for the retry_count field.
 	walletutxotokenverification.DefaultRetryCount = walletutxotokenverificationDescRetryCount.Default.(int64)
 	// walletutxotokenverificationDescErrorMessage is the schema descriptor for error_message field.
-	walletutxotokenverificationDescErrorMessage := walletutxotokenverificationFields[11].Descriptor()
+	walletutxotokenverificationDescErrorMessage := walletutxotokenverificationFields[12].Descriptor()
 	// walletutxotokenverification.DefaultErrorMessage holds the default value on creation for the error_message field.
 	walletutxotokenverification.DefaultErrorMessage = walletutxotokenverificationDescErrorMessage.Default.(string)
 }

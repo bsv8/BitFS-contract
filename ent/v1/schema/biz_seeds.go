@@ -18,6 +18,7 @@ func (BizSeeds) Annotations() []schema.Annotation {
 
 func (BizSeeds) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("seed_hash").Unique().Immutable(),
 		field.Int64("chunk_count"),
 		field.Int64("file_size"),

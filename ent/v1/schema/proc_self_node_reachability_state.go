@@ -18,6 +18,7 @@ func (ProcSelfNodeReachabilityState) Annotations() []schema.Annotation {
 
 func (ProcSelfNodeReachabilityState) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("node_pubkey_hex").Unique().Immutable(),
 		field.Int64("head_height"),
 		field.Int64("seq"),

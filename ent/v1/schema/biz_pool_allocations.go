@@ -19,6 +19,7 @@ func (BizPoolAllocations) Annotations() []schema.Annotation {
 
 func (BizPoolAllocations) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("allocation_id").Unique().Immutable(),
 		field.String("pool_session_id"),
 		field.Int64("allocation_no"),

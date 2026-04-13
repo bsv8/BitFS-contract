@@ -40,6 +40,8 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementrecords"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/facttokencarrierlinks"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/facttokenlots"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/orders"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/ordersettlements"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procchaintipstate"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procchaintipworkerlogs"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procchainutxoworkerlogs"
@@ -125,6 +127,10 @@ type Client struct {
 	FactTokenCarrierLinks *FactTokenCarrierLinksClient
 	// FactTokenLots is the client for interacting with the FactTokenLots builders.
 	FactTokenLots *FactTokenLotsClient
+	// OrderSettlements is the client for interacting with the OrderSettlements builders.
+	OrderSettlements *OrderSettlementsClient
+	// Orders is the client for interacting with the Orders builders.
+	Orders *OrdersClient
 	// ProcChainTipState is the client for interacting with the ProcChainTipState builders.
 	ProcChainTipState *ProcChainTipStateClient
 	// ProcChainTipWorkerLogs is the client for interacting with the ProcChainTipWorkerLogs builders.
@@ -214,6 +220,8 @@ func (c *Client) init() {
 	c.FactSettlementRecords = NewFactSettlementRecordsClient(c.config)
 	c.FactTokenCarrierLinks = NewFactTokenCarrierLinksClient(c.config)
 	c.FactTokenLots = NewFactTokenLotsClient(c.config)
+	c.OrderSettlements = NewOrderSettlementsClient(c.config)
+	c.Orders = NewOrdersClient(c.config)
 	c.ProcChainTipState = NewProcChainTipStateClient(c.config)
 	c.ProcChainTipWorkerLogs = NewProcChainTipWorkerLogsClient(c.config)
 	c.ProcChainUtxoWorkerLogs = NewProcChainUtxoWorkerLogsClient(c.config)
@@ -358,6 +366,8 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		FactSettlementRecords:                    NewFactSettlementRecordsClient(cfg),
 		FactTokenCarrierLinks:                    NewFactTokenCarrierLinksClient(cfg),
 		FactTokenLots:                            NewFactTokenLotsClient(cfg),
+		OrderSettlements:                         NewOrderSettlementsClient(cfg),
+		Orders:                                   NewOrdersClient(cfg),
 		ProcChainTipState:                        NewProcChainTipStateClient(cfg),
 		ProcChainTipWorkerLogs:                   NewProcChainTipWorkerLogsClient(cfg),
 		ProcChainUtxoWorkerLogs:                  NewProcChainUtxoWorkerLogsClient(cfg),
@@ -429,6 +439,8 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		FactSettlementRecords:                    NewFactSettlementRecordsClient(cfg),
 		FactTokenCarrierLinks:                    NewFactTokenCarrierLinksClient(cfg),
 		FactTokenLots:                            NewFactTokenLotsClient(cfg),
+		OrderSettlements:                         NewOrderSettlementsClient(cfg),
+		Orders:                                   NewOrdersClient(cfg),
 		ProcChainTipState:                        NewProcChainTipStateClient(cfg),
 		ProcChainTipWorkerLogs:                   NewProcChainTipWorkerLogsClient(cfg),
 		ProcChainUtxoWorkerLogs:                  NewProcChainUtxoWorkerLogsClient(cfg),
@@ -493,13 +505,14 @@ func (c *Client) Use(hooks ...Hook) {
 		c.FactSettlementChannelChainQuotePay,
 		c.FactSettlementChannelPoolSessionQuotePay, c.FactSettlementCycles,
 		c.FactSettlementRecords, c.FactTokenCarrierLinks, c.FactTokenLots,
-		c.ProcChainTipState, c.ProcChainTipWorkerLogs, c.ProcChainUtxoWorkerLogs,
-		c.ProcCommandJournal, c.ProcDirectDeals, c.ProcDirectTransferPools,
-		c.ProcDomainEvents, c.ProcEffectLogs, c.ProcFileDownloadChunks,
-		c.ProcFileDownloads, c.ProcGatewayEvents, c.ProcInboxMessages,
-		c.ProcLiveFollows, c.ProcNodeReachabilityCache, c.ProcObservedGatewayStates,
-		c.ProcOrchestratorLogs, c.ProcPublishedRouteIndexes, c.ProcSchedulerTaskRuns,
-		c.ProcSchedulerTasks, c.ProcSelfNodeReachabilityState, c.ProcStateSnapshots,
+		c.OrderSettlements, c.Orders, c.ProcChainTipState, c.ProcChainTipWorkerLogs,
+		c.ProcChainUtxoWorkerLogs, c.ProcCommandJournal, c.ProcDirectDeals,
+		c.ProcDirectTransferPools, c.ProcDomainEvents, c.ProcEffectLogs,
+		c.ProcFileDownloadChunks, c.ProcFileDownloads, c.ProcGatewayEvents,
+		c.ProcInboxMessages, c.ProcLiveFollows, c.ProcNodeReachabilityCache,
+		c.ProcObservedGatewayStates, c.ProcOrchestratorLogs,
+		c.ProcPublishedRouteIndexes, c.ProcSchedulerTaskRuns, c.ProcSchedulerTasks,
+		c.ProcSelfNodeReachabilityState, c.ProcStateSnapshots,
 		c.WalletLocalBroadcastTxs, c.WalletUtxo, c.WalletUtxoSyncCursor,
 		c.WalletUtxoSyncState, c.WalletUtxoTokenVerification,
 	} {
@@ -520,13 +533,14 @@ func (c *Client) Intercept(interceptors ...Interceptor) {
 		c.FactSettlementChannelChainQuotePay,
 		c.FactSettlementChannelPoolSessionQuotePay, c.FactSettlementCycles,
 		c.FactSettlementRecords, c.FactTokenCarrierLinks, c.FactTokenLots,
-		c.ProcChainTipState, c.ProcChainTipWorkerLogs, c.ProcChainUtxoWorkerLogs,
-		c.ProcCommandJournal, c.ProcDirectDeals, c.ProcDirectTransferPools,
-		c.ProcDomainEvents, c.ProcEffectLogs, c.ProcFileDownloadChunks,
-		c.ProcFileDownloads, c.ProcGatewayEvents, c.ProcInboxMessages,
-		c.ProcLiveFollows, c.ProcNodeReachabilityCache, c.ProcObservedGatewayStates,
-		c.ProcOrchestratorLogs, c.ProcPublishedRouteIndexes, c.ProcSchedulerTaskRuns,
-		c.ProcSchedulerTasks, c.ProcSelfNodeReachabilityState, c.ProcStateSnapshots,
+		c.OrderSettlements, c.Orders, c.ProcChainTipState, c.ProcChainTipWorkerLogs,
+		c.ProcChainUtxoWorkerLogs, c.ProcCommandJournal, c.ProcDirectDeals,
+		c.ProcDirectTransferPools, c.ProcDomainEvents, c.ProcEffectLogs,
+		c.ProcFileDownloadChunks, c.ProcFileDownloads, c.ProcGatewayEvents,
+		c.ProcInboxMessages, c.ProcLiveFollows, c.ProcNodeReachabilityCache,
+		c.ProcObservedGatewayStates, c.ProcOrchestratorLogs,
+		c.ProcPublishedRouteIndexes, c.ProcSchedulerTaskRuns, c.ProcSchedulerTasks,
+		c.ProcSelfNodeReachabilityState, c.ProcStateSnapshots,
 		c.WalletLocalBroadcastTxs, c.WalletUtxo, c.WalletUtxoSyncCursor,
 		c.WalletUtxoSyncState, c.WalletUtxoTokenVerification,
 	} {
@@ -589,6 +603,10 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.FactTokenCarrierLinks.mutate(ctx, m)
 	case *FactTokenLotsMutation:
 		return c.FactTokenLots.mutate(ctx, m)
+	case *OrderSettlementsMutation:
+		return c.OrderSettlements.mutate(ctx, m)
+	case *OrdersMutation:
+		return c.Orders.mutate(ctx, m)
 	case *ProcChainTipStateMutation:
 		return c.ProcChainTipState.mutate(ctx, m)
 	case *ProcChainTipWorkerLogsMutation:
@@ -4104,6 +4122,272 @@ func (c *FactTokenLotsClient) mutate(ctx context.Context, m *FactTokenLotsMutati
 	}
 }
 
+// OrderSettlementsClient is a client for the OrderSettlements schema.
+type OrderSettlementsClient struct {
+	config
+}
+
+// NewOrderSettlementsClient returns a client for the OrderSettlements from the given config.
+func NewOrderSettlementsClient(c config) *OrderSettlementsClient {
+	return &OrderSettlementsClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `ordersettlements.Hooks(f(g(h())))`.
+func (c *OrderSettlementsClient) Use(hooks ...Hook) {
+	c.hooks.OrderSettlements = append(c.hooks.OrderSettlements, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `ordersettlements.Intercept(f(g(h())))`.
+func (c *OrderSettlementsClient) Intercept(interceptors ...Interceptor) {
+	c.inters.OrderSettlements = append(c.inters.OrderSettlements, interceptors...)
+}
+
+// Create returns a builder for creating a OrderSettlements entity.
+func (c *OrderSettlementsClient) Create() *OrderSettlementsCreate {
+	mutation := newOrderSettlementsMutation(c.config, OpCreate)
+	return &OrderSettlementsCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of OrderSettlements entities.
+func (c *OrderSettlementsClient) CreateBulk(builders ...*OrderSettlementsCreate) *OrderSettlementsCreateBulk {
+	return &OrderSettlementsCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *OrderSettlementsClient) MapCreateBulk(slice any, setFunc func(*OrderSettlementsCreate, int)) *OrderSettlementsCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &OrderSettlementsCreateBulk{err: fmt.Errorf("calling to OrderSettlementsClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*OrderSettlementsCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &OrderSettlementsCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for OrderSettlements.
+func (c *OrderSettlementsClient) Update() *OrderSettlementsUpdate {
+	mutation := newOrderSettlementsMutation(c.config, OpUpdate)
+	return &OrderSettlementsUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *OrderSettlementsClient) UpdateOne(_m *OrderSettlements) *OrderSettlementsUpdateOne {
+	mutation := newOrderSettlementsMutation(c.config, OpUpdateOne, withOrderSettlements(_m))
+	return &OrderSettlementsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *OrderSettlementsClient) UpdateOneID(id int) *OrderSettlementsUpdateOne {
+	mutation := newOrderSettlementsMutation(c.config, OpUpdateOne, withOrderSettlementsID(id))
+	return &OrderSettlementsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for OrderSettlements.
+func (c *OrderSettlementsClient) Delete() *OrderSettlementsDelete {
+	mutation := newOrderSettlementsMutation(c.config, OpDelete)
+	return &OrderSettlementsDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *OrderSettlementsClient) DeleteOne(_m *OrderSettlements) *OrderSettlementsDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *OrderSettlementsClient) DeleteOneID(id int) *OrderSettlementsDeleteOne {
+	builder := c.Delete().Where(ordersettlements.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &OrderSettlementsDeleteOne{builder}
+}
+
+// Query returns a query builder for OrderSettlements.
+func (c *OrderSettlementsClient) Query() *OrderSettlementsQuery {
+	return &OrderSettlementsQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeOrderSettlements},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a OrderSettlements entity by its id.
+func (c *OrderSettlementsClient) Get(ctx context.Context, id int) (*OrderSettlements, error) {
+	return c.Query().Where(ordersettlements.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *OrderSettlementsClient) GetX(ctx context.Context, id int) *OrderSettlements {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *OrderSettlementsClient) Hooks() []Hook {
+	return c.hooks.OrderSettlements
+}
+
+// Interceptors returns the client interceptors.
+func (c *OrderSettlementsClient) Interceptors() []Interceptor {
+	return c.inters.OrderSettlements
+}
+
+func (c *OrderSettlementsClient) mutate(ctx context.Context, m *OrderSettlementsMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&OrderSettlementsCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&OrderSettlementsUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&OrderSettlementsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&OrderSettlementsDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("gen: unknown OrderSettlements mutation op: %q", m.Op())
+	}
+}
+
+// OrdersClient is a client for the Orders schema.
+type OrdersClient struct {
+	config
+}
+
+// NewOrdersClient returns a client for the Orders from the given config.
+func NewOrdersClient(c config) *OrdersClient {
+	return &OrdersClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `orders.Hooks(f(g(h())))`.
+func (c *OrdersClient) Use(hooks ...Hook) {
+	c.hooks.Orders = append(c.hooks.Orders, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `orders.Intercept(f(g(h())))`.
+func (c *OrdersClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Orders = append(c.inters.Orders, interceptors...)
+}
+
+// Create returns a builder for creating a Orders entity.
+func (c *OrdersClient) Create() *OrdersCreate {
+	mutation := newOrdersMutation(c.config, OpCreate)
+	return &OrdersCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Orders entities.
+func (c *OrdersClient) CreateBulk(builders ...*OrdersCreate) *OrdersCreateBulk {
+	return &OrdersCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *OrdersClient) MapCreateBulk(slice any, setFunc func(*OrdersCreate, int)) *OrdersCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &OrdersCreateBulk{err: fmt.Errorf("calling to OrdersClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*OrdersCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &OrdersCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Orders.
+func (c *OrdersClient) Update() *OrdersUpdate {
+	mutation := newOrdersMutation(c.config, OpUpdate)
+	return &OrdersUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *OrdersClient) UpdateOne(_m *Orders) *OrdersUpdateOne {
+	mutation := newOrdersMutation(c.config, OpUpdateOne, withOrders(_m))
+	return &OrdersUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *OrdersClient) UpdateOneID(id int) *OrdersUpdateOne {
+	mutation := newOrdersMutation(c.config, OpUpdateOne, withOrdersID(id))
+	return &OrdersUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Orders.
+func (c *OrdersClient) Delete() *OrdersDelete {
+	mutation := newOrdersMutation(c.config, OpDelete)
+	return &OrdersDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *OrdersClient) DeleteOne(_m *Orders) *OrdersDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *OrdersClient) DeleteOneID(id int) *OrdersDeleteOne {
+	builder := c.Delete().Where(orders.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &OrdersDeleteOne{builder}
+}
+
+// Query returns a query builder for Orders.
+func (c *OrdersClient) Query() *OrdersQuery {
+	return &OrdersQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeOrders},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Orders entity by its id.
+func (c *OrdersClient) Get(ctx context.Context, id int) (*Orders, error) {
+	return c.Query().Where(orders.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *OrdersClient) GetX(ctx context.Context, id int) *Orders {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *OrdersClient) Hooks() []Hook {
+	return c.hooks.Orders
+}
+
+// Interceptors returns the client interceptors.
+func (c *OrdersClient) Interceptors() []Interceptor {
+	return c.inters.Orders
+}
+
+func (c *OrdersClient) mutate(ctx context.Context, m *OrdersMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&OrdersCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&OrdersUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&OrdersUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&OrdersDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("gen: unknown Orders mutation op: %q", m.Op())
+	}
+}
+
 // ProcChainTipStateClient is a client for the ProcChainTipState schema.
 type ProcChainTipStateClient struct {
 	config
@@ -7572,9 +7856,9 @@ type (
 		FactSettlementChannelChainAssetCreate, FactSettlementChannelChainDirectPay,
 		FactSettlementChannelChainQuotePay, FactSettlementChannelPoolSessionQuotePay,
 		FactSettlementCycles, FactSettlementRecords, FactTokenCarrierLinks,
-		FactTokenLots, ProcChainTipState, ProcChainTipWorkerLogs,
-		ProcChainUtxoWorkerLogs, ProcCommandJournal, ProcDirectDeals,
-		ProcDirectTransferPools, ProcDomainEvents, ProcEffectLogs,
+		FactTokenLots, OrderSettlements, Orders, ProcChainTipState,
+		ProcChainTipWorkerLogs, ProcChainUtxoWorkerLogs, ProcCommandJournal,
+		ProcDirectDeals, ProcDirectTransferPools, ProcDomainEvents, ProcEffectLogs,
 		ProcFileDownloadChunks, ProcFileDownloads, ProcGatewayEvents,
 		ProcInboxMessages, ProcLiveFollows, ProcNodeReachabilityCache,
 		ProcObservedGatewayStates, ProcOrchestratorLogs, ProcPublishedRouteIndexes,
@@ -7590,9 +7874,9 @@ type (
 		FactSettlementChannelChainAssetCreate, FactSettlementChannelChainDirectPay,
 		FactSettlementChannelChainQuotePay, FactSettlementChannelPoolSessionQuotePay,
 		FactSettlementCycles, FactSettlementRecords, FactTokenCarrierLinks,
-		FactTokenLots, ProcChainTipState, ProcChainTipWorkerLogs,
-		ProcChainUtxoWorkerLogs, ProcCommandJournal, ProcDirectDeals,
-		ProcDirectTransferPools, ProcDomainEvents, ProcEffectLogs,
+		FactTokenLots, OrderSettlements, Orders, ProcChainTipState,
+		ProcChainTipWorkerLogs, ProcChainUtxoWorkerLogs, ProcCommandJournal,
+		ProcDirectDeals, ProcDirectTransferPools, ProcDomainEvents, ProcEffectLogs,
 		ProcFileDownloadChunks, ProcFileDownloads, ProcGatewayEvents,
 		ProcInboxMessages, ProcLiveFollows, ProcNodeReachabilityCache,
 		ProcObservedGatewayStates, ProcOrchestratorLogs, ProcPublishedRouteIndexes,

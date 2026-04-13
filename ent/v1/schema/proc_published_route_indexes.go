@@ -19,6 +19,7 @@ func (ProcPublishedRouteIndexes) Annotations() []schema.Annotation {
 
 func (ProcPublishedRouteIndexes) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("route").Unique().Immutable(),
 		field.String("seed_hash"),
 		field.Int64("updated_at_unix"),

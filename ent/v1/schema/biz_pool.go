@@ -18,6 +18,7 @@ func (BizPool) Annotations() []schema.Annotation {
 
 func (BizPool) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("pool_session_id").Unique().Immutable(),
 		field.String("pool_scheme"),
 		field.String("counterparty_pubkey_hex").Default(""),

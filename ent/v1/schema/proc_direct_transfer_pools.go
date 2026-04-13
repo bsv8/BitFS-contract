@@ -18,6 +18,7 @@ func (ProcDirectTransferPools) Annotations() []schema.Annotation {
 
 func (ProcDirectTransferPools) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("session_id").Unique().Immutable(),
 		field.String("deal_id"),
 		field.String("buyer_pubkey_hex"),

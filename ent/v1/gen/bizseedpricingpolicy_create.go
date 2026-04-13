@@ -49,6 +49,12 @@ func (_c *BizSeedPricingPolicyCreate) SetUpdatedAtUnix(v int64) *BizSeedPricingP
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *BizSeedPricingPolicyCreate) SetID(v int) *BizSeedPricingPolicyCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // Mutation returns the BizSeedPricingPolicyMutation object of the builder.
 func (_c *BizSeedPricingPolicyCreate) Mutation() *BizSeedPricingPolicyMutation {
 	return _c.mutation
@@ -112,8 +118,10 @@ func (_c *BizSeedPricingPolicyCreate) sqlSave(ctx context.Context) (*BizSeedPric
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -124,6 +132,10 @@ func (_c *BizSeedPricingPolicyCreate) createSpec() (*BizSeedPricingPolicy, *sqlg
 		_node = &BizSeedPricingPolicy{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(bizseedpricingpolicy.Table, sqlgraph.NewFieldSpec(bizseedpricingpolicy.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.SeedHash(); ok {
 		_spec.SetField(bizseedpricingpolicy.FieldSeedHash, field.TypeString, value)
 		_node.SeedHash = value
@@ -191,7 +203,7 @@ func (_c *BizSeedPricingPolicyCreateBulk) Save(ctx context.Context) ([]*BizSeedP
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

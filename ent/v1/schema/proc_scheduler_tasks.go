@@ -19,6 +19,7 @@ func (ProcSchedulerTasks) Annotations() []schema.Annotation {
 
 func (ProcSchedulerTasks) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("task_name").Unique().Immutable(),
 		field.String("owner"),
 		field.String("mode"),

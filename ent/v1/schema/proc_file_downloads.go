@@ -19,6 +19,7 @@ func (ProcFileDownloads) Annotations() []schema.Annotation {
 
 func (ProcFileDownloads) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("seed_hash").Unique().Immutable(),
 		field.String("file_path"),
 		field.Int64("file_size"),

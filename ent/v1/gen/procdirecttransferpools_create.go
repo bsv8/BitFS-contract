@@ -127,6 +127,12 @@ func (_c *ProcDirectTransferPoolsCreate) SetUpdatedAtUnix(v int64) *ProcDirectTr
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *ProcDirectTransferPoolsCreate) SetID(v int) *ProcDirectTransferPoolsCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // Mutation returns the ProcDirectTransferPoolsMutation object of the builder.
 func (_c *ProcDirectTransferPoolsCreate) Mutation() *ProcDirectTransferPoolsMutation {
 	return _c.mutation
@@ -229,8 +235,10 @@ func (_c *ProcDirectTransferPoolsCreate) sqlSave(ctx context.Context) (*ProcDire
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -241,6 +249,10 @@ func (_c *ProcDirectTransferPoolsCreate) createSpec() (*ProcDirectTransferPools,
 		_node = &ProcDirectTransferPools{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(procdirecttransferpools.Table, sqlgraph.NewFieldSpec(procdirecttransferpools.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.SessionID(); ok {
 		_spec.SetField(procdirecttransferpools.FieldSessionID, field.TypeString, value)
 		_node.SessionID = value
@@ -360,7 +372,7 @@ func (_c *ProcDirectTransferPoolsCreateBulk) Save(ctx context.Context) ([]*ProcD
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

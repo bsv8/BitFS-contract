@@ -321,6 +321,30 @@ func (f FactTokenLotsFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.Valu
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.FactTokenLotsMutation", m)
 }
 
+// The OrderSettlementsFunc type is an adapter to allow the use of ordinary
+// function as OrderSettlements mutator.
+type OrderSettlementsFunc func(context.Context, *gen.OrderSettlementsMutation) (gen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f OrderSettlementsFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.Value, error) {
+	if mv, ok := m.(*gen.OrderSettlementsMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.OrderSettlementsMutation", m)
+}
+
+// The OrdersFunc type is an adapter to allow the use of ordinary
+// function as Orders mutator.
+type OrdersFunc func(context.Context, *gen.OrdersMutation) (gen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f OrdersFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.Value, error) {
+	if mv, ok := m.(*gen.OrdersMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.OrdersMutation", m)
+}
+
 // The ProcChainTipStateFunc type is an adapter to allow the use of ordinary
 // function as ProcChainTipState mutator.
 type ProcChainTipStateFunc func(context.Context, *gen.ProcChainTipStateMutation) (gen.Value, error)

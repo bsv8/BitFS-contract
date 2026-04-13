@@ -19,6 +19,7 @@ func (BizWorkspaceFiles) Annotations() []schema.Annotation {
 
 func (BizWorkspaceFiles) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int("id"),
 		field.String("workspace_path"),
 		field.String("file_path"),
 		field.String("seed_hash"),

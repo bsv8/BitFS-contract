@@ -38,6 +38,8 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/factsettlementrecords"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/facttokencarrierlinks"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/facttokenlots"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/orders"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/ordersettlements"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procchaintipstate"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procchaintipworkerlogs"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procchainutxoworkerlogs"
@@ -150,6 +152,8 @@ func checkColumn(t, c string) error {
 			factsettlementrecords.Table:                    factsettlementrecords.ValidColumn,
 			facttokencarrierlinks.Table:                    facttokencarrierlinks.ValidColumn,
 			facttokenlots.Table:                            facttokenlots.ValidColumn,
+			ordersettlements.Table:                         ordersettlements.ValidColumn,
+			orders.Table:                                   orders.ValidColumn,
 			procchaintipstate.Table:                        procchaintipstate.ValidColumn,
 			procchaintipworkerlogs.Table:                   procchaintipworkerlogs.ValidColumn,
 			procchainutxoworkerlogs.Table:                  procchainutxoworkerlogs.ValidColumn,
