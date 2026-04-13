@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+package bitfs.v1;
+
+option go_package = "github.com/bsv8/bitfs-contract/gen/go/v1;bitfsv1";
+
+// 直连报价提交。
+message DirectQuoteSubmitReq {
+  string demand_id = 1;
+  string seller_pubkey_hex = 2;
+  uint64 seed_price = 3;
+  uint64 chunk_price = 4;
+  int64 expires_at_unix = 5;
+  string recommended_file_name = 6;
+  repeated string arbiter_pubkey_hexes = 7;
+  bytes available_chunk_bitmap = 8;
+  uint32 chunk_count = 9;
+  uint64 file_size = 10;
+  string mime_hint = 11;
+}
+
+message DirectQuoteSubmitResp {
+  string status = 1;
+}
+
+// 买家接受卖家报价并建立 deal。
+message DirectDealAcceptReq {
+  string demand_id = 1;
+  string buyer_pubkey_hex = 2;
+  string seed_hash = 3;
+  uint64 seed_price = 4;
+  uint64 chunk_price = 5;
+  int64 expires_at_unix = 6;
+  string arbiter_pubkey_hex = 7;
+}
+
+message DirectDealAcceptResp {
+  string deal_id = 1;
+  string seller_pubkey_hex = 2;
+  uint64 chunk_price = 3;
+  string status = 4;
+}
+
+// 直连池 open。
+message DirectTransferPoolOpenReq {
+  string session_id = 1;
+  string deal_id = 2;
+  string buyer_pubkey_hex = 3;
+  string arbiter_pubkey_hex = 4;
+  string arbiter_pubkey = 5;
+  uint64 pool_amount = 6;
+  uint64 spend_tx_fee = 7;
+  uint32 sequence = 8;
+  uint64 seller_amount = 9;
+  uint64 buyer_amount = 10;
+  bytes current_tx = 11;
+  bytes buyer_sig = 12;
+  bytes base_tx = 13;
+  string base_txid = 14;
+  double fee_rate_sat_byte = 15;
+  uint32 lock_blocks = 16;
+}
+
+message DirectTransferPoolOpenResp {
+  string session_id = 1;
+  string status = 2;
+  bytes seller_sig = 3;
+  string error = 4;
+}
+
+// 直连池 pay。
+message DirectTransferPoolPayReq {
+  string session_id = 1;
+  string seed_hash = 2;
+  string chunk_hash = 3;
+  uint32 chunk_index = 4;
+  uint32 sequence = 5;
+  uint64 seller_amount = 6;
+  uint64 buyer_amount = 7;
+  bytes current_tx = 8;
+  bytes buyer_sig = 9;
+}
+
+message DirectTransferPoolPayResp {
+  string session_id = 1;
+  string status = 2;
+  bytes seller_sig = 3;
+  bytes chunk = 4;
+  string error = 5;
+}
+
+// 直连池 close。
+message DirectTransferPoolCloseReq {
+  string session_id = 1;
+  uint32 sequence = 2;
+  uint64 seller_amount = 3;
+  uint64 buyer_amount = 4;
+  bytes current_tx = 5;
+  bytes buyer_sig = 6;
+}
+
+message DirectTransferPoolCloseResp {
+  string session_id = 1;
+  string status = 2;
+  bytes seller_sig = 3;
+  string error = 4;
+}
+
+// 按 seed_hash 拉 seed 内容。
+message SeedGetReq {
+  string session_id = 1;
+  string seed_hash = 2;
+}
+
+message SeedGetResp {
+  bytes seed = 1;
+}

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package bitfs.v1;
+
+option go_package = "github.com/bsv8/bitfs-contract/gen/go/v1;bitfsv1";
+
+// 直播最近片段引用。
+message LiveSegmentRef {
+  uint64 segment_index = 1;
+  string seed_hash = 2;
+  int64 published_at_unix = 3;
+}
