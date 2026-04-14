@@ -15,6 +15,8 @@ const (
 	FieldProcessID = "process_id"
 	// FieldSettlementID holds the string denoting the settlement_id field in the database.
 	FieldSettlementID = "settlement_id"
+	// FieldOrderID holds the string denoting the order_id field in the database.
+	FieldOrderID = "order_id"
 	// FieldSourceType holds the string denoting the source_type field in the database.
 	FieldSourceType = "source_type"
 	// FieldSourceID holds the string denoting the source_id field in the database.
@@ -27,8 +29,6 @@ const (
 	FieldEventType = "event_type"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
-	// FieldIdempotencyKey holds the string denoting the idempotency_key field in the database.
-	FieldIdempotencyKey = "idempotency_key"
 	// FieldNote holds the string denoting the note field in the database.
 	FieldNote = "note"
 	// FieldPayloadJSON holds the string denoting the payload_json field in the database.
@@ -44,13 +44,13 @@ var Columns = []string{
 	FieldID,
 	FieldProcessID,
 	FieldSettlementID,
+	FieldOrderID,
 	FieldSourceType,
 	FieldSourceID,
 	FieldAccountingScene,
 	FieldAccountingSubtype,
 	FieldEventType,
 	FieldStatus,
-	FieldIdempotencyKey,
 	FieldNote,
 	FieldPayloadJSON,
 	FieldOccurredAtUnix,
@@ -91,6 +91,11 @@ func BySettlementID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSettlementID, opts...).ToFunc()
 }
 
+// ByOrderID orders the results by the order_id field.
+func ByOrderID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldOrderID, opts...).ToFunc()
+}
+
 // BySourceType orders the results by the source_type field.
 func BySourceType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSourceType, opts...).ToFunc()
@@ -119,11 +124,6 @@ func ByEventType(opts ...sql.OrderTermOption) OrderOption {
 // ByStatus orders the results by the status field.
 func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
-}
-
-// ByIdempotencyKey orders the results by the idempotency_key field.
-func ByIdempotencyKey(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIdempotencyKey, opts...).ToFunc()
 }
 
 // ByNote orders the results by the note field.

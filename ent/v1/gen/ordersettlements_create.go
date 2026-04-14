@@ -171,20 +171,6 @@ func (_c *OrderSettlementsCreate) SetTargetID(v string) *OrderSettlementsCreate 
 	return _c
 }
 
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (_c *OrderSettlementsCreate) SetIdempotencyKey(v string) *OrderSettlementsCreate {
-	_c.mutation.SetIdempotencyKey(v)
-	return _c
-}
-
-// SetNillableIdempotencyKey sets the "idempotency_key" field if the given value is not nil.
-func (_c *OrderSettlementsCreate) SetNillableIdempotencyKey(v *string) *OrderSettlementsCreate {
-	if v != nil {
-		_c.SetIdempotencyKey(*v)
-	}
-	return _c
-}
-
 // SetNote sets the "note" field.
 func (_c *OrderSettlementsCreate) SetNote(v string) *OrderSettlementsCreate {
 	_c.mutation.SetNote(v)
@@ -322,10 +308,6 @@ func (_c *OrderSettlementsCreate) defaults() {
 		v := ordersettlements.DefaultAmountSatoshi
 		_c.mutation.SetAmountSatoshi(v)
 	}
-	if _, ok := _c.mutation.IdempotencyKey(); !ok {
-		v := ordersettlements.DefaultIdempotencyKey
-		_c.mutation.SetIdempotencyKey(v)
-	}
 	if _, ok := _c.mutation.Note(); !ok {
 		v := ordersettlements.DefaultNote
 		_c.mutation.SetNote(v)
@@ -393,9 +375,6 @@ func (_c *OrderSettlementsCreate) check() error {
 	}
 	if _, ok := _c.mutation.TargetID(); !ok {
 		return &ValidationError{Name: "target_id", err: errors.New(`gen: missing required field "OrderSettlements.target_id"`)}
-	}
-	if _, ok := _c.mutation.IdempotencyKey(); !ok {
-		return &ValidationError{Name: "idempotency_key", err: errors.New(`gen: missing required field "OrderSettlements.idempotency_key"`)}
 	}
 	if _, ok := _c.mutation.Note(); !ok {
 		return &ValidationError{Name: "note", err: errors.New(`gen: missing required field "OrderSettlements.note"`)}
@@ -510,10 +489,6 @@ func (_c *OrderSettlementsCreate) createSpec() (*OrderSettlements, *sqlgraph.Cre
 	if value, ok := _c.mutation.TargetID(); ok {
 		_spec.SetField(ordersettlements.FieldTargetID, field.TypeString, value)
 		_node.TargetID = value
-	}
-	if value, ok := _c.mutation.IdempotencyKey(); ok {
-		_spec.SetField(ordersettlements.FieldIdempotencyKey, field.TypeString, value)
-		_node.IdempotencyKey = value
 	}
 	if value, ok := _c.mutation.Note(); ok {
 		_spec.SetField(ordersettlements.FieldNote, field.TypeString, value)

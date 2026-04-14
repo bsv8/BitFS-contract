@@ -43,8 +43,6 @@ const (
 	FieldTargetType = "target_type"
 	// FieldTargetID holds the string denoting the target_id field in the database.
 	FieldTargetID = "target_id"
-	// FieldIdempotencyKey holds the string denoting the idempotency_key field in the database.
-	FieldIdempotencyKey = "idempotency_key"
 	// FieldNote holds the string denoting the note field in the database.
 	FieldNote = "note"
 	// FieldErrorMessage holds the string denoting the error_message field in the database.
@@ -80,7 +78,6 @@ var Columns = []string{
 	FieldToPartyID,
 	FieldTargetType,
 	FieldTargetID,
-	FieldIdempotencyKey,
 	FieldNote,
 	FieldErrorMessage,
 	FieldPayloadJSON,
@@ -114,8 +111,6 @@ var (
 	DefaultSettlementStatus string
 	// DefaultAmountSatoshi holds the default value on creation for the "amount_satoshi" field.
 	DefaultAmountSatoshi int64
-	// DefaultIdempotencyKey holds the default value on creation for the "idempotency_key" field.
-	DefaultIdempotencyKey string
 	// DefaultNote holds the default value on creation for the "note" field.
 	DefaultNote string
 	// DefaultErrorMessage holds the default value on creation for the "error_message" field.
@@ -212,11 +207,6 @@ func ByTargetType(opts ...sql.OrderTermOption) OrderOption {
 // ByTargetID orders the results by the target_id field.
 func ByTargetID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTargetID, opts...).ToFunc()
-}
-
-// ByIdempotencyKey orders the results by the idempotency_key field.
-func ByIdempotencyKey(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIdempotencyKey, opts...).ToFunc()
 }
 
 // ByNote orders the results by the note field.

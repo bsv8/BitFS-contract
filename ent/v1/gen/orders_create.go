@@ -61,12 +61,6 @@ func (_c *OrdersCreate) SetStatus(v string) *OrdersCreate {
 	return _c
 }
 
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (_c *OrdersCreate) SetIdempotencyKey(v string) *OrdersCreate {
-	_c.mutation.SetIdempotencyKey(v)
-	return _c
-}
-
 // SetNote sets the "note" field.
 func (_c *OrdersCreate) SetNote(v string) *OrdersCreate {
 	_c.mutation.SetNote(v)
@@ -181,9 +175,6 @@ func (_c *OrdersCreate) check() error {
 	if _, ok := _c.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`gen: missing required field "Orders.status"`)}
 	}
-	if _, ok := _c.mutation.IdempotencyKey(); !ok {
-		return &ValidationError{Name: "idempotency_key", err: errors.New(`gen: missing required field "Orders.idempotency_key"`)}
-	}
 	if _, ok := _c.mutation.Note(); !ok {
 		return &ValidationError{Name: "note", err: errors.New(`gen: missing required field "Orders.note"`)}
 	}
@@ -255,10 +246,6 @@ func (_c *OrdersCreate) createSpec() (*Orders, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.Status(); ok {
 		_spec.SetField(orders.FieldStatus, field.TypeString, value)
 		_node.Status = value
-	}
-	if value, ok := _c.mutation.IdempotencyKey(); ok {
-		_spec.SetField(orders.FieldIdempotencyKey, field.TypeString, value)
-		_node.IdempotencyKey = value
 	}
 	if value, ok := _c.mutation.Note(); ok {
 		_spec.SetField(orders.FieldNote, field.TypeString, value)

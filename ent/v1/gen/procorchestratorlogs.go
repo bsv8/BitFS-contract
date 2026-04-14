@@ -26,8 +26,6 @@ type ProcOrchestratorLogs struct {
 	SignalType string `json:"signal_type,omitempty"`
 	// AggregateKey holds the value of the "aggregate_key" field.
 	AggregateKey string `json:"aggregate_key,omitempty"`
-	// IdempotencyKey holds the value of the "idempotency_key" field.
-	IdempotencyKey string `json:"idempotency_key,omitempty"`
 	// CommandType holds the value of the "command_type" field.
 	CommandType string `json:"command_type,omitempty"`
 	// GatewayPubkeyHex holds the value of the "gateway_pubkey_hex" field.
@@ -52,7 +50,7 @@ func (*ProcOrchestratorLogs) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case procorchestratorlogs.FieldID, procorchestratorlogs.FieldCreatedAtUnix, procorchestratorlogs.FieldRetryCount, procorchestratorlogs.FieldQueueLength:
 			values[i] = new(sql.NullInt64)
-		case procorchestratorlogs.FieldEventType, procorchestratorlogs.FieldSource, procorchestratorlogs.FieldSignalType, procorchestratorlogs.FieldAggregateKey, procorchestratorlogs.FieldIdempotencyKey, procorchestratorlogs.FieldCommandType, procorchestratorlogs.FieldGatewayPubkeyHex, procorchestratorlogs.FieldTaskStatus, procorchestratorlogs.FieldErrorMessage, procorchestratorlogs.FieldPayloadJSON:
+		case procorchestratorlogs.FieldEventType, procorchestratorlogs.FieldSource, procorchestratorlogs.FieldSignalType, procorchestratorlogs.FieldAggregateKey, procorchestratorlogs.FieldCommandType, procorchestratorlogs.FieldGatewayPubkeyHex, procorchestratorlogs.FieldTaskStatus, procorchestratorlogs.FieldErrorMessage, procorchestratorlogs.FieldPayloadJSON:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -104,12 +102,6 @@ func (_m *ProcOrchestratorLogs) assignValues(columns []string, values []any) err
 				return fmt.Errorf("unexpected type %T for field aggregate_key", values[i])
 			} else if value.Valid {
 				_m.AggregateKey = value.String
-			}
-		case procorchestratorlogs.FieldIdempotencyKey:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field idempotency_key", values[i])
-			} else if value.Valid {
-				_m.IdempotencyKey = value.String
 			}
 		case procorchestratorlogs.FieldCommandType:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -203,9 +195,6 @@ func (_m *ProcOrchestratorLogs) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("aggregate_key=")
 	builder.WriteString(_m.AggregateKey)
-	builder.WriteString(", ")
-	builder.WriteString("idempotency_key=")
-	builder.WriteString(_m.IdempotencyKey)
 	builder.WriteString(", ")
 	builder.WriteString("command_type=")
 	builder.WriteString(_m.CommandType)

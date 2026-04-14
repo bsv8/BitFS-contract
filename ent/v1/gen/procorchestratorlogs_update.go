@@ -104,20 +104,6 @@ func (_u *ProcOrchestratorLogsUpdate) SetNillableAggregateKey(v *string) *ProcOr
 	return _u
 }
 
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (_u *ProcOrchestratorLogsUpdate) SetIdempotencyKey(v string) *ProcOrchestratorLogsUpdate {
-	_u.mutation.SetIdempotencyKey(v)
-	return _u
-}
-
-// SetNillableIdempotencyKey sets the "idempotency_key" field if the given value is not nil.
-func (_u *ProcOrchestratorLogsUpdate) SetNillableIdempotencyKey(v *string) *ProcOrchestratorLogsUpdate {
-	if v != nil {
-		_u.SetIdempotencyKey(*v)
-	}
-	return _u
-}
-
 // SetCommandType sets the "command_type" field.
 func (_u *ProcOrchestratorLogsUpdate) SetCommandType(v string) *ProcOrchestratorLogsUpdate {
 	_u.mutation.SetCommandType(v)
@@ -289,9 +275,6 @@ func (_u *ProcOrchestratorLogsUpdate) sqlSave(ctx context.Context) (_node int, e
 	if value, ok := _u.mutation.AggregateKey(); ok {
 		_spec.SetField(procorchestratorlogs.FieldAggregateKey, field.TypeString, value)
 	}
-	if value, ok := _u.mutation.IdempotencyKey(); ok {
-		_spec.SetField(procorchestratorlogs.FieldIdempotencyKey, field.TypeString, value)
-	}
 	if value, ok := _u.mutation.CommandType(); ok {
 		_spec.SetField(procorchestratorlogs.FieldCommandType, field.TypeString, value)
 	}
@@ -412,20 +395,6 @@ func (_u *ProcOrchestratorLogsUpdateOne) SetAggregateKey(v string) *ProcOrchestr
 func (_u *ProcOrchestratorLogsUpdateOne) SetNillableAggregateKey(v *string) *ProcOrchestratorLogsUpdateOne {
 	if v != nil {
 		_u.SetAggregateKey(*v)
-	}
-	return _u
-}
-
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (_u *ProcOrchestratorLogsUpdateOne) SetIdempotencyKey(v string) *ProcOrchestratorLogsUpdateOne {
-	_u.mutation.SetIdempotencyKey(v)
-	return _u
-}
-
-// SetNillableIdempotencyKey sets the "idempotency_key" field if the given value is not nil.
-func (_u *ProcOrchestratorLogsUpdateOne) SetNillableIdempotencyKey(v *string) *ProcOrchestratorLogsUpdateOne {
-	if v != nil {
-		_u.SetIdempotencyKey(*v)
 	}
 	return _u
 }
@@ -630,9 +599,6 @@ func (_u *ProcOrchestratorLogsUpdateOne) sqlSave(ctx context.Context) (_node *Pr
 	}
 	if value, ok := _u.mutation.AggregateKey(); ok {
 		_spec.SetField(procorchestratorlogs.FieldAggregateKey, field.TypeString, value)
-	}
-	if value, ok := _u.mutation.IdempotencyKey(); ok {
-		_spec.SetField(procorchestratorlogs.FieldIdempotencyKey, field.TypeString, value)
 	}
 	if value, ok := _u.mutation.CommandType(); ok {
 		_spec.SetField(procorchestratorlogs.FieldCommandType, field.TypeString, value)

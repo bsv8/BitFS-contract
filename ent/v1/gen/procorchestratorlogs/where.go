@@ -77,11 +77,6 @@ func AggregateKey(v string) predicate.ProcOrchestratorLogs {
 	return predicate.ProcOrchestratorLogs(sql.FieldEQ(FieldAggregateKey, v))
 }
 
-// IdempotencyKey applies equality check predicate on the "idempotency_key" field. It's identical to IdempotencyKeyEQ.
-func IdempotencyKey(v string) predicate.ProcOrchestratorLogs {
-	return predicate.ProcOrchestratorLogs(sql.FieldEQ(FieldIdempotencyKey, v))
-}
-
 // CommandType applies equality check predicate on the "command_type" field. It's identical to CommandTypeEQ.
 func CommandType(v string) predicate.ProcOrchestratorLogs {
 	return predicate.ProcOrchestratorLogs(sql.FieldEQ(FieldCommandType, v))
@@ -415,71 +410,6 @@ func AggregateKeyEqualFold(v string) predicate.ProcOrchestratorLogs {
 // AggregateKeyContainsFold applies the ContainsFold predicate on the "aggregate_key" field.
 func AggregateKeyContainsFold(v string) predicate.ProcOrchestratorLogs {
 	return predicate.ProcOrchestratorLogs(sql.FieldContainsFold(FieldAggregateKey, v))
-}
-
-// IdempotencyKeyEQ applies the EQ predicate on the "idempotency_key" field.
-func IdempotencyKeyEQ(v string) predicate.ProcOrchestratorLogs {
-	return predicate.ProcOrchestratorLogs(sql.FieldEQ(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyNEQ applies the NEQ predicate on the "idempotency_key" field.
-func IdempotencyKeyNEQ(v string) predicate.ProcOrchestratorLogs {
-	return predicate.ProcOrchestratorLogs(sql.FieldNEQ(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyIn applies the In predicate on the "idempotency_key" field.
-func IdempotencyKeyIn(vs ...string) predicate.ProcOrchestratorLogs {
-	return predicate.ProcOrchestratorLogs(sql.FieldIn(FieldIdempotencyKey, vs...))
-}
-
-// IdempotencyKeyNotIn applies the NotIn predicate on the "idempotency_key" field.
-func IdempotencyKeyNotIn(vs ...string) predicate.ProcOrchestratorLogs {
-	return predicate.ProcOrchestratorLogs(sql.FieldNotIn(FieldIdempotencyKey, vs...))
-}
-
-// IdempotencyKeyGT applies the GT predicate on the "idempotency_key" field.
-func IdempotencyKeyGT(v string) predicate.ProcOrchestratorLogs {
-	return predicate.ProcOrchestratorLogs(sql.FieldGT(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyGTE applies the GTE predicate on the "idempotency_key" field.
-func IdempotencyKeyGTE(v string) predicate.ProcOrchestratorLogs {
-	return predicate.ProcOrchestratorLogs(sql.FieldGTE(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyLT applies the LT predicate on the "idempotency_key" field.
-func IdempotencyKeyLT(v string) predicate.ProcOrchestratorLogs {
-	return predicate.ProcOrchestratorLogs(sql.FieldLT(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyLTE applies the LTE predicate on the "idempotency_key" field.
-func IdempotencyKeyLTE(v string) predicate.ProcOrchestratorLogs {
-	return predicate.ProcOrchestratorLogs(sql.FieldLTE(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyContains applies the Contains predicate on the "idempotency_key" field.
-func IdempotencyKeyContains(v string) predicate.ProcOrchestratorLogs {
-	return predicate.ProcOrchestratorLogs(sql.FieldContains(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyHasPrefix applies the HasPrefix predicate on the "idempotency_key" field.
-func IdempotencyKeyHasPrefix(v string) predicate.ProcOrchestratorLogs {
-	return predicate.ProcOrchestratorLogs(sql.FieldHasPrefix(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyHasSuffix applies the HasSuffix predicate on the "idempotency_key" field.
-func IdempotencyKeyHasSuffix(v string) predicate.ProcOrchestratorLogs {
-	return predicate.ProcOrchestratorLogs(sql.FieldHasSuffix(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyEqualFold applies the EqualFold predicate on the "idempotency_key" field.
-func IdempotencyKeyEqualFold(v string) predicate.ProcOrchestratorLogs {
-	return predicate.ProcOrchestratorLogs(sql.FieldEqualFold(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyContainsFold applies the ContainsFold predicate on the "idempotency_key" field.
-func IdempotencyKeyContainsFold(v string) predicate.ProcOrchestratorLogs {
-	return predicate.ProcOrchestratorLogs(sql.FieldContainsFold(FieldIdempotencyKey, v))
 }
 
 // CommandTypeEQ applies the EQ predicate on the "command_type" field.

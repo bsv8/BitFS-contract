@@ -55,6 +55,20 @@ func (_u *OrderSettlementEventsUpdate) SetNillableSettlementID(v *string) *Order
 	return _u
 }
 
+// SetOrderID sets the "order_id" field.
+func (_u *OrderSettlementEventsUpdate) SetOrderID(v string) *OrderSettlementEventsUpdate {
+	_u.mutation.SetOrderID(v)
+	return _u
+}
+
+// SetNillableOrderID sets the "order_id" field if the given value is not nil.
+func (_u *OrderSettlementEventsUpdate) SetNillableOrderID(v *string) *OrderSettlementEventsUpdate {
+	if v != nil {
+		_u.SetOrderID(*v)
+	}
+	return _u
+}
+
 // SetSourceType sets the "source_type" field.
 func (_u *OrderSettlementEventsUpdate) SetSourceType(v string) *OrderSettlementEventsUpdate {
 	_u.mutation.SetSourceType(v)
@@ -135,20 +149,6 @@ func (_u *OrderSettlementEventsUpdate) SetStatus(v string) *OrderSettlementEvent
 func (_u *OrderSettlementEventsUpdate) SetNillableStatus(v *string) *OrderSettlementEventsUpdate {
 	if v != nil {
 		_u.SetStatus(*v)
-	}
-	return _u
-}
-
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (_u *OrderSettlementEventsUpdate) SetIdempotencyKey(v string) *OrderSettlementEventsUpdate {
-	_u.mutation.SetIdempotencyKey(v)
-	return _u
-}
-
-// SetNillableIdempotencyKey sets the "idempotency_key" field if the given value is not nil.
-func (_u *OrderSettlementEventsUpdate) SetNillableIdempotencyKey(v *string) *OrderSettlementEventsUpdate {
-	if v != nil {
-		_u.SetIdempotencyKey(*v)
 	}
 	return _u
 }
@@ -249,6 +249,9 @@ func (_u *OrderSettlementEventsUpdate) sqlSave(ctx context.Context) (_node int, 
 	if value, ok := _u.mutation.SettlementID(); ok {
 		_spec.SetField(ordersettlementevents.FieldSettlementID, field.TypeString, value)
 	}
+	if value, ok := _u.mutation.OrderID(); ok {
+		_spec.SetField(ordersettlementevents.FieldOrderID, field.TypeString, value)
+	}
 	if value, ok := _u.mutation.SourceType(); ok {
 		_spec.SetField(ordersettlementevents.FieldSourceType, field.TypeString, value)
 	}
@@ -266,9 +269,6 @@ func (_u *OrderSettlementEventsUpdate) sqlSave(ctx context.Context) (_node int, 
 	}
 	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(ordersettlementevents.FieldStatus, field.TypeString, value)
-	}
-	if value, ok := _u.mutation.IdempotencyKey(); ok {
-		_spec.SetField(ordersettlementevents.FieldIdempotencyKey, field.TypeString, value)
 	}
 	if value, ok := _u.mutation.Note(); ok {
 		_spec.SetField(ordersettlementevents.FieldNote, field.TypeString, value)
@@ -326,6 +326,20 @@ func (_u *OrderSettlementEventsUpdateOne) SetSettlementID(v string) *OrderSettle
 func (_u *OrderSettlementEventsUpdateOne) SetNillableSettlementID(v *string) *OrderSettlementEventsUpdateOne {
 	if v != nil {
 		_u.SetSettlementID(*v)
+	}
+	return _u
+}
+
+// SetOrderID sets the "order_id" field.
+func (_u *OrderSettlementEventsUpdateOne) SetOrderID(v string) *OrderSettlementEventsUpdateOne {
+	_u.mutation.SetOrderID(v)
+	return _u
+}
+
+// SetNillableOrderID sets the "order_id" field if the given value is not nil.
+func (_u *OrderSettlementEventsUpdateOne) SetNillableOrderID(v *string) *OrderSettlementEventsUpdateOne {
+	if v != nil {
+		_u.SetOrderID(*v)
 	}
 	return _u
 }
@@ -410,20 +424,6 @@ func (_u *OrderSettlementEventsUpdateOne) SetStatus(v string) *OrderSettlementEv
 func (_u *OrderSettlementEventsUpdateOne) SetNillableStatus(v *string) *OrderSettlementEventsUpdateOne {
 	if v != nil {
 		_u.SetStatus(*v)
-	}
-	return _u
-}
-
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (_u *OrderSettlementEventsUpdateOne) SetIdempotencyKey(v string) *OrderSettlementEventsUpdateOne {
-	_u.mutation.SetIdempotencyKey(v)
-	return _u
-}
-
-// SetNillableIdempotencyKey sets the "idempotency_key" field if the given value is not nil.
-func (_u *OrderSettlementEventsUpdateOne) SetNillableIdempotencyKey(v *string) *OrderSettlementEventsUpdateOne {
-	if v != nil {
-		_u.SetIdempotencyKey(*v)
 	}
 	return _u
 }
@@ -554,6 +554,9 @@ func (_u *OrderSettlementEventsUpdateOne) sqlSave(ctx context.Context) (_node *O
 	if value, ok := _u.mutation.SettlementID(); ok {
 		_spec.SetField(ordersettlementevents.FieldSettlementID, field.TypeString, value)
 	}
+	if value, ok := _u.mutation.OrderID(); ok {
+		_spec.SetField(ordersettlementevents.FieldOrderID, field.TypeString, value)
+	}
 	if value, ok := _u.mutation.SourceType(); ok {
 		_spec.SetField(ordersettlementevents.FieldSourceType, field.TypeString, value)
 	}
@@ -571,9 +574,6 @@ func (_u *OrderSettlementEventsUpdateOne) sqlSave(ctx context.Context) (_node *O
 	}
 	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(ordersettlementevents.FieldStatus, field.TypeString, value)
-	}
-	if value, ok := _u.mutation.IdempotencyKey(); ok {
-		_spec.SetField(ordersettlementevents.FieldIdempotencyKey, field.TypeString, value)
 	}
 	if value, ok := _u.mutation.Note(); ok {
 		_spec.SetField(ordersettlementevents.FieldNote, field.TypeString, value)

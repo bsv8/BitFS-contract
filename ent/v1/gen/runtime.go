@@ -487,34 +487,30 @@ func init() {
 	ordersettlementsDescAmountSatoshi := ordersettlementsFields[12].Descriptor()
 	// ordersettlements.DefaultAmountSatoshi holds the default value on creation for the amount_satoshi field.
 	ordersettlements.DefaultAmountSatoshi = ordersettlementsDescAmountSatoshi.Default.(int64)
-	// ordersettlementsDescIdempotencyKey is the schema descriptor for idempotency_key field.
-	ordersettlementsDescIdempotencyKey := ordersettlementsFields[17].Descriptor()
-	// ordersettlements.DefaultIdempotencyKey holds the default value on creation for the idempotency_key field.
-	ordersettlements.DefaultIdempotencyKey = ordersettlementsDescIdempotencyKey.Default.(string)
 	// ordersettlementsDescNote is the schema descriptor for note field.
-	ordersettlementsDescNote := ordersettlementsFields[18].Descriptor()
+	ordersettlementsDescNote := ordersettlementsFields[17].Descriptor()
 	// ordersettlements.DefaultNote holds the default value on creation for the note field.
 	ordersettlements.DefaultNote = ordersettlementsDescNote.Default.(string)
 	// ordersettlementsDescErrorMessage is the schema descriptor for error_message field.
-	ordersettlementsDescErrorMessage := ordersettlementsFields[19].Descriptor()
+	ordersettlementsDescErrorMessage := ordersettlementsFields[18].Descriptor()
 	// ordersettlements.DefaultErrorMessage holds the default value on creation for the error_message field.
 	ordersettlements.DefaultErrorMessage = ordersettlementsDescErrorMessage.Default.(string)
 	// ordersettlementsDescPayloadJSON is the schema descriptor for payload_json field.
-	ordersettlementsDescPayloadJSON := ordersettlementsFields[20].Descriptor()
+	ordersettlementsDescPayloadJSON := ordersettlementsFields[19].Descriptor()
 	// ordersettlements.DefaultPayloadJSON holds the default value on creation for the payload_json field.
 	ordersettlements.DefaultPayloadJSON = ordersettlementsDescPayloadJSON.Default.(string)
 	// ordersettlementsDescSettlementPayloadJSON is the schema descriptor for settlement_payload_json field.
-	ordersettlementsDescSettlementPayloadJSON := ordersettlementsFields[21].Descriptor()
+	ordersettlementsDescSettlementPayloadJSON := ordersettlementsFields[20].Descriptor()
 	// ordersettlements.DefaultSettlementPayloadJSON holds the default value on creation for the settlement_payload_json field.
 	ordersettlements.DefaultSettlementPayloadJSON = ordersettlementsDescSettlementPayloadJSON.Default.(string)
 	ordersFields := schema.Orders{}.Fields()
 	_ = ordersFields
 	// ordersDescNote is the schema descriptor for note field.
-	ordersDescNote := ordersFields[9].Descriptor()
+	ordersDescNote := ordersFields[8].Descriptor()
 	// orders.DefaultNote holds the default value on creation for the note field.
 	orders.DefaultNote = ordersDescNote.Default.(string)
 	// ordersDescPayloadJSON is the schema descriptor for payload_json field.
-	ordersDescPayloadJSON := ordersFields[10].Descriptor()
+	ordersDescPayloadJSON := ordersFields[9].Descriptor()
 	// orders.DefaultPayloadJSON holds the default value on creation for the payload_json field.
 	orders.DefaultPayloadJSON = ordersDescPayloadJSON.Default.(string)
 	proccommandjournalFields := schema.ProcCommandJournal{}.Fields()

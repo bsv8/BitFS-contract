@@ -30,7 +30,6 @@ func (Orders) Fields() []ent.Field {
 		field.String("target_object_type"),
 		field.String("target_object_id"),
 		field.String("status"),
-		field.String("idempotency_key"),
 		field.String("note").Default(""),
 		field.String("payload_json").Default("{}"),
 		field.Int64("created_at_unix"),

@@ -24,7 +24,6 @@ func (ProcOrchestratorLogs) Fields() []ent.Field {
 		field.String("source"),
 		field.String("signal_type"),
 		field.String("aggregate_key"),
-		field.String("idempotency_key"),
 		field.String("command_type"),
 		field.String("gateway_pubkey_hex"),
 		field.String("task_status"),
@@ -40,7 +39,6 @@ func (ProcOrchestratorLogs) Indexes() []ent.Index {
 		index.Fields("created_at_unix"),
 		index.Fields("event_type", "id"),
 		index.Fields("gateway_pubkey_hex", "id"),
-		index.Fields("idempotency_key", "id"),
 		index.Fields("signal_type", "id"),
 	}
 }

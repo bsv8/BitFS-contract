@@ -21,8 +21,6 @@ const (
 	FieldSignalType = "signal_type"
 	// FieldAggregateKey holds the string denoting the aggregate_key field in the database.
 	FieldAggregateKey = "aggregate_key"
-	// FieldIdempotencyKey holds the string denoting the idempotency_key field in the database.
-	FieldIdempotencyKey = "idempotency_key"
 	// FieldCommandType holds the string denoting the command_type field in the database.
 	FieldCommandType = "command_type"
 	// FieldGatewayPubkeyHex holds the string denoting the gateway_pubkey_hex field in the database.
@@ -49,7 +47,6 @@ var Columns = []string{
 	FieldSource,
 	FieldSignalType,
 	FieldAggregateKey,
-	FieldIdempotencyKey,
 	FieldCommandType,
 	FieldGatewayPubkeyHex,
 	FieldTaskStatus,
@@ -100,11 +97,6 @@ func BySignalType(opts ...sql.OrderTermOption) OrderOption {
 // ByAggregateKey orders the results by the aggregate_key field.
 func ByAggregateKey(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAggregateKey, opts...).ToFunc()
-}
-
-// ByIdempotencyKey orders the results by the idempotency_key field.
-func ByIdempotencyKey(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIdempotencyKey, opts...).ToFunc()
 }
 
 // ByCommandType orders the results by the command_type field.

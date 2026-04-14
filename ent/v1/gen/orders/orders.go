@@ -25,8 +25,6 @@ const (
 	FieldTargetObjectID = "target_object_id"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
-	// FieldIdempotencyKey holds the string denoting the idempotency_key field in the database.
-	FieldIdempotencyKey = "idempotency_key"
 	// FieldNote holds the string denoting the note field in the database.
 	FieldNote = "note"
 	// FieldPayloadJSON holds the string denoting the payload_json field in the database.
@@ -49,7 +47,6 @@ var Columns = []string{
 	FieldTargetObjectType,
 	FieldTargetObjectID,
 	FieldStatus,
-	FieldIdempotencyKey,
 	FieldNote,
 	FieldPayloadJSON,
 	FieldCreatedAtUnix,
@@ -114,11 +111,6 @@ func ByTargetObjectID(opts ...sql.OrderTermOption) OrderOption {
 // ByStatus orders the results by the status field.
 func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
-}
-
-// ByIdempotencyKey orders the results by the idempotency_key field.
-func ByIdempotencyKey(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIdempotencyKey, opts...).ToFunc()
 }
 
 // ByNote orders the results by the note field.

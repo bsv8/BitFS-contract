@@ -48,8 +48,6 @@ type OrderSettlements struct {
 	TargetType string `json:"target_type,omitempty"`
 	// TargetID holds the value of the "target_id" field.
 	TargetID string `json:"target_id,omitempty"`
-	// IdempotencyKey holds the value of the "idempotency_key" field.
-	IdempotencyKey string `json:"idempotency_key,omitempty"`
 	// Note holds the value of the "note" field.
 	Note string `json:"note,omitempty"`
 	// ErrorMessage holds the value of the "error_message" field.
@@ -72,7 +70,7 @@ func (*OrderSettlements) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case ordersettlements.FieldID, ordersettlements.FieldSettlementNo, ordersettlements.FieldAmountSatoshi, ordersettlements.FieldCreatedAtUnix, ordersettlements.FieldUpdatedAtUnix:
 			values[i] = new(sql.NullInt64)
-		case ordersettlements.FieldSettlementID, ordersettlements.FieldOrderID, ordersettlements.FieldBusinessRole, ordersettlements.FieldSourceType, ordersettlements.FieldSourceID, ordersettlements.FieldAccountingScene, ordersettlements.FieldAccountingSubtype, ordersettlements.FieldSettlementMethod, ordersettlements.FieldStatus, ordersettlements.FieldSettlementStatus, ordersettlements.FieldFromPartyID, ordersettlements.FieldToPartyID, ordersettlements.FieldTargetType, ordersettlements.FieldTargetID, ordersettlements.FieldIdempotencyKey, ordersettlements.FieldNote, ordersettlements.FieldErrorMessage, ordersettlements.FieldPayloadJSON, ordersettlements.FieldSettlementPayloadJSON:
+		case ordersettlements.FieldSettlementID, ordersettlements.FieldOrderID, ordersettlements.FieldBusinessRole, ordersettlements.FieldSourceType, ordersettlements.FieldSourceID, ordersettlements.FieldAccountingScene, ordersettlements.FieldAccountingSubtype, ordersettlements.FieldSettlementMethod, ordersettlements.FieldStatus, ordersettlements.FieldSettlementStatus, ordersettlements.FieldFromPartyID, ordersettlements.FieldToPartyID, ordersettlements.FieldTargetType, ordersettlements.FieldTargetID, ordersettlements.FieldNote, ordersettlements.FieldErrorMessage, ordersettlements.FieldPayloadJSON, ordersettlements.FieldSettlementPayloadJSON:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -190,12 +188,6 @@ func (_m *OrderSettlements) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field target_id", values[i])
 			} else if value.Valid {
 				_m.TargetID = value.String
-			}
-		case ordersettlements.FieldIdempotencyKey:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field idempotency_key", values[i])
-			} else if value.Valid {
-				_m.IdempotencyKey = value.String
 			}
 		case ordersettlements.FieldNote:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -316,9 +308,6 @@ func (_m *OrderSettlements) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("target_id=")
 	builder.WriteString(_m.TargetID)
-	builder.WriteString(", ")
-	builder.WriteString("idempotency_key=")
-	builder.WriteString(_m.IdempotencyKey)
 	builder.WriteString(", ")
 	builder.WriteString("note=")
 	builder.WriteString(_m.Note)

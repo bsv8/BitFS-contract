@@ -30,8 +30,6 @@ type Orders struct {
 	TargetObjectID string `json:"target_object_id,omitempty"`
 	// Status holds the value of the "status" field.
 	Status string `json:"status,omitempty"`
-	// IdempotencyKey holds the value of the "idempotency_key" field.
-	IdempotencyKey string `json:"idempotency_key,omitempty"`
 	// Note holds the value of the "note" field.
 	Note string `json:"note,omitempty"`
 	// PayloadJSON holds the value of the "payload_json" field.
@@ -50,7 +48,7 @@ func (*Orders) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case orders.FieldID, orders.FieldCreatedAtUnix, orders.FieldUpdatedAtUnix:
 			values[i] = new(sql.NullInt64)
-		case orders.FieldOrderID, orders.FieldOrderType, orders.FieldOrderSubtype, orders.FieldOwnerPubkeyHex, orders.FieldTargetObjectType, orders.FieldTargetObjectID, orders.FieldStatus, orders.FieldIdempotencyKey, orders.FieldNote, orders.FieldPayloadJSON:
+		case orders.FieldOrderID, orders.FieldOrderType, orders.FieldOrderSubtype, orders.FieldOwnerPubkeyHex, orders.FieldTargetObjectType, orders.FieldTargetObjectID, orders.FieldStatus, orders.FieldNote, orders.FieldPayloadJSON:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -114,12 +112,6 @@ func (_m *Orders) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
 				_m.Status = value.String
-			}
-		case orders.FieldIdempotencyKey:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field idempotency_key", values[i])
-			} else if value.Valid {
-				_m.IdempotencyKey = value.String
 			}
 		case orders.FieldNote:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -201,9 +193,6 @@ func (_m *Orders) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(_m.Status)
-	builder.WriteString(", ")
-	builder.WriteString("idempotency_key=")
-	builder.WriteString(_m.IdempotencyKey)
 	builder.WriteString(", ")
 	builder.WriteString("note=")
 	builder.WriteString(_m.Note)

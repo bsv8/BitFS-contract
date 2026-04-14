@@ -1028,13 +1028,13 @@ var (
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "process_id", Type: field.TypeString},
 		{Name: "settlement_id", Type: field.TypeString},
+		{Name: "order_id", Type: field.TypeString},
 		{Name: "source_type", Type: field.TypeString},
 		{Name: "source_id", Type: field.TypeString},
 		{Name: "accounting_scene", Type: field.TypeString},
 		{Name: "accounting_subtype", Type: field.TypeString},
 		{Name: "event_type", Type: field.TypeString},
 		{Name: "status", Type: field.TypeString},
-		{Name: "idempotency_key", Type: field.TypeString},
 		{Name: "note", Type: field.TypeString, Default: ""},
 		{Name: "payload_json", Type: field.TypeString, Default: "{}"},
 		{Name: "occurred_at_unix", Type: field.TypeInt64},
@@ -1053,12 +1053,12 @@ var (
 			{
 				Name:    "idx_order_settlement_events_type",
 				Unique:  false,
-				Columns: []*schema.Column{OrderSettlementEventsColumns[7], OrderSettlementEventsColumns[12]},
+				Columns: []*schema.Column{OrderSettlementEventsColumns[8], OrderSettlementEventsColumns[12]},
 			},
 			{
-				Name:    "ordersettlementevents_settlement_id_event_type_idempotency_key",
+				Name:    "ordersettlementevents_settlement_id_event_type_order_id",
 				Unique:  true,
-				Columns: []*schema.Column{OrderSettlementEventsColumns[2], OrderSettlementEventsColumns[7], OrderSettlementEventsColumns[9]},
+				Columns: []*schema.Column{OrderSettlementEventsColumns[2], OrderSettlementEventsColumns[8], OrderSettlementEventsColumns[3]},
 			},
 		},
 	}
@@ -1081,7 +1081,6 @@ var (
 		{Name: "to_party_id", Type: field.TypeString},
 		{Name: "target_type", Type: field.TypeString},
 		{Name: "target_id", Type: field.TypeString},
-		{Name: "idempotency_key", Type: field.TypeString, Default: ""},
 		{Name: "note", Type: field.TypeString, Default: ""},
 		{Name: "error_message", Type: field.TypeString, Default: ""},
 		{Name: "payload_json", Type: field.TypeString, Default: "{}"},
@@ -1103,17 +1102,17 @@ var (
 			{
 				Name:    "idx_order_settlements_order",
 				Unique:  false,
-				Columns: []*schema.Column{OrderSettlementsColumns[2], OrderSettlementsColumns[22]},
+				Columns: []*schema.Column{OrderSettlementsColumns[2], OrderSettlementsColumns[21]},
 			},
 			{
 				Name:    "idx_order_settlements_status",
 				Unique:  false,
-				Columns: []*schema.Column{OrderSettlementsColumns[10], OrderSettlementsColumns[23]},
+				Columns: []*schema.Column{OrderSettlementsColumns[10], OrderSettlementsColumns[22]},
 			},
 			{
 				Name:    "idx_order_settlements_method",
 				Unique:  false,
-				Columns: []*schema.Column{OrderSettlementsColumns[9], OrderSettlementsColumns[10], OrderSettlementsColumns[23]},
+				Columns: []*schema.Column{OrderSettlementsColumns[9], OrderSettlementsColumns[10], OrderSettlementsColumns[22]},
 			},
 			{
 				Name:    "idx_order_settlements_target",
@@ -1132,7 +1131,6 @@ var (
 		{Name: "target_object_type", Type: field.TypeString},
 		{Name: "target_object_id", Type: field.TypeString},
 		{Name: "status", Type: field.TypeString},
-		{Name: "idempotency_key", Type: field.TypeString},
 		{Name: "note", Type: field.TypeString, Default: ""},
 		{Name: "payload_json", Type: field.TypeString, Default: "{}"},
 		{Name: "created_at_unix", Type: field.TypeInt64},
@@ -1157,12 +1155,12 @@ var (
 			{
 				Name:    "idx_orders_owner",
 				Unique:  false,
-				Columns: []*schema.Column{OrdersColumns[4], OrdersColumns[11]},
+				Columns: []*schema.Column{OrdersColumns[4], OrdersColumns[10]},
 			},
 			{
 				Name:    "idx_orders_status",
 				Unique:  false,
-				Columns: []*schema.Column{OrdersColumns[7], OrdersColumns[12]},
+				Columns: []*schema.Column{OrdersColumns[7], OrdersColumns[11]},
 			},
 		},
 	}
@@ -1621,7 +1619,6 @@ var (
 		{Name: "source", Type: field.TypeString},
 		{Name: "signal_type", Type: field.TypeString},
 		{Name: "aggregate_key", Type: field.TypeString},
-		{Name: "idempotency_key", Type: field.TypeString},
 		{Name: "command_type", Type: field.TypeString},
 		{Name: "gateway_pubkey_hex", Type: field.TypeString},
 		{Name: "task_status", Type: field.TypeString},
@@ -1649,12 +1646,7 @@ var (
 			{
 				Name:    "procorchestratorlogs_gateway_pubkey_hex_id",
 				Unique:  false,
-				Columns: []*schema.Column{ProcOrchestratorLogsColumns[8], ProcOrchestratorLogsColumns[0]},
-			},
-			{
-				Name:    "procorchestratorlogs_idempotency_key_id",
-				Unique:  false,
-				Columns: []*schema.Column{ProcOrchestratorLogsColumns[6], ProcOrchestratorLogsColumns[0]},
+				Columns: []*schema.Column{ProcOrchestratorLogsColumns[7], ProcOrchestratorLogsColumns[0]},
 			},
 			{
 				Name:    "procorchestratorlogs_signal_type_id",

@@ -31,6 +31,12 @@ func (_c *OrderSettlementEventsCreate) SetSettlementID(v string) *OrderSettlemen
 	return _c
 }
 
+// SetOrderID sets the "order_id" field.
+func (_c *OrderSettlementEventsCreate) SetOrderID(v string) *OrderSettlementEventsCreate {
+	_c.mutation.SetOrderID(v)
+	return _c
+}
+
 // SetSourceType sets the "source_type" field.
 func (_c *OrderSettlementEventsCreate) SetSourceType(v string) *OrderSettlementEventsCreate {
 	_c.mutation.SetSourceType(v)
@@ -64,12 +70,6 @@ func (_c *OrderSettlementEventsCreate) SetEventType(v string) *OrderSettlementEv
 // SetStatus sets the "status" field.
 func (_c *OrderSettlementEventsCreate) SetStatus(v string) *OrderSettlementEventsCreate {
 	_c.mutation.SetStatus(v)
-	return _c
-}
-
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (_c *OrderSettlementEventsCreate) SetIdempotencyKey(v string) *OrderSettlementEventsCreate {
-	_c.mutation.SetIdempotencyKey(v)
 	return _c
 }
 
@@ -166,6 +166,9 @@ func (_c *OrderSettlementEventsCreate) check() error {
 	if _, ok := _c.mutation.SettlementID(); !ok {
 		return &ValidationError{Name: "settlement_id", err: errors.New(`gen: missing required field "OrderSettlementEvents.settlement_id"`)}
 	}
+	if _, ok := _c.mutation.OrderID(); !ok {
+		return &ValidationError{Name: "order_id", err: errors.New(`gen: missing required field "OrderSettlementEvents.order_id"`)}
+	}
 	if _, ok := _c.mutation.SourceType(); !ok {
 		return &ValidationError{Name: "source_type", err: errors.New(`gen: missing required field "OrderSettlementEvents.source_type"`)}
 	}
@@ -183,9 +186,6 @@ func (_c *OrderSettlementEventsCreate) check() error {
 	}
 	if _, ok := _c.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`gen: missing required field "OrderSettlementEvents.status"`)}
-	}
-	if _, ok := _c.mutation.IdempotencyKey(); !ok {
-		return &ValidationError{Name: "idempotency_key", err: errors.New(`gen: missing required field "OrderSettlementEvents.idempotency_key"`)}
 	}
 	if _, ok := _c.mutation.Note(); !ok {
 		return &ValidationError{Name: "note", err: errors.New(`gen: missing required field "OrderSettlementEvents.note"`)}
@@ -236,6 +236,10 @@ func (_c *OrderSettlementEventsCreate) createSpec() (*OrderSettlementEvents, *sq
 		_spec.SetField(ordersettlementevents.FieldSettlementID, field.TypeString, value)
 		_node.SettlementID = value
 	}
+	if value, ok := _c.mutation.OrderID(); ok {
+		_spec.SetField(ordersettlementevents.FieldOrderID, field.TypeString, value)
+		_node.OrderID = value
+	}
 	if value, ok := _c.mutation.SourceType(); ok {
 		_spec.SetField(ordersettlementevents.FieldSourceType, field.TypeString, value)
 		_node.SourceType = value
@@ -259,10 +263,6 @@ func (_c *OrderSettlementEventsCreate) createSpec() (*OrderSettlementEvents, *sq
 	if value, ok := _c.mutation.Status(); ok {
 		_spec.SetField(ordersettlementevents.FieldStatus, field.TypeString, value)
 		_node.Status = value
-	}
-	if value, ok := _c.mutation.IdempotencyKey(); ok {
-		_spec.SetField(ordersettlementevents.FieldIdempotencyKey, field.TypeString, value)
-		_node.IdempotencyKey = value
 	}
 	if value, ok := _c.mutation.Note(); ok {
 		_spec.SetField(ordersettlementevents.FieldNote, field.TypeString, value)

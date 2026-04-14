@@ -251,20 +251,6 @@ func (_u *OrderSettlementsUpdate) SetNillableTargetID(v *string) *OrderSettlemen
 	return _u
 }
 
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (_u *OrderSettlementsUpdate) SetIdempotencyKey(v string) *OrderSettlementsUpdate {
-	_u.mutation.SetIdempotencyKey(v)
-	return _u
-}
-
-// SetNillableIdempotencyKey sets the "idempotency_key" field if the given value is not nil.
-func (_u *OrderSettlementsUpdate) SetNillableIdempotencyKey(v *string) *OrderSettlementsUpdate {
-	if v != nil {
-		_u.SetIdempotencyKey(*v)
-	}
-	return _u
-}
-
 // SetNote sets the "note" field.
 func (_u *OrderSettlementsUpdate) SetNote(v string) *OrderSettlementsUpdate {
 	_u.mutation.SetNote(v)
@@ -454,9 +440,6 @@ func (_u *OrderSettlementsUpdate) sqlSave(ctx context.Context) (_node int, err e
 	}
 	if value, ok := _u.mutation.TargetID(); ok {
 		_spec.SetField(ordersettlements.FieldTargetID, field.TypeString, value)
-	}
-	if value, ok := _u.mutation.IdempotencyKey(); ok {
-		_spec.SetField(ordersettlements.FieldIdempotencyKey, field.TypeString, value)
 	}
 	if value, ok := _u.mutation.Note(); ok {
 		_spec.SetField(ordersettlements.FieldNote, field.TypeString, value)
@@ -726,20 +709,6 @@ func (_u *OrderSettlementsUpdateOne) SetNillableTargetID(v *string) *OrderSettle
 	return _u
 }
 
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (_u *OrderSettlementsUpdateOne) SetIdempotencyKey(v string) *OrderSettlementsUpdateOne {
-	_u.mutation.SetIdempotencyKey(v)
-	return _u
-}
-
-// SetNillableIdempotencyKey sets the "idempotency_key" field if the given value is not nil.
-func (_u *OrderSettlementsUpdateOne) SetNillableIdempotencyKey(v *string) *OrderSettlementsUpdateOne {
-	if v != nil {
-		_u.SetIdempotencyKey(*v)
-	}
-	return _u
-}
-
 // SetNote sets the "note" field.
 func (_u *OrderSettlementsUpdateOne) SetNote(v string) *OrderSettlementsUpdateOne {
 	_u.mutation.SetNote(v)
@@ -959,9 +928,6 @@ func (_u *OrderSettlementsUpdateOne) sqlSave(ctx context.Context) (_node *OrderS
 	}
 	if value, ok := _u.mutation.TargetID(); ok {
 		_spec.SetField(ordersettlements.FieldTargetID, field.TypeString, value)
-	}
-	if value, ok := _u.mutation.IdempotencyKey(); ok {
-		_spec.SetField(ordersettlements.FieldIdempotencyKey, field.TypeString, value)
 	}
 	if value, ok := _u.mutation.Note(); ok {
 		_spec.SetField(ordersettlements.FieldNote, field.TypeString, value)

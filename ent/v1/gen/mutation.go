@@ -26352,13 +26352,13 @@ type OrderSettlementEventsMutation struct {
 	id                  *int64
 	process_id          *string
 	settlement_id       *string
+	order_id            *string
 	source_type         *string
 	source_id           *string
 	accounting_scene    *string
 	accounting_subtype  *string
 	event_type          *string
 	status              *string
-	idempotency_key     *string
 	note                *string
 	payload_json        *string
 	occurred_at_unix    *int64
@@ -26543,6 +26543,42 @@ func (m *OrderSettlementEventsMutation) OldSettlementID(ctx context.Context) (v 
 // ResetSettlementID resets all changes to the "settlement_id" field.
 func (m *OrderSettlementEventsMutation) ResetSettlementID() {
 	m.settlement_id = nil
+}
+
+// SetOrderID sets the "order_id" field.
+func (m *OrderSettlementEventsMutation) SetOrderID(s string) {
+	m.order_id = &s
+}
+
+// OrderID returns the value of the "order_id" field in the mutation.
+func (m *OrderSettlementEventsMutation) OrderID() (r string, exists bool) {
+	v := m.order_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOrderID returns the old "order_id" field's value of the OrderSettlementEvents entity.
+// If the OrderSettlementEvents object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderSettlementEventsMutation) OldOrderID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOrderID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOrderID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOrderID: %w", err)
+	}
+	return oldValue.OrderID, nil
+}
+
+// ResetOrderID resets all changes to the "order_id" field.
+func (m *OrderSettlementEventsMutation) ResetOrderID() {
+	m.order_id = nil
 }
 
 // SetSourceType sets the "source_type" field.
@@ -26761,42 +26797,6 @@ func (m *OrderSettlementEventsMutation) ResetStatus() {
 	m.status = nil
 }
 
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (m *OrderSettlementEventsMutation) SetIdempotencyKey(s string) {
-	m.idempotency_key = &s
-}
-
-// IdempotencyKey returns the value of the "idempotency_key" field in the mutation.
-func (m *OrderSettlementEventsMutation) IdempotencyKey() (r string, exists bool) {
-	v := m.idempotency_key
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldIdempotencyKey returns the old "idempotency_key" field's value of the OrderSettlementEvents entity.
-// If the OrderSettlementEvents object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderSettlementEventsMutation) OldIdempotencyKey(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIdempotencyKey is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIdempotencyKey requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIdempotencyKey: %w", err)
-	}
-	return oldValue.IdempotencyKey, nil
-}
-
-// ResetIdempotencyKey resets all changes to the "idempotency_key" field.
-func (m *OrderSettlementEventsMutation) ResetIdempotencyKey() {
-	m.idempotency_key = nil
-}
-
 // SetNote sets the "note" field.
 func (m *OrderSettlementEventsMutation) SetNote(s string) {
 	m.note = &s
@@ -26966,6 +26966,9 @@ func (m *OrderSettlementEventsMutation) Fields() []string {
 	if m.settlement_id != nil {
 		fields = append(fields, ordersettlementevents.FieldSettlementID)
 	}
+	if m.order_id != nil {
+		fields = append(fields, ordersettlementevents.FieldOrderID)
+	}
 	if m.source_type != nil {
 		fields = append(fields, ordersettlementevents.FieldSourceType)
 	}
@@ -26983,9 +26986,6 @@ func (m *OrderSettlementEventsMutation) Fields() []string {
 	}
 	if m.status != nil {
 		fields = append(fields, ordersettlementevents.FieldStatus)
-	}
-	if m.idempotency_key != nil {
-		fields = append(fields, ordersettlementevents.FieldIdempotencyKey)
 	}
 	if m.note != nil {
 		fields = append(fields, ordersettlementevents.FieldNote)
@@ -27008,6 +27008,8 @@ func (m *OrderSettlementEventsMutation) Field(name string) (ent.Value, bool) {
 		return m.ProcessID()
 	case ordersettlementevents.FieldSettlementID:
 		return m.SettlementID()
+	case ordersettlementevents.FieldOrderID:
+		return m.OrderID()
 	case ordersettlementevents.FieldSourceType:
 		return m.SourceType()
 	case ordersettlementevents.FieldSourceID:
@@ -27020,8 +27022,6 @@ func (m *OrderSettlementEventsMutation) Field(name string) (ent.Value, bool) {
 		return m.EventType()
 	case ordersettlementevents.FieldStatus:
 		return m.Status()
-	case ordersettlementevents.FieldIdempotencyKey:
-		return m.IdempotencyKey()
 	case ordersettlementevents.FieldNote:
 		return m.Note()
 	case ordersettlementevents.FieldPayloadJSON:
@@ -27041,6 +27041,8 @@ func (m *OrderSettlementEventsMutation) OldField(ctx context.Context, name strin
 		return m.OldProcessID(ctx)
 	case ordersettlementevents.FieldSettlementID:
 		return m.OldSettlementID(ctx)
+	case ordersettlementevents.FieldOrderID:
+		return m.OldOrderID(ctx)
 	case ordersettlementevents.FieldSourceType:
 		return m.OldSourceType(ctx)
 	case ordersettlementevents.FieldSourceID:
@@ -27053,8 +27055,6 @@ func (m *OrderSettlementEventsMutation) OldField(ctx context.Context, name strin
 		return m.OldEventType(ctx)
 	case ordersettlementevents.FieldStatus:
 		return m.OldStatus(ctx)
-	case ordersettlementevents.FieldIdempotencyKey:
-		return m.OldIdempotencyKey(ctx)
 	case ordersettlementevents.FieldNote:
 		return m.OldNote(ctx)
 	case ordersettlementevents.FieldPayloadJSON:
@@ -27083,6 +27083,13 @@ func (m *OrderSettlementEventsMutation) SetField(name string, value ent.Value) e
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetSettlementID(v)
+		return nil
+	case ordersettlementevents.FieldOrderID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOrderID(v)
 		return nil
 	case ordersettlementevents.FieldSourceType:
 		v, ok := value.(string)
@@ -27125,13 +27132,6 @@ func (m *OrderSettlementEventsMutation) SetField(name string, value ent.Value) e
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStatus(v)
-		return nil
-	case ordersettlementevents.FieldIdempotencyKey:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetIdempotencyKey(v)
 		return nil
 	case ordersettlementevents.FieldNote:
 		v, ok := value.(string)
@@ -27224,6 +27224,9 @@ func (m *OrderSettlementEventsMutation) ResetField(name string) error {
 	case ordersettlementevents.FieldSettlementID:
 		m.ResetSettlementID()
 		return nil
+	case ordersettlementevents.FieldOrderID:
+		m.ResetOrderID()
+		return nil
 	case ordersettlementevents.FieldSourceType:
 		m.ResetSourceType()
 		return nil
@@ -27241,9 +27244,6 @@ func (m *OrderSettlementEventsMutation) ResetField(name string) error {
 		return nil
 	case ordersettlementevents.FieldStatus:
 		m.ResetStatus()
-		return nil
-	case ordersettlementevents.FieldIdempotencyKey:
-		m.ResetIdempotencyKey()
 		return nil
 	case ordersettlementevents.FieldNote:
 		m.ResetNote()
@@ -27330,7 +27330,6 @@ type OrderSettlementsMutation struct {
 	to_party_id             *string
 	target_type             *string
 	target_id               *string
-	idempotency_key         *string
 	note                    *string
 	error_message           *string
 	payload_json            *string
@@ -28065,42 +28064,6 @@ func (m *OrderSettlementsMutation) ResetTargetID() {
 	m.target_id = nil
 }
 
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (m *OrderSettlementsMutation) SetIdempotencyKey(s string) {
-	m.idempotency_key = &s
-}
-
-// IdempotencyKey returns the value of the "idempotency_key" field in the mutation.
-func (m *OrderSettlementsMutation) IdempotencyKey() (r string, exists bool) {
-	v := m.idempotency_key
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldIdempotencyKey returns the old "idempotency_key" field's value of the OrderSettlements entity.
-// If the OrderSettlements object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderSettlementsMutation) OldIdempotencyKey(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIdempotencyKey is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIdempotencyKey requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIdempotencyKey: %w", err)
-	}
-	return oldValue.IdempotencyKey, nil
-}
-
-// ResetIdempotencyKey resets all changes to the "idempotency_key" field.
-func (m *OrderSettlementsMutation) ResetIdempotencyKey() {
-	m.idempotency_key = nil
-}
-
 // SetNote sets the "note" field.
 func (m *OrderSettlementsMutation) SetNote(s string) {
 	m.note = &s
@@ -28391,7 +28354,7 @@ func (m *OrderSettlementsMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *OrderSettlementsMutation) Fields() []string {
-	fields := make([]string, 0, 23)
+	fields := make([]string, 0, 22)
 	if m.settlement_id != nil {
 		fields = append(fields, ordersettlements.FieldSettlementID)
 	}
@@ -28439,9 +28402,6 @@ func (m *OrderSettlementsMutation) Fields() []string {
 	}
 	if m.target_id != nil {
 		fields = append(fields, ordersettlements.FieldTargetID)
-	}
-	if m.idempotency_key != nil {
-		fields = append(fields, ordersettlements.FieldIdempotencyKey)
 	}
 	if m.note != nil {
 		fields = append(fields, ordersettlements.FieldNote)
@@ -28501,8 +28461,6 @@ func (m *OrderSettlementsMutation) Field(name string) (ent.Value, bool) {
 		return m.TargetType()
 	case ordersettlements.FieldTargetID:
 		return m.TargetID()
-	case ordersettlements.FieldIdempotencyKey:
-		return m.IdempotencyKey()
 	case ordersettlements.FieldNote:
 		return m.Note()
 	case ordersettlements.FieldErrorMessage:
@@ -28556,8 +28514,6 @@ func (m *OrderSettlementsMutation) OldField(ctx context.Context, name string) (e
 		return m.OldTargetType(ctx)
 	case ordersettlements.FieldTargetID:
 		return m.OldTargetID(ctx)
-	case ordersettlements.FieldIdempotencyKey:
-		return m.OldIdempotencyKey(ctx)
 	case ordersettlements.FieldNote:
 		return m.OldNote(ctx)
 	case ordersettlements.FieldErrorMessage:
@@ -28690,13 +28646,6 @@ func (m *OrderSettlementsMutation) SetField(name string, value ent.Value) error 
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetTargetID(v)
-		return nil
-	case ordersettlements.FieldIdempotencyKey:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetIdempotencyKey(v)
 		return nil
 	case ordersettlements.FieldNote:
 		v, ok := value.(string)
@@ -28888,9 +28837,6 @@ func (m *OrderSettlementsMutation) ResetField(name string) error {
 	case ordersettlements.FieldTargetID:
 		m.ResetTargetID()
 		return nil
-	case ordersettlements.FieldIdempotencyKey:
-		m.ResetIdempotencyKey()
-		return nil
 	case ordersettlements.FieldNote:
 		m.ResetNote()
 		return nil
@@ -28974,7 +28920,6 @@ type OrdersMutation struct {
 	target_object_type *string
 	target_object_id   *string
 	status             *string
-	idempotency_key    *string
 	note               *string
 	payload_json       *string
 	created_at_unix    *int64
@@ -29343,42 +29288,6 @@ func (m *OrdersMutation) ResetStatus() {
 	m.status = nil
 }
 
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (m *OrdersMutation) SetIdempotencyKey(s string) {
-	m.idempotency_key = &s
-}
-
-// IdempotencyKey returns the value of the "idempotency_key" field in the mutation.
-func (m *OrdersMutation) IdempotencyKey() (r string, exists bool) {
-	v := m.idempotency_key
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldIdempotencyKey returns the old "idempotency_key" field's value of the Orders entity.
-// If the Orders object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrdersMutation) OldIdempotencyKey(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIdempotencyKey is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIdempotencyKey requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIdempotencyKey: %w", err)
-	}
-	return oldValue.IdempotencyKey, nil
-}
-
-// ResetIdempotencyKey resets all changes to the "idempotency_key" field.
-func (m *OrdersMutation) ResetIdempotencyKey() {
-	m.idempotency_key = nil
-}
-
 // SetNote sets the "note" field.
 func (m *OrdersMutation) SetNote(s string) {
 	m.note = &s
@@ -29597,7 +29506,7 @@ func (m *OrdersMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *OrdersMutation) Fields() []string {
-	fields := make([]string, 0, 12)
+	fields := make([]string, 0, 11)
 	if m.order_id != nil {
 		fields = append(fields, orders.FieldOrderID)
 	}
@@ -29618,9 +29527,6 @@ func (m *OrdersMutation) Fields() []string {
 	}
 	if m.status != nil {
 		fields = append(fields, orders.FieldStatus)
-	}
-	if m.idempotency_key != nil {
-		fields = append(fields, orders.FieldIdempotencyKey)
 	}
 	if m.note != nil {
 		fields = append(fields, orders.FieldNote)
@@ -29656,8 +29562,6 @@ func (m *OrdersMutation) Field(name string) (ent.Value, bool) {
 		return m.TargetObjectID()
 	case orders.FieldStatus:
 		return m.Status()
-	case orders.FieldIdempotencyKey:
-		return m.IdempotencyKey()
 	case orders.FieldNote:
 		return m.Note()
 	case orders.FieldPayloadJSON:
@@ -29689,8 +29593,6 @@ func (m *OrdersMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldTargetObjectID(ctx)
 	case orders.FieldStatus:
 		return m.OldStatus(ctx)
-	case orders.FieldIdempotencyKey:
-		return m.OldIdempotencyKey(ctx)
 	case orders.FieldNote:
 		return m.OldNote(ctx)
 	case orders.FieldPayloadJSON:
@@ -29756,13 +29658,6 @@ func (m *OrdersMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStatus(v)
-		return nil
-	case orders.FieldIdempotencyKey:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetIdempotencyKey(v)
 		return nil
 	case orders.FieldNote:
 		v, ok := value.(string)
@@ -29888,9 +29783,6 @@ func (m *OrdersMutation) ResetField(name string) error {
 		return nil
 	case orders.FieldStatus:
 		m.ResetStatus()
-		return nil
-	case orders.FieldIdempotencyKey:
-		m.ResetIdempotencyKey()
 		return nil
 	case orders.FieldNote:
 		m.ResetNote()
@@ -44050,7 +43942,6 @@ type ProcOrchestratorLogsMutation struct {
 	source             *string
 	signal_type        *string
 	aggregate_key      *string
-	idempotency_key    *string
 	command_type       *string
 	gateway_pubkey_hex *string
 	task_status        *string
@@ -44362,42 +44253,6 @@ func (m *ProcOrchestratorLogsMutation) OldAggregateKey(ctx context.Context) (v s
 // ResetAggregateKey resets all changes to the "aggregate_key" field.
 func (m *ProcOrchestratorLogsMutation) ResetAggregateKey() {
 	m.aggregate_key = nil
-}
-
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (m *ProcOrchestratorLogsMutation) SetIdempotencyKey(s string) {
-	m.idempotency_key = &s
-}
-
-// IdempotencyKey returns the value of the "idempotency_key" field in the mutation.
-func (m *ProcOrchestratorLogsMutation) IdempotencyKey() (r string, exists bool) {
-	v := m.idempotency_key
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldIdempotencyKey returns the old "idempotency_key" field's value of the ProcOrchestratorLogs entity.
-// If the ProcOrchestratorLogs object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ProcOrchestratorLogsMutation) OldIdempotencyKey(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIdempotencyKey is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIdempotencyKey requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIdempotencyKey: %w", err)
-	}
-	return oldValue.IdempotencyKey, nil
-}
-
-// ResetIdempotencyKey resets all changes to the "idempotency_key" field.
-func (m *ProcOrchestratorLogsMutation) ResetIdempotencyKey() {
-	m.idempotency_key = nil
 }
 
 // SetCommandType sets the "command_type" field.
@@ -44726,7 +44581,7 @@ func (m *ProcOrchestratorLogsMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProcOrchestratorLogsMutation) Fields() []string {
-	fields := make([]string, 0, 13)
+	fields := make([]string, 0, 12)
 	if m.created_at_unix != nil {
 		fields = append(fields, procorchestratorlogs.FieldCreatedAtUnix)
 	}
@@ -44741,9 +44596,6 @@ func (m *ProcOrchestratorLogsMutation) Fields() []string {
 	}
 	if m.aggregate_key != nil {
 		fields = append(fields, procorchestratorlogs.FieldAggregateKey)
-	}
-	if m.idempotency_key != nil {
-		fields = append(fields, procorchestratorlogs.FieldIdempotencyKey)
 	}
 	if m.command_type != nil {
 		fields = append(fields, procorchestratorlogs.FieldCommandType)
@@ -44784,8 +44636,6 @@ func (m *ProcOrchestratorLogsMutation) Field(name string) (ent.Value, bool) {
 		return m.SignalType()
 	case procorchestratorlogs.FieldAggregateKey:
 		return m.AggregateKey()
-	case procorchestratorlogs.FieldIdempotencyKey:
-		return m.IdempotencyKey()
 	case procorchestratorlogs.FieldCommandType:
 		return m.CommandType()
 	case procorchestratorlogs.FieldGatewayPubkeyHex:
@@ -44819,8 +44669,6 @@ func (m *ProcOrchestratorLogsMutation) OldField(ctx context.Context, name string
 		return m.OldSignalType(ctx)
 	case procorchestratorlogs.FieldAggregateKey:
 		return m.OldAggregateKey(ctx)
-	case procorchestratorlogs.FieldIdempotencyKey:
-		return m.OldIdempotencyKey(ctx)
 	case procorchestratorlogs.FieldCommandType:
 		return m.OldCommandType(ctx)
 	case procorchestratorlogs.FieldGatewayPubkeyHex:
@@ -44878,13 +44726,6 @@ func (m *ProcOrchestratorLogsMutation) SetField(name string, value ent.Value) er
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetAggregateKey(v)
-		return nil
-	case procorchestratorlogs.FieldIdempotencyKey:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetIdempotencyKey(v)
 		return nil
 	case procorchestratorlogs.FieldCommandType:
 		v, ok := value.(string)
@@ -45037,9 +44878,6 @@ func (m *ProcOrchestratorLogsMutation) ResetField(name string) error {
 		return nil
 	case procorchestratorlogs.FieldAggregateKey:
 		m.ResetAggregateKey()
-		return nil
-	case procorchestratorlogs.FieldIdempotencyKey:
-		m.ResetIdempotencyKey()
 		return nil
 	case procorchestratorlogs.FieldCommandType:
 		m.ResetCommandType()

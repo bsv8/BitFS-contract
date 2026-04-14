@@ -62,6 +62,11 @@ func SettlementID(v string) predicate.OrderSettlementEvents {
 	return predicate.OrderSettlementEvents(sql.FieldEQ(FieldSettlementID, v))
 }
 
+// OrderID applies equality check predicate on the "order_id" field. It's identical to OrderIDEQ.
+func OrderID(v string) predicate.OrderSettlementEvents {
+	return predicate.OrderSettlementEvents(sql.FieldEQ(FieldOrderID, v))
+}
+
 // SourceType applies equality check predicate on the "source_type" field. It's identical to SourceTypeEQ.
 func SourceType(v string) predicate.OrderSettlementEvents {
 	return predicate.OrderSettlementEvents(sql.FieldEQ(FieldSourceType, v))
@@ -90,11 +95,6 @@ func EventType(v string) predicate.OrderSettlementEvents {
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
 func Status(v string) predicate.OrderSettlementEvents {
 	return predicate.OrderSettlementEvents(sql.FieldEQ(FieldStatus, v))
-}
-
-// IdempotencyKey applies equality check predicate on the "idempotency_key" field. It's identical to IdempotencyKeyEQ.
-func IdempotencyKey(v string) predicate.OrderSettlementEvents {
-	return predicate.OrderSettlementEvents(sql.FieldEQ(FieldIdempotencyKey, v))
 }
 
 // Note applies equality check predicate on the "note" field. It's identical to NoteEQ.
@@ -240,6 +240,71 @@ func SettlementIDEqualFold(v string) predicate.OrderSettlementEvents {
 // SettlementIDContainsFold applies the ContainsFold predicate on the "settlement_id" field.
 func SettlementIDContainsFold(v string) predicate.OrderSettlementEvents {
 	return predicate.OrderSettlementEvents(sql.FieldContainsFold(FieldSettlementID, v))
+}
+
+// OrderIDEQ applies the EQ predicate on the "order_id" field.
+func OrderIDEQ(v string) predicate.OrderSettlementEvents {
+	return predicate.OrderSettlementEvents(sql.FieldEQ(FieldOrderID, v))
+}
+
+// OrderIDNEQ applies the NEQ predicate on the "order_id" field.
+func OrderIDNEQ(v string) predicate.OrderSettlementEvents {
+	return predicate.OrderSettlementEvents(sql.FieldNEQ(FieldOrderID, v))
+}
+
+// OrderIDIn applies the In predicate on the "order_id" field.
+func OrderIDIn(vs ...string) predicate.OrderSettlementEvents {
+	return predicate.OrderSettlementEvents(sql.FieldIn(FieldOrderID, vs...))
+}
+
+// OrderIDNotIn applies the NotIn predicate on the "order_id" field.
+func OrderIDNotIn(vs ...string) predicate.OrderSettlementEvents {
+	return predicate.OrderSettlementEvents(sql.FieldNotIn(FieldOrderID, vs...))
+}
+
+// OrderIDGT applies the GT predicate on the "order_id" field.
+func OrderIDGT(v string) predicate.OrderSettlementEvents {
+	return predicate.OrderSettlementEvents(sql.FieldGT(FieldOrderID, v))
+}
+
+// OrderIDGTE applies the GTE predicate on the "order_id" field.
+func OrderIDGTE(v string) predicate.OrderSettlementEvents {
+	return predicate.OrderSettlementEvents(sql.FieldGTE(FieldOrderID, v))
+}
+
+// OrderIDLT applies the LT predicate on the "order_id" field.
+func OrderIDLT(v string) predicate.OrderSettlementEvents {
+	return predicate.OrderSettlementEvents(sql.FieldLT(FieldOrderID, v))
+}
+
+// OrderIDLTE applies the LTE predicate on the "order_id" field.
+func OrderIDLTE(v string) predicate.OrderSettlementEvents {
+	return predicate.OrderSettlementEvents(sql.FieldLTE(FieldOrderID, v))
+}
+
+// OrderIDContains applies the Contains predicate on the "order_id" field.
+func OrderIDContains(v string) predicate.OrderSettlementEvents {
+	return predicate.OrderSettlementEvents(sql.FieldContains(FieldOrderID, v))
+}
+
+// OrderIDHasPrefix applies the HasPrefix predicate on the "order_id" field.
+func OrderIDHasPrefix(v string) predicate.OrderSettlementEvents {
+	return predicate.OrderSettlementEvents(sql.FieldHasPrefix(FieldOrderID, v))
+}
+
+// OrderIDHasSuffix applies the HasSuffix predicate on the "order_id" field.
+func OrderIDHasSuffix(v string) predicate.OrderSettlementEvents {
+	return predicate.OrderSettlementEvents(sql.FieldHasSuffix(FieldOrderID, v))
+}
+
+// OrderIDEqualFold applies the EqualFold predicate on the "order_id" field.
+func OrderIDEqualFold(v string) predicate.OrderSettlementEvents {
+	return predicate.OrderSettlementEvents(sql.FieldEqualFold(FieldOrderID, v))
+}
+
+// OrderIDContainsFold applies the ContainsFold predicate on the "order_id" field.
+func OrderIDContainsFold(v string) predicate.OrderSettlementEvents {
+	return predicate.OrderSettlementEvents(sql.FieldContainsFold(FieldOrderID, v))
 }
 
 // SourceTypeEQ applies the EQ predicate on the "source_type" field.
@@ -630,71 +695,6 @@ func StatusEqualFold(v string) predicate.OrderSettlementEvents {
 // StatusContainsFold applies the ContainsFold predicate on the "status" field.
 func StatusContainsFold(v string) predicate.OrderSettlementEvents {
 	return predicate.OrderSettlementEvents(sql.FieldContainsFold(FieldStatus, v))
-}
-
-// IdempotencyKeyEQ applies the EQ predicate on the "idempotency_key" field.
-func IdempotencyKeyEQ(v string) predicate.OrderSettlementEvents {
-	return predicate.OrderSettlementEvents(sql.FieldEQ(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyNEQ applies the NEQ predicate on the "idempotency_key" field.
-func IdempotencyKeyNEQ(v string) predicate.OrderSettlementEvents {
-	return predicate.OrderSettlementEvents(sql.FieldNEQ(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyIn applies the In predicate on the "idempotency_key" field.
-func IdempotencyKeyIn(vs ...string) predicate.OrderSettlementEvents {
-	return predicate.OrderSettlementEvents(sql.FieldIn(FieldIdempotencyKey, vs...))
-}
-
-// IdempotencyKeyNotIn applies the NotIn predicate on the "idempotency_key" field.
-func IdempotencyKeyNotIn(vs ...string) predicate.OrderSettlementEvents {
-	return predicate.OrderSettlementEvents(sql.FieldNotIn(FieldIdempotencyKey, vs...))
-}
-
-// IdempotencyKeyGT applies the GT predicate on the "idempotency_key" field.
-func IdempotencyKeyGT(v string) predicate.OrderSettlementEvents {
-	return predicate.OrderSettlementEvents(sql.FieldGT(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyGTE applies the GTE predicate on the "idempotency_key" field.
-func IdempotencyKeyGTE(v string) predicate.OrderSettlementEvents {
-	return predicate.OrderSettlementEvents(sql.FieldGTE(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyLT applies the LT predicate on the "idempotency_key" field.
-func IdempotencyKeyLT(v string) predicate.OrderSettlementEvents {
-	return predicate.OrderSettlementEvents(sql.FieldLT(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyLTE applies the LTE predicate on the "idempotency_key" field.
-func IdempotencyKeyLTE(v string) predicate.OrderSettlementEvents {
-	return predicate.OrderSettlementEvents(sql.FieldLTE(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyContains applies the Contains predicate on the "idempotency_key" field.
-func IdempotencyKeyContains(v string) predicate.OrderSettlementEvents {
-	return predicate.OrderSettlementEvents(sql.FieldContains(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyHasPrefix applies the HasPrefix predicate on the "idempotency_key" field.
-func IdempotencyKeyHasPrefix(v string) predicate.OrderSettlementEvents {
-	return predicate.OrderSettlementEvents(sql.FieldHasPrefix(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyHasSuffix applies the HasSuffix predicate on the "idempotency_key" field.
-func IdempotencyKeyHasSuffix(v string) predicate.OrderSettlementEvents {
-	return predicate.OrderSettlementEvents(sql.FieldHasSuffix(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyEqualFold applies the EqualFold predicate on the "idempotency_key" field.
-func IdempotencyKeyEqualFold(v string) predicate.OrderSettlementEvents {
-	return predicate.OrderSettlementEvents(sql.FieldEqualFold(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyContainsFold applies the ContainsFold predicate on the "idempotency_key" field.
-func IdempotencyKeyContainsFold(v string) predicate.OrderSettlementEvents {
-	return predicate.OrderSettlementEvents(sql.FieldContainsFold(FieldIdempotencyKey, v))
 }
 
 // NoteEQ applies the EQ predicate on the "note" field.

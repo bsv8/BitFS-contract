@@ -39,7 +39,6 @@ func (OrderSettlements) Fields() []ent.Field {
 		field.String("to_party_id"),
 		field.String("target_type"),
 		field.String("target_id"),
-		field.String("idempotency_key").Default(""),
 		field.String("note").Default(""),
 		field.String("error_message").Default(""),
 		field.String("payload_json").Default("{}"),

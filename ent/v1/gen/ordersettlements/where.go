@@ -132,11 +132,6 @@ func TargetID(v string) predicate.OrderSettlements {
 	return predicate.OrderSettlements(sql.FieldEQ(FieldTargetID, v))
 }
 
-// IdempotencyKey applies equality check predicate on the "idempotency_key" field. It's identical to IdempotencyKeyEQ.
-func IdempotencyKey(v string) predicate.OrderSettlements {
-	return predicate.OrderSettlements(sql.FieldEQ(FieldIdempotencyKey, v))
-}
-
 // Note applies equality check predicate on the "note" field. It's identical to NoteEQ.
 func Note(v string) predicate.OrderSettlements {
 	return predicate.OrderSettlements(sql.FieldEQ(FieldNote, v))
@@ -1155,71 +1150,6 @@ func TargetIDEqualFold(v string) predicate.OrderSettlements {
 // TargetIDContainsFold applies the ContainsFold predicate on the "target_id" field.
 func TargetIDContainsFold(v string) predicate.OrderSettlements {
 	return predicate.OrderSettlements(sql.FieldContainsFold(FieldTargetID, v))
-}
-
-// IdempotencyKeyEQ applies the EQ predicate on the "idempotency_key" field.
-func IdempotencyKeyEQ(v string) predicate.OrderSettlements {
-	return predicate.OrderSettlements(sql.FieldEQ(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyNEQ applies the NEQ predicate on the "idempotency_key" field.
-func IdempotencyKeyNEQ(v string) predicate.OrderSettlements {
-	return predicate.OrderSettlements(sql.FieldNEQ(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyIn applies the In predicate on the "idempotency_key" field.
-func IdempotencyKeyIn(vs ...string) predicate.OrderSettlements {
-	return predicate.OrderSettlements(sql.FieldIn(FieldIdempotencyKey, vs...))
-}
-
-// IdempotencyKeyNotIn applies the NotIn predicate on the "idempotency_key" field.
-func IdempotencyKeyNotIn(vs ...string) predicate.OrderSettlements {
-	return predicate.OrderSettlements(sql.FieldNotIn(FieldIdempotencyKey, vs...))
-}
-
-// IdempotencyKeyGT applies the GT predicate on the "idempotency_key" field.
-func IdempotencyKeyGT(v string) predicate.OrderSettlements {
-	return predicate.OrderSettlements(sql.FieldGT(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyGTE applies the GTE predicate on the "idempotency_key" field.
-func IdempotencyKeyGTE(v string) predicate.OrderSettlements {
-	return predicate.OrderSettlements(sql.FieldGTE(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyLT applies the LT predicate on the "idempotency_key" field.
-func IdempotencyKeyLT(v string) predicate.OrderSettlements {
-	return predicate.OrderSettlements(sql.FieldLT(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyLTE applies the LTE predicate on the "idempotency_key" field.
-func IdempotencyKeyLTE(v string) predicate.OrderSettlements {
-	return predicate.OrderSettlements(sql.FieldLTE(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyContains applies the Contains predicate on the "idempotency_key" field.
-func IdempotencyKeyContains(v string) predicate.OrderSettlements {
-	return predicate.OrderSettlements(sql.FieldContains(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyHasPrefix applies the HasPrefix predicate on the "idempotency_key" field.
-func IdempotencyKeyHasPrefix(v string) predicate.OrderSettlements {
-	return predicate.OrderSettlements(sql.FieldHasPrefix(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyHasSuffix applies the HasSuffix predicate on the "idempotency_key" field.
-func IdempotencyKeyHasSuffix(v string) predicate.OrderSettlements {
-	return predicate.OrderSettlements(sql.FieldHasSuffix(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyEqualFold applies the EqualFold predicate on the "idempotency_key" field.
-func IdempotencyKeyEqualFold(v string) predicate.OrderSettlements {
-	return predicate.OrderSettlements(sql.FieldEqualFold(FieldIdempotencyKey, v))
-}
-
-// IdempotencyKeyContainsFold applies the ContainsFold predicate on the "idempotency_key" field.
-func IdempotencyKeyContainsFold(v string) predicate.OrderSettlements {
-	return predicate.OrderSettlements(sql.FieldContainsFold(FieldIdempotencyKey, v))
 }
 
 // NoteEQ applies the EQ predicate on the "note" field.

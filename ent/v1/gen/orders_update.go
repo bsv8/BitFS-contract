@@ -111,20 +111,6 @@ func (_u *OrdersUpdate) SetNillableStatus(v *string) *OrdersUpdate {
 	return _u
 }
 
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (_u *OrdersUpdate) SetIdempotencyKey(v string) *OrdersUpdate {
-	_u.mutation.SetIdempotencyKey(v)
-	return _u
-}
-
-// SetNillableIdempotencyKey sets the "idempotency_key" field if the given value is not nil.
-func (_u *OrdersUpdate) SetNillableIdempotencyKey(v *string) *OrdersUpdate {
-	if v != nil {
-		_u.SetIdempotencyKey(*v)
-	}
-	return _u
-}
-
 // SetNote sets the "note" field.
 func (_u *OrdersUpdate) SetNote(v string) *OrdersUpdate {
 	_u.mutation.SetNote(v)
@@ -254,9 +240,6 @@ func (_u *OrdersUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(orders.FieldStatus, field.TypeString, value)
 	}
-	if value, ok := _u.mutation.IdempotencyKey(); ok {
-		_spec.SetField(orders.FieldIdempotencyKey, field.TypeString, value)
-	}
 	if value, ok := _u.mutation.Note(); ok {
 		_spec.SetField(orders.FieldNote, field.TypeString, value)
 	}
@@ -375,20 +358,6 @@ func (_u *OrdersUpdateOne) SetStatus(v string) *OrdersUpdateOne {
 func (_u *OrdersUpdateOne) SetNillableStatus(v *string) *OrdersUpdateOne {
 	if v != nil {
 		_u.SetStatus(*v)
-	}
-	return _u
-}
-
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (_u *OrdersUpdateOne) SetIdempotencyKey(v string) *OrdersUpdateOne {
-	_u.mutation.SetIdempotencyKey(v)
-	return _u
-}
-
-// SetNillableIdempotencyKey sets the "idempotency_key" field if the given value is not nil.
-func (_u *OrdersUpdateOne) SetNillableIdempotencyKey(v *string) *OrdersUpdateOne {
-	if v != nil {
-		_u.SetIdempotencyKey(*v)
 	}
 	return _u
 }
@@ -551,9 +520,6 @@ func (_u *OrdersUpdateOne) sqlSave(ctx context.Context) (_node *Orders, err erro
 	}
 	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(orders.FieldStatus, field.TypeString, value)
-	}
-	if value, ok := _u.mutation.IdempotencyKey(); ok {
-		_spec.SetField(orders.FieldIdempotencyKey, field.TypeString, value)
 	}
 	if value, ok := _u.mutation.Note(); ok {
 		_spec.SetField(orders.FieldNote, field.TypeString, value)

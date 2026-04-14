@@ -20,6 +20,8 @@ type OrderSettlementEvents struct {
 	ProcessID string `json:"process_id,omitempty"`
 	// SettlementID holds the value of the "settlement_id" field.
 	SettlementID string `json:"settlement_id,omitempty"`
+	// OrderID holds the value of the "order_id" field.
+	OrderID string `json:"order_id,omitempty"`
 	// SourceType holds the value of the "source_type" field.
 	SourceType string `json:"source_type,omitempty"`
 	// SourceID holds the value of the "source_id" field.
@@ -32,8 +34,6 @@ type OrderSettlementEvents struct {
 	EventType string `json:"event_type,omitempty"`
 	// Status holds the value of the "status" field.
 	Status string `json:"status,omitempty"`
-	// IdempotencyKey holds the value of the "idempotency_key" field.
-	IdempotencyKey string `json:"idempotency_key,omitempty"`
 	// Note holds the value of the "note" field.
 	Note string `json:"note,omitempty"`
 	// PayloadJSON holds the value of the "payload_json" field.
@@ -50,7 +50,7 @@ func (*OrderSettlementEvents) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case ordersettlementevents.FieldID, ordersettlementevents.FieldOccurredAtUnix:
 			values[i] = new(sql.NullInt64)
-		case ordersettlementevents.FieldProcessID, ordersettlementevents.FieldSettlementID, ordersettlementevents.FieldSourceType, ordersettlementevents.FieldSourceID, ordersettlementevents.FieldAccountingScene, ordersettlementevents.FieldAccountingSubtype, ordersettlementevents.FieldEventType, ordersettlementevents.FieldStatus, ordersettlementevents.FieldIdempotencyKey, ordersettlementevents.FieldNote, ordersettlementevents.FieldPayloadJSON:
+		case ordersettlementevents.FieldProcessID, ordersettlementevents.FieldSettlementID, ordersettlementevents.FieldOrderID, ordersettlementevents.FieldSourceType, ordersettlementevents.FieldSourceID, ordersettlementevents.FieldAccountingScene, ordersettlementevents.FieldAccountingSubtype, ordersettlementevents.FieldEventType, ordersettlementevents.FieldStatus, ordersettlementevents.FieldNote, ordersettlementevents.FieldPayloadJSON:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -84,6 +84,12 @@ func (_m *OrderSettlementEvents) assignValues(columns []string, values []any) er
 				return fmt.Errorf("unexpected type %T for field settlement_id", values[i])
 			} else if value.Valid {
 				_m.SettlementID = value.String
+			}
+		case ordersettlementevents.FieldOrderID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field order_id", values[i])
+			} else if value.Valid {
+				_m.OrderID = value.String
 			}
 		case ordersettlementevents.FieldSourceType:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -120,12 +126,6 @@ func (_m *OrderSettlementEvents) assignValues(columns []string, values []any) er
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
 				_m.Status = value.String
-			}
-		case ordersettlementevents.FieldIdempotencyKey:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field idempotency_key", values[i])
-			} else if value.Valid {
-				_m.IdempotencyKey = value.String
 			}
 		case ordersettlementevents.FieldNote:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -187,6 +187,9 @@ func (_m *OrderSettlementEvents) String() string {
 	builder.WriteString("settlement_id=")
 	builder.WriteString(_m.SettlementID)
 	builder.WriteString(", ")
+	builder.WriteString("order_id=")
+	builder.WriteString(_m.OrderID)
+	builder.WriteString(", ")
 	builder.WriteString("source_type=")
 	builder.WriteString(_m.SourceType)
 	builder.WriteString(", ")
@@ -204,9 +207,6 @@ func (_m *OrderSettlementEvents) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(_m.Status)
-	builder.WriteString(", ")
-	builder.WriteString("idempotency_key=")
-	builder.WriteString(_m.IdempotencyKey)
 	builder.WriteString(", ")
 	builder.WriteString("note=")
 	builder.WriteString(_m.Note)

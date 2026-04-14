@@ -49,12 +49,6 @@ func (_c *ProcOrchestratorLogsCreate) SetAggregateKey(v string) *ProcOrchestrato
 	return _c
 }
 
-// SetIdempotencyKey sets the "idempotency_key" field.
-func (_c *ProcOrchestratorLogsCreate) SetIdempotencyKey(v string) *ProcOrchestratorLogsCreate {
-	_c.mutation.SetIdempotencyKey(v)
-	return _c
-}
-
 // SetCommandType sets the "command_type" field.
 func (_c *ProcOrchestratorLogsCreate) SetCommandType(v string) *ProcOrchestratorLogsCreate {
 	_c.mutation.SetCommandType(v)
@@ -146,9 +140,6 @@ func (_c *ProcOrchestratorLogsCreate) check() error {
 	if _, ok := _c.mutation.AggregateKey(); !ok {
 		return &ValidationError{Name: "aggregate_key", err: errors.New(`gen: missing required field "ProcOrchestratorLogs.aggregate_key"`)}
 	}
-	if _, ok := _c.mutation.IdempotencyKey(); !ok {
-		return &ValidationError{Name: "idempotency_key", err: errors.New(`gen: missing required field "ProcOrchestratorLogs.idempotency_key"`)}
-	}
 	if _, ok := _c.mutation.CommandType(); !ok {
 		return &ValidationError{Name: "command_type", err: errors.New(`gen: missing required field "ProcOrchestratorLogs.command_type"`)}
 	}
@@ -215,10 +206,6 @@ func (_c *ProcOrchestratorLogsCreate) createSpec() (*ProcOrchestratorLogs, *sqlg
 	if value, ok := _c.mutation.AggregateKey(); ok {
 		_spec.SetField(procorchestratorlogs.FieldAggregateKey, field.TypeString, value)
 		_node.AggregateKey = value
-	}
-	if value, ok := _c.mutation.IdempotencyKey(); ok {
-		_spec.SetField(procorchestratorlogs.FieldIdempotencyKey, field.TypeString, value)
-		_node.IdempotencyKey = value
 	}
 	if value, ok := _c.mutation.CommandType(); ok {
 		_spec.SetField(procorchestratorlogs.FieldCommandType, field.TypeString, value)
