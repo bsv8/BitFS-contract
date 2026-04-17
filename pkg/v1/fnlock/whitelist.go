@@ -10,6 +10,10 @@ var Whitelist = buildWhitelist()
 func buildWhitelist() []LockedFunction {
 	total := len(whitelistBusinessControl) +
 		len(whitelistBusinessKey) +
+		len(whitelistBusinessWallet) +
+		len(whitelistBusinessGateway) +
+		len(whitelistBusinessDomain) +
+		len(whitelistBusinessPeer) +
 		len(whitelistBusinessPricing) +
 		len(whitelistBusinessWorkspace) +
 		len(whitelistBusinessObs) +
@@ -18,6 +22,10 @@ func buildWhitelist() []LockedFunction {
 	out := make([]LockedFunction, 0, total)
 	out = append(out, whitelistBusinessControl...)
 	out = append(out, whitelistBusinessKey...)
+	out = append(out, whitelistBusinessWallet...)
+	out = append(out, whitelistBusinessGateway...)
+	out = append(out, whitelistBusinessDomain...)
+	out = append(out, whitelistBusinessPeer...)
 	out = append(out, whitelistBusinessPricing...)
 	out = append(out, whitelistBusinessWorkspace...)
 	out = append(out, whitelistBusinessObs...)

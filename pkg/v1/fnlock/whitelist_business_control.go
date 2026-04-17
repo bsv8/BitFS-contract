@@ -26,4 +26,12 @@ var whitelistBusinessControl = []LockedFunction{
 		Signature: "func (d *managedDaemon) executeManagedPricingControlCommand(req controlCommandRequest) (controlCommandResult, error)",
 		Note:      "定价控制桥接分发口，保持签名稳定可避免控制层与业务层脱钩。",
 	},
+	{
+		ID:        "bitfs.managed.control.execute_business",
+		Module:    ModuleBitFS,
+		Package:   "./pkg/managedclient",
+		Symbol:    "managedDaemon.executeManagedBusinessControlCommand",
+		Signature: "func (d *managedDaemon) executeManagedBusinessControlCommand(req controlCommandRequest) (controlCommandResult, error)",
+		Note:      "业务控制桥接分发口，统一承接钱包直付、网关交互、domain 交互与 peer 交互动作。",
+	},
 }
