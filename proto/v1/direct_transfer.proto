@@ -85,8 +85,57 @@ message DirectTransferPoolPayResp {
   string session_id = 1;
   string status = 2;
   bytes seller_sig = 3;
-  bytes chunk = 4;
-  string error = 5;
+  string error = 4;
+}
+
+// 直连池 chunk_get（先给块，不改金额状态）。
+message DirectTransferChunkGetReq {
+  string session_id = 1;
+  string seed_hash = 2;
+  string chunk_hash = 3;
+  uint32 chunk_index = 4;
+  uint32 sequence = 5;
+}
+
+message DirectTransferChunkGetResp {
+  string session_id = 1;
+  string status = 2;
+  bytes chunk = 3;
+  string error = 4;
+}
+
+// 直连池仲裁（卖方向仲裁者发起）。
+message DirectTransferArbitrateReq {
+  string demand_id = 1;
+  string session_id = 2;
+  string seed_hash = 3;
+  uint32 chunk_index = 4;
+  string chunk_hash = 5;
+  uint32 sequence = 6;
+
+  string seller_pubkey_hex = 7;
+  string buyer_pubkey_hex = 8;
+  string arbiter_pubkey_hex = 9;
+
+  uint64 seller_amount = 10;
+  uint64 buyer_amount = 11;
+  uint64 arbiter_fee = 12;
+  uint64 spend_tx_fee = 13;
+
+  bytes current_tx = 14;
+  bytes buyer_sig = 15;
+  bytes evidence_hash = 16;
+  bytes evidence_payload = 17;
+}
+
+message DirectTransferArbitrateResp {
+  string session_id = 1;
+  string status = 2;
+  string error = 3;
+  bytes award_tx = 4;
+  string award_txid = 5;
+  bytes arbiter_sig = 6;
+  uint64 arbiter_fee = 7;
 }
 
 // 直连池 close。

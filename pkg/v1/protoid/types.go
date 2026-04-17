@@ -14,7 +14,9 @@ const (
 	ProtoQuoteDirectSubmit protocol.ID = "/bsv-transfer/client/quote/direct_submit/1.0.0"
 	ProtoDirectDealAccept  protocol.ID = "/bsv-transfer/client/deal/accept/1.0.0"
 	ProtoTransferPoolOpen  protocol.ID = "/bsv-transfer/client/transfer-pool/open/1.0.0"
+	ProtoTransferChunkGet  protocol.ID = "/bsv-transfer/client/transfer-pool/chunk-get/1.0.0"
 	ProtoTransferPoolPay   protocol.ID = "/bsv-transfer/client/transfer-pool/pay/1.0.0"
+	ProtoTransferArbitrate protocol.ID = "/bsv-transfer/client/transfer-pool/arbitrate/1.0.0"
 	ProtoTransferPoolClose protocol.ID = "/bsv-transfer/client/transfer-pool/close/1.0.0"
 
 	ProtoLiveQuoteSubmit protocol.ID = "/bsv-transfer/client/live_quote/submit/1.0.0"
