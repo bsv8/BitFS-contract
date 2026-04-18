@@ -1,6 +1,6 @@
 package fnlock
 
-// peer.call / peer.resolve 触发入口。
+// peer.* 触发入口。
 var whitelistBusinessPeer = []LockedFunction{
 	{
 		ID:               "bitfs.clientapp.peer.trigger_call",
@@ -19,5 +19,23 @@ var whitelistBusinessPeer = []LockedFunction{
 		Signature:        "func TriggerPeerResolve(ctx context.Context, rt *Runtime, p TriggerPeerResolveParams) (ncall.ResolveResp, error)",
 		ObsControlAction: "peer.resolve",
 		Note:             "节点 route resolve 触发入口。",
+	},
+	{
+		ID:               "bitfs.clientapp.peer.trigger_self",
+		Module:           ModuleBitFS,
+		Package:          "./pkg/managedclient",
+		Symbol:           "managedDaemon.executeManagedBusinessControlCommand",
+		Signature:        "func (d *managedDaemon) executeManagedBusinessControlCommand(req controlCommandRequest) (controlCommandResult, error)",
+		ObsControlAction: "peer.self",
+		Note:             "managed 控制入口：读取当前节点 peer 身份（pubkey_hex/peer_id/addrs）。",
+	},
+	{
+		ID:               "bitfs.clientapp.peer.trigger_connect",
+		Module:           ModuleBitFS,
+		Package:          "./pkg/managedclient",
+		Symbol:           "managedDaemon.executeManagedBusinessControlCommand",
+		Signature:        "func (d *managedDaemon) executeManagedBusinessControlCommand(req controlCommandRequest) (controlCommandResult, error)",
+		ObsControlAction: "peer.connect",
+		Note:             "managed 控制入口：按给定 addr 建立 p2p 连接（写 peerstore + host connect）。",
 	},
 }
