@@ -3,13 +3,22 @@ package fnlock
 // 密钥生命周期相关能力入口。
 var whitelistBusinessKey = []LockedFunction{
 	{
-		ID:               "bitfs.managed.key.ensure_material",
+		ID:               "bitfs.managed.key.create_random",
 		Module:           ModuleBitFS,
 		Package:          "./pkg/managedclient",
-		Symbol:           "managedDaemon.ensureKeyMaterial",
-		Signature:        "func (d *managedDaemon) ensureKeyMaterial(password string) (keyMaterialTicket, error)",
-		ObsControlAction: "key.ensure_material",
-		Note:             "密钥材料创建链路的核心能力入口，测试触发与 HTTP 语义需要稳定对齐。",
+		Symbol:           "managedDaemon.createRandomKeyMaterial",
+		Signature:        "func (d *managedDaemon) createRandomKeyMaterial(password string) (keyMaterialTicket, error)",
+		ObsControlAction: "key.create_random",
+		Note:             "只负责创建随机密钥；已存在时直接报错，避免测试语义混淆。",
+	},
+	{
+		ID:               "bitfs.managed.key.assert_exists",
+		Module:           ModuleBitFS,
+		Package:          "./pkg/managedclient",
+		Symbol:           "managedDaemon.assertKeyMaterialExists",
+		Signature:        "func (d *managedDaemon) assertKeyMaterialExists() error",
+		ObsControlAction: "key.assert_exists",
+		Note:             "只负责断言密钥文件存在；不创建、不修改。",
 	},
 	{
 		ID:               "bitfs.managed.key.unlock_with_password",
