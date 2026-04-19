@@ -14,6 +14,7 @@ const (
 // - 进入白名单后，函数名、参数、返回值都被冻结；
 // - CI 通过 go doc 提取实时签名，必须和 Signature 完全一致；
 // - Note 必填，用于说明该签名为什么不能随意改动。
+// - 模块私有白名单不进 contract/fnlock，只由 BitFS 侧模块自己维护。
 type LockedFunction struct {
 	ID               string
 	Module           Module

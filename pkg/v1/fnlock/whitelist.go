@@ -1,9 +1,9 @@
 package fnlock
 
-// Whitelist 是跨 BitFS/BFTP 的全局函数签名锁清单。
+// Whitelist 只承载主框架全局函数签名锁清单。
 //
 // 设计说明：
-// - 这里只做业务组装，不承载具体业务项；
+// - 这里只做主框架能力拼装，不承载模块私有白名单；
 // - 新增业务时，优先新增对应业务分组文件，再在这里挂接。
 var Whitelist = buildWhitelist()
 

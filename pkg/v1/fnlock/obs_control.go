@@ -20,6 +20,7 @@ func obsControlActionIndex() map[string]string {
 
 func buildObsControlActionToLockID() map[string]string {
 	out := map[string]string{}
+	// 这里只从主框架白名单生成 obs action 映射，不扫描模块私有白名单。
 	for _, item := range Whitelist {
 		action := strings.TrimSpace(item.ObsControlAction)
 		lockID := strings.TrimSpace(item.ID)
