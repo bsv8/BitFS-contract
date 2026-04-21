@@ -56,6 +56,9 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procfiledownloadchunks"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procfiledownloads"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgatewayevents"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashchunks"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashjobs"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashquotes"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procinboxmessages"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/proclivefollows"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procnodereachabilitycache"
@@ -160,6 +163,12 @@ type Client struct {
 	ProcFileDownloads *ProcFileDownloadsClient
 	// ProcGatewayEvents is the client for interacting with the ProcGatewayEvents builders.
 	ProcGatewayEvents *ProcGatewayEventsClient
+	// ProcGetFileByHashChunks is the client for interacting with the ProcGetFileByHashChunks builders.
+	ProcGetFileByHashChunks *ProcGetFileByHashChunksClient
+	// ProcGetFileByHashJobs is the client for interacting with the ProcGetFileByHashJobs builders.
+	ProcGetFileByHashJobs *ProcGetFileByHashJobsClient
+	// ProcGetFileByHashQuotes is the client for interacting with the ProcGetFileByHashQuotes builders.
+	ProcGetFileByHashQuotes *ProcGetFileByHashQuotesClient
 	// ProcInboxMessages is the client for interacting with the ProcInboxMessages builders.
 	ProcInboxMessages *ProcInboxMessagesClient
 	// ProcLiveFollows is the client for interacting with the ProcLiveFollows builders.
@@ -242,6 +251,9 @@ func (c *Client) init() {
 	c.ProcFileDownloadChunks = NewProcFileDownloadChunksClient(c.config)
 	c.ProcFileDownloads = NewProcFileDownloadsClient(c.config)
 	c.ProcGatewayEvents = NewProcGatewayEventsClient(c.config)
+	c.ProcGetFileByHashChunks = NewProcGetFileByHashChunksClient(c.config)
+	c.ProcGetFileByHashJobs = NewProcGetFileByHashJobsClient(c.config)
+	c.ProcGetFileByHashQuotes = NewProcGetFileByHashQuotesClient(c.config)
 	c.ProcInboxMessages = NewProcInboxMessagesClient(c.config)
 	c.ProcLiveFollows = NewProcLiveFollowsClient(c.config)
 	c.ProcNodeReachabilityCache = NewProcNodeReachabilityCacheClient(c.config)
@@ -390,6 +402,9 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		ProcFileDownloadChunks:                   NewProcFileDownloadChunksClient(cfg),
 		ProcFileDownloads:                        NewProcFileDownloadsClient(cfg),
 		ProcGatewayEvents:                        NewProcGatewayEventsClient(cfg),
+		ProcGetFileByHashChunks:                  NewProcGetFileByHashChunksClient(cfg),
+		ProcGetFileByHashJobs:                    NewProcGetFileByHashJobsClient(cfg),
+		ProcGetFileByHashQuotes:                  NewProcGetFileByHashQuotesClient(cfg),
 		ProcInboxMessages:                        NewProcInboxMessagesClient(cfg),
 		ProcLiveFollows:                          NewProcLiveFollowsClient(cfg),
 		ProcNodeReachabilityCache:                NewProcNodeReachabilityCacheClient(cfg),
@@ -465,6 +480,9 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		ProcFileDownloadChunks:                   NewProcFileDownloadChunksClient(cfg),
 		ProcFileDownloads:                        NewProcFileDownloadsClient(cfg),
 		ProcGatewayEvents:                        NewProcGatewayEventsClient(cfg),
+		ProcGetFileByHashChunks:                  NewProcGetFileByHashChunksClient(cfg),
+		ProcGetFileByHashJobs:                    NewProcGetFileByHashJobsClient(cfg),
+		ProcGetFileByHashQuotes:                  NewProcGetFileByHashQuotesClient(cfg),
 		ProcInboxMessages:                        NewProcInboxMessagesClient(cfg),
 		ProcLiveFollows:                          NewProcLiveFollowsClient(cfg),
 		ProcNodeReachabilityCache:                NewProcNodeReachabilityCacheClient(cfg),
@@ -523,6 +541,7 @@ func (c *Client) Use(hooks ...Hook) {
 		c.ProcChainUtxoWorkerLogs, c.ProcCommandJournal, c.ProcDirectDeals,
 		c.ProcDirectTransferPools, c.ProcDomainEvents, c.ProcEffectLogs,
 		c.ProcFileDownloadChunks, c.ProcFileDownloads, c.ProcGatewayEvents,
+		c.ProcGetFileByHashChunks, c.ProcGetFileByHashJobs, c.ProcGetFileByHashQuotes,
 		c.ProcInboxMessages, c.ProcLiveFollows, c.ProcNodeReachabilityCache,
 		c.ProcObservedGatewayStates, c.ProcOrchestratorLogs,
 		c.ProcPublishedRouteIndexes, c.ProcSchedulerTaskRuns, c.ProcSchedulerTasks,
@@ -552,6 +571,7 @@ func (c *Client) Intercept(interceptors ...Interceptor) {
 		c.ProcChainUtxoWorkerLogs, c.ProcCommandJournal, c.ProcDirectDeals,
 		c.ProcDirectTransferPools, c.ProcDomainEvents, c.ProcEffectLogs,
 		c.ProcFileDownloadChunks, c.ProcFileDownloads, c.ProcGatewayEvents,
+		c.ProcGetFileByHashChunks, c.ProcGetFileByHashJobs, c.ProcGetFileByHashQuotes,
 		c.ProcInboxMessages, c.ProcLiveFollows, c.ProcNodeReachabilityCache,
 		c.ProcObservedGatewayStates, c.ProcOrchestratorLogs,
 		c.ProcPublishedRouteIndexes, c.ProcSchedulerTaskRuns, c.ProcSchedulerTasks,
@@ -648,6 +668,12 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.ProcFileDownloads.mutate(ctx, m)
 	case *ProcGatewayEventsMutation:
 		return c.ProcGatewayEvents.mutate(ctx, m)
+	case *ProcGetFileByHashChunksMutation:
+		return c.ProcGetFileByHashChunks.mutate(ctx, m)
+	case *ProcGetFileByHashJobsMutation:
+		return c.ProcGetFileByHashJobs.mutate(ctx, m)
+	case *ProcGetFileByHashQuotesMutation:
+		return c.ProcGetFileByHashQuotes.mutate(ctx, m)
 	case *ProcInboxMessagesMutation:
 		return c.ProcInboxMessages.mutate(ctx, m)
 	case *ProcLiveFollowsMutation:
@@ -6216,6 +6242,405 @@ func (c *ProcGatewayEventsClient) mutate(ctx context.Context, m *ProcGatewayEven
 	}
 }
 
+// ProcGetFileByHashChunksClient is a client for the ProcGetFileByHashChunks schema.
+type ProcGetFileByHashChunksClient struct {
+	config
+}
+
+// NewProcGetFileByHashChunksClient returns a client for the ProcGetFileByHashChunks from the given config.
+func NewProcGetFileByHashChunksClient(c config) *ProcGetFileByHashChunksClient {
+	return &ProcGetFileByHashChunksClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `procgetfilebyhashchunks.Hooks(f(g(h())))`.
+func (c *ProcGetFileByHashChunksClient) Use(hooks ...Hook) {
+	c.hooks.ProcGetFileByHashChunks = append(c.hooks.ProcGetFileByHashChunks, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `procgetfilebyhashchunks.Intercept(f(g(h())))`.
+func (c *ProcGetFileByHashChunksClient) Intercept(interceptors ...Interceptor) {
+	c.inters.ProcGetFileByHashChunks = append(c.inters.ProcGetFileByHashChunks, interceptors...)
+}
+
+// Create returns a builder for creating a ProcGetFileByHashChunks entity.
+func (c *ProcGetFileByHashChunksClient) Create() *ProcGetFileByHashChunksCreate {
+	mutation := newProcGetFileByHashChunksMutation(c.config, OpCreate)
+	return &ProcGetFileByHashChunksCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ProcGetFileByHashChunks entities.
+func (c *ProcGetFileByHashChunksClient) CreateBulk(builders ...*ProcGetFileByHashChunksCreate) *ProcGetFileByHashChunksCreateBulk {
+	return &ProcGetFileByHashChunksCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *ProcGetFileByHashChunksClient) MapCreateBulk(slice any, setFunc func(*ProcGetFileByHashChunksCreate, int)) *ProcGetFileByHashChunksCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &ProcGetFileByHashChunksCreateBulk{err: fmt.Errorf("calling to ProcGetFileByHashChunksClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*ProcGetFileByHashChunksCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &ProcGetFileByHashChunksCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ProcGetFileByHashChunks.
+func (c *ProcGetFileByHashChunksClient) Update() *ProcGetFileByHashChunksUpdate {
+	mutation := newProcGetFileByHashChunksMutation(c.config, OpUpdate)
+	return &ProcGetFileByHashChunksUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ProcGetFileByHashChunksClient) UpdateOne(_m *ProcGetFileByHashChunks) *ProcGetFileByHashChunksUpdateOne {
+	mutation := newProcGetFileByHashChunksMutation(c.config, OpUpdateOne, withProcGetFileByHashChunks(_m))
+	return &ProcGetFileByHashChunksUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ProcGetFileByHashChunksClient) UpdateOneID(id int) *ProcGetFileByHashChunksUpdateOne {
+	mutation := newProcGetFileByHashChunksMutation(c.config, OpUpdateOne, withProcGetFileByHashChunksID(id))
+	return &ProcGetFileByHashChunksUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ProcGetFileByHashChunks.
+func (c *ProcGetFileByHashChunksClient) Delete() *ProcGetFileByHashChunksDelete {
+	mutation := newProcGetFileByHashChunksMutation(c.config, OpDelete)
+	return &ProcGetFileByHashChunksDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ProcGetFileByHashChunksClient) DeleteOne(_m *ProcGetFileByHashChunks) *ProcGetFileByHashChunksDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *ProcGetFileByHashChunksClient) DeleteOneID(id int) *ProcGetFileByHashChunksDeleteOne {
+	builder := c.Delete().Where(procgetfilebyhashchunks.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ProcGetFileByHashChunksDeleteOne{builder}
+}
+
+// Query returns a query builder for ProcGetFileByHashChunks.
+func (c *ProcGetFileByHashChunksClient) Query() *ProcGetFileByHashChunksQuery {
+	return &ProcGetFileByHashChunksQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeProcGetFileByHashChunks},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a ProcGetFileByHashChunks entity by its id.
+func (c *ProcGetFileByHashChunksClient) Get(ctx context.Context, id int) (*ProcGetFileByHashChunks, error) {
+	return c.Query().Where(procgetfilebyhashchunks.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ProcGetFileByHashChunksClient) GetX(ctx context.Context, id int) *ProcGetFileByHashChunks {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *ProcGetFileByHashChunksClient) Hooks() []Hook {
+	return c.hooks.ProcGetFileByHashChunks
+}
+
+// Interceptors returns the client interceptors.
+func (c *ProcGetFileByHashChunksClient) Interceptors() []Interceptor {
+	return c.inters.ProcGetFileByHashChunks
+}
+
+func (c *ProcGetFileByHashChunksClient) mutate(ctx context.Context, m *ProcGetFileByHashChunksMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&ProcGetFileByHashChunksCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&ProcGetFileByHashChunksUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&ProcGetFileByHashChunksUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&ProcGetFileByHashChunksDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("gen: unknown ProcGetFileByHashChunks mutation op: %q", m.Op())
+	}
+}
+
+// ProcGetFileByHashJobsClient is a client for the ProcGetFileByHashJobs schema.
+type ProcGetFileByHashJobsClient struct {
+	config
+}
+
+// NewProcGetFileByHashJobsClient returns a client for the ProcGetFileByHashJobs from the given config.
+func NewProcGetFileByHashJobsClient(c config) *ProcGetFileByHashJobsClient {
+	return &ProcGetFileByHashJobsClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `procgetfilebyhashjobs.Hooks(f(g(h())))`.
+func (c *ProcGetFileByHashJobsClient) Use(hooks ...Hook) {
+	c.hooks.ProcGetFileByHashJobs = append(c.hooks.ProcGetFileByHashJobs, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `procgetfilebyhashjobs.Intercept(f(g(h())))`.
+func (c *ProcGetFileByHashJobsClient) Intercept(interceptors ...Interceptor) {
+	c.inters.ProcGetFileByHashJobs = append(c.inters.ProcGetFileByHashJobs, interceptors...)
+}
+
+// Create returns a builder for creating a ProcGetFileByHashJobs entity.
+func (c *ProcGetFileByHashJobsClient) Create() *ProcGetFileByHashJobsCreate {
+	mutation := newProcGetFileByHashJobsMutation(c.config, OpCreate)
+	return &ProcGetFileByHashJobsCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ProcGetFileByHashJobs entities.
+func (c *ProcGetFileByHashJobsClient) CreateBulk(builders ...*ProcGetFileByHashJobsCreate) *ProcGetFileByHashJobsCreateBulk {
+	return &ProcGetFileByHashJobsCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *ProcGetFileByHashJobsClient) MapCreateBulk(slice any, setFunc func(*ProcGetFileByHashJobsCreate, int)) *ProcGetFileByHashJobsCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &ProcGetFileByHashJobsCreateBulk{err: fmt.Errorf("calling to ProcGetFileByHashJobsClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*ProcGetFileByHashJobsCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &ProcGetFileByHashJobsCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ProcGetFileByHashJobs.
+func (c *ProcGetFileByHashJobsClient) Update() *ProcGetFileByHashJobsUpdate {
+	mutation := newProcGetFileByHashJobsMutation(c.config, OpUpdate)
+	return &ProcGetFileByHashJobsUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ProcGetFileByHashJobsClient) UpdateOne(_m *ProcGetFileByHashJobs) *ProcGetFileByHashJobsUpdateOne {
+	mutation := newProcGetFileByHashJobsMutation(c.config, OpUpdateOne, withProcGetFileByHashJobs(_m))
+	return &ProcGetFileByHashJobsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ProcGetFileByHashJobsClient) UpdateOneID(id int) *ProcGetFileByHashJobsUpdateOne {
+	mutation := newProcGetFileByHashJobsMutation(c.config, OpUpdateOne, withProcGetFileByHashJobsID(id))
+	return &ProcGetFileByHashJobsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ProcGetFileByHashJobs.
+func (c *ProcGetFileByHashJobsClient) Delete() *ProcGetFileByHashJobsDelete {
+	mutation := newProcGetFileByHashJobsMutation(c.config, OpDelete)
+	return &ProcGetFileByHashJobsDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ProcGetFileByHashJobsClient) DeleteOne(_m *ProcGetFileByHashJobs) *ProcGetFileByHashJobsDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *ProcGetFileByHashJobsClient) DeleteOneID(id int) *ProcGetFileByHashJobsDeleteOne {
+	builder := c.Delete().Where(procgetfilebyhashjobs.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ProcGetFileByHashJobsDeleteOne{builder}
+}
+
+// Query returns a query builder for ProcGetFileByHashJobs.
+func (c *ProcGetFileByHashJobsClient) Query() *ProcGetFileByHashJobsQuery {
+	return &ProcGetFileByHashJobsQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeProcGetFileByHashJobs},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a ProcGetFileByHashJobs entity by its id.
+func (c *ProcGetFileByHashJobsClient) Get(ctx context.Context, id int) (*ProcGetFileByHashJobs, error) {
+	return c.Query().Where(procgetfilebyhashjobs.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ProcGetFileByHashJobsClient) GetX(ctx context.Context, id int) *ProcGetFileByHashJobs {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *ProcGetFileByHashJobsClient) Hooks() []Hook {
+	return c.hooks.ProcGetFileByHashJobs
+}
+
+// Interceptors returns the client interceptors.
+func (c *ProcGetFileByHashJobsClient) Interceptors() []Interceptor {
+	return c.inters.ProcGetFileByHashJobs
+}
+
+func (c *ProcGetFileByHashJobsClient) mutate(ctx context.Context, m *ProcGetFileByHashJobsMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&ProcGetFileByHashJobsCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&ProcGetFileByHashJobsUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&ProcGetFileByHashJobsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&ProcGetFileByHashJobsDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("gen: unknown ProcGetFileByHashJobs mutation op: %q", m.Op())
+	}
+}
+
+// ProcGetFileByHashQuotesClient is a client for the ProcGetFileByHashQuotes schema.
+type ProcGetFileByHashQuotesClient struct {
+	config
+}
+
+// NewProcGetFileByHashQuotesClient returns a client for the ProcGetFileByHashQuotes from the given config.
+func NewProcGetFileByHashQuotesClient(c config) *ProcGetFileByHashQuotesClient {
+	return &ProcGetFileByHashQuotesClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `procgetfilebyhashquotes.Hooks(f(g(h())))`.
+func (c *ProcGetFileByHashQuotesClient) Use(hooks ...Hook) {
+	c.hooks.ProcGetFileByHashQuotes = append(c.hooks.ProcGetFileByHashQuotes, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `procgetfilebyhashquotes.Intercept(f(g(h())))`.
+func (c *ProcGetFileByHashQuotesClient) Intercept(interceptors ...Interceptor) {
+	c.inters.ProcGetFileByHashQuotes = append(c.inters.ProcGetFileByHashQuotes, interceptors...)
+}
+
+// Create returns a builder for creating a ProcGetFileByHashQuotes entity.
+func (c *ProcGetFileByHashQuotesClient) Create() *ProcGetFileByHashQuotesCreate {
+	mutation := newProcGetFileByHashQuotesMutation(c.config, OpCreate)
+	return &ProcGetFileByHashQuotesCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ProcGetFileByHashQuotes entities.
+func (c *ProcGetFileByHashQuotesClient) CreateBulk(builders ...*ProcGetFileByHashQuotesCreate) *ProcGetFileByHashQuotesCreateBulk {
+	return &ProcGetFileByHashQuotesCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *ProcGetFileByHashQuotesClient) MapCreateBulk(slice any, setFunc func(*ProcGetFileByHashQuotesCreate, int)) *ProcGetFileByHashQuotesCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &ProcGetFileByHashQuotesCreateBulk{err: fmt.Errorf("calling to ProcGetFileByHashQuotesClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*ProcGetFileByHashQuotesCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &ProcGetFileByHashQuotesCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ProcGetFileByHashQuotes.
+func (c *ProcGetFileByHashQuotesClient) Update() *ProcGetFileByHashQuotesUpdate {
+	mutation := newProcGetFileByHashQuotesMutation(c.config, OpUpdate)
+	return &ProcGetFileByHashQuotesUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ProcGetFileByHashQuotesClient) UpdateOne(_m *ProcGetFileByHashQuotes) *ProcGetFileByHashQuotesUpdateOne {
+	mutation := newProcGetFileByHashQuotesMutation(c.config, OpUpdateOne, withProcGetFileByHashQuotes(_m))
+	return &ProcGetFileByHashQuotesUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ProcGetFileByHashQuotesClient) UpdateOneID(id int) *ProcGetFileByHashQuotesUpdateOne {
+	mutation := newProcGetFileByHashQuotesMutation(c.config, OpUpdateOne, withProcGetFileByHashQuotesID(id))
+	return &ProcGetFileByHashQuotesUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ProcGetFileByHashQuotes.
+func (c *ProcGetFileByHashQuotesClient) Delete() *ProcGetFileByHashQuotesDelete {
+	mutation := newProcGetFileByHashQuotesMutation(c.config, OpDelete)
+	return &ProcGetFileByHashQuotesDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ProcGetFileByHashQuotesClient) DeleteOne(_m *ProcGetFileByHashQuotes) *ProcGetFileByHashQuotesDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *ProcGetFileByHashQuotesClient) DeleteOneID(id int) *ProcGetFileByHashQuotesDeleteOne {
+	builder := c.Delete().Where(procgetfilebyhashquotes.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ProcGetFileByHashQuotesDeleteOne{builder}
+}
+
+// Query returns a query builder for ProcGetFileByHashQuotes.
+func (c *ProcGetFileByHashQuotesClient) Query() *ProcGetFileByHashQuotesQuery {
+	return &ProcGetFileByHashQuotesQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeProcGetFileByHashQuotes},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a ProcGetFileByHashQuotes entity by its id.
+func (c *ProcGetFileByHashQuotesClient) Get(ctx context.Context, id int) (*ProcGetFileByHashQuotes, error) {
+	return c.Query().Where(procgetfilebyhashquotes.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ProcGetFileByHashQuotesClient) GetX(ctx context.Context, id int) *ProcGetFileByHashQuotes {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *ProcGetFileByHashQuotesClient) Hooks() []Hook {
+	return c.hooks.ProcGetFileByHashQuotes
+}
+
+// Interceptors returns the client interceptors.
+func (c *ProcGetFileByHashQuotesClient) Interceptors() []Interceptor {
+	return c.inters.ProcGetFileByHashQuotes
+}
+
+func (c *ProcGetFileByHashQuotesClient) mutate(ctx context.Context, m *ProcGetFileByHashQuotesMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&ProcGetFileByHashQuotesCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&ProcGetFileByHashQuotesUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&ProcGetFileByHashQuotesUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&ProcGetFileByHashQuotesDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("gen: unknown ProcGetFileByHashQuotes mutation op: %q", m.Op())
+	}
+}
+
 // ProcInboxMessagesClient is a client for the ProcInboxMessages schema.
 type ProcInboxMessagesClient struct {
 	config
@@ -8225,6 +8650,7 @@ type (
 		Orders, ProcChainTipState, ProcChainTipWorkerLogs, ProcChainUtxoWorkerLogs,
 		ProcCommandJournal, ProcDirectDeals, ProcDirectTransferPools, ProcDomainEvents,
 		ProcEffectLogs, ProcFileDownloadChunks, ProcFileDownloads, ProcGatewayEvents,
+		ProcGetFileByHashChunks, ProcGetFileByHashJobs, ProcGetFileByHashQuotes,
 		ProcInboxMessages, ProcLiveFollows, ProcNodeReachabilityCache,
 		ProcObservedGatewayStates, ProcOrchestratorLogs, ProcPublishedRouteIndexes,
 		ProcSchedulerTaskRuns, ProcSchedulerTasks, ProcSelfNodeReachabilityState,
@@ -8243,6 +8669,7 @@ type (
 		Orders, ProcChainTipState, ProcChainTipWorkerLogs, ProcChainUtxoWorkerLogs,
 		ProcCommandJournal, ProcDirectDeals, ProcDirectTransferPools, ProcDomainEvents,
 		ProcEffectLogs, ProcFileDownloadChunks, ProcFileDownloads, ProcGatewayEvents,
+		ProcGetFileByHashChunks, ProcGetFileByHashJobs, ProcGetFileByHashQuotes,
 		ProcInboxMessages, ProcLiveFollows, ProcNodeReachabilityCache,
 		ProcObservedGatewayStates, ProcOrchestratorLogs, ProcPublishedRouteIndexes,
 		ProcSchedulerTaskRuns, ProcSchedulerTasks, ProcSelfNodeReachabilityState,

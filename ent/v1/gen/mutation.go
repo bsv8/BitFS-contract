@@ -52,6 +52,9 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procfiledownloadchunks"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procfiledownloads"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgatewayevents"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashchunks"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashjobs"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashquotes"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procinboxmessages"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/proclivefollows"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procnodereachabilitycache"
@@ -119,6 +122,9 @@ const (
 	TypeProcFileDownloadChunks                   = "ProcFileDownloadChunks"
 	TypeProcFileDownloads                        = "ProcFileDownloads"
 	TypeProcGatewayEvents                        = "ProcGatewayEvents"
+	TypeProcGetFileByHashChunks                  = "ProcGetFileByHashChunks"
+	TypeProcGetFileByHashJobs                    = "ProcGetFileByHashJobs"
+	TypeProcGetFileByHashQuotes                  = "ProcGetFileByHashQuotes"
 	TypeProcInboxMessages                        = "ProcInboxMessages"
 	TypeProcLiveFollows                          = "ProcLiveFollows"
 	TypeProcNodeReachabilityCache                = "ProcNodeReachabilityCache"
@@ -40140,6 +40146,3282 @@ func (m *ProcGatewayEventsMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *ProcGatewayEventsMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown ProcGatewayEvents edge %s", name)
+}
+
+// ProcGetFileByHashChunksMutation represents an operation that mutates the ProcGetFileByHashChunks nodes in the graph.
+type ProcGetFileByHashChunksMutation struct {
+	config
+	op                 Op
+	typ                string
+	id                 *int
+	job_id             *string
+	seed_hash          *string
+	chunk_index        *int64
+	addchunk_index     *int64
+	state              *string
+	seller_pubkey_hex  *string
+	chunk_price_sat    *int64
+	addchunk_price_sat *int64
+	speed_bps          *int64
+	addspeed_bps       *int64
+	selected           *bool
+	reject_reason      *string
+	updated_at_unix    *int64
+	addupdated_at_unix *int64
+	clearedFields      map[string]struct{}
+	done               bool
+	oldValue           func(context.Context) (*ProcGetFileByHashChunks, error)
+	predicates         []predicate.ProcGetFileByHashChunks
+}
+
+var _ ent.Mutation = (*ProcGetFileByHashChunksMutation)(nil)
+
+// procgetfilebyhashchunksOption allows management of the mutation configuration using functional options.
+type procgetfilebyhashchunksOption func(*ProcGetFileByHashChunksMutation)
+
+// newProcGetFileByHashChunksMutation creates new mutation for the ProcGetFileByHashChunks entity.
+func newProcGetFileByHashChunksMutation(c config, op Op, opts ...procgetfilebyhashchunksOption) *ProcGetFileByHashChunksMutation {
+	m := &ProcGetFileByHashChunksMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeProcGetFileByHashChunks,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withProcGetFileByHashChunksID sets the ID field of the mutation.
+func withProcGetFileByHashChunksID(id int) procgetfilebyhashchunksOption {
+	return func(m *ProcGetFileByHashChunksMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *ProcGetFileByHashChunks
+		)
+		m.oldValue = func(ctx context.Context) (*ProcGetFileByHashChunks, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().ProcGetFileByHashChunks.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withProcGetFileByHashChunks sets the old ProcGetFileByHashChunks of the mutation.
+func withProcGetFileByHashChunks(node *ProcGetFileByHashChunks) procgetfilebyhashchunksOption {
+	return func(m *ProcGetFileByHashChunksMutation) {
+		m.oldValue = func(context.Context) (*ProcGetFileByHashChunks, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m ProcGetFileByHashChunksMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m ProcGetFileByHashChunksMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("gen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of ProcGetFileByHashChunks entities.
+func (m *ProcGetFileByHashChunksMutation) SetID(id int) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *ProcGetFileByHashChunksMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *ProcGetFileByHashChunksMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().ProcGetFileByHashChunks.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetJobID sets the "job_id" field.
+func (m *ProcGetFileByHashChunksMutation) SetJobID(s string) {
+	m.job_id = &s
+}
+
+// JobID returns the value of the "job_id" field in the mutation.
+func (m *ProcGetFileByHashChunksMutation) JobID() (r string, exists bool) {
+	v := m.job_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldJobID returns the old "job_id" field's value of the ProcGetFileByHashChunks entity.
+// If the ProcGetFileByHashChunks object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashChunksMutation) OldJobID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldJobID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldJobID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldJobID: %w", err)
+	}
+	return oldValue.JobID, nil
+}
+
+// ResetJobID resets all changes to the "job_id" field.
+func (m *ProcGetFileByHashChunksMutation) ResetJobID() {
+	m.job_id = nil
+}
+
+// SetSeedHash sets the "seed_hash" field.
+func (m *ProcGetFileByHashChunksMutation) SetSeedHash(s string) {
+	m.seed_hash = &s
+}
+
+// SeedHash returns the value of the "seed_hash" field in the mutation.
+func (m *ProcGetFileByHashChunksMutation) SeedHash() (r string, exists bool) {
+	v := m.seed_hash
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSeedHash returns the old "seed_hash" field's value of the ProcGetFileByHashChunks entity.
+// If the ProcGetFileByHashChunks object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashChunksMutation) OldSeedHash(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSeedHash is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSeedHash requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSeedHash: %w", err)
+	}
+	return oldValue.SeedHash, nil
+}
+
+// ResetSeedHash resets all changes to the "seed_hash" field.
+func (m *ProcGetFileByHashChunksMutation) ResetSeedHash() {
+	m.seed_hash = nil
+}
+
+// SetChunkIndex sets the "chunk_index" field.
+func (m *ProcGetFileByHashChunksMutation) SetChunkIndex(i int64) {
+	m.chunk_index = &i
+	m.addchunk_index = nil
+}
+
+// ChunkIndex returns the value of the "chunk_index" field in the mutation.
+func (m *ProcGetFileByHashChunksMutation) ChunkIndex() (r int64, exists bool) {
+	v := m.chunk_index
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldChunkIndex returns the old "chunk_index" field's value of the ProcGetFileByHashChunks entity.
+// If the ProcGetFileByHashChunks object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashChunksMutation) OldChunkIndex(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldChunkIndex is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldChunkIndex requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldChunkIndex: %w", err)
+	}
+	return oldValue.ChunkIndex, nil
+}
+
+// AddChunkIndex adds i to the "chunk_index" field.
+func (m *ProcGetFileByHashChunksMutation) AddChunkIndex(i int64) {
+	if m.addchunk_index != nil {
+		*m.addchunk_index += i
+	} else {
+		m.addchunk_index = &i
+	}
+}
+
+// AddedChunkIndex returns the value that was added to the "chunk_index" field in this mutation.
+func (m *ProcGetFileByHashChunksMutation) AddedChunkIndex() (r int64, exists bool) {
+	v := m.addchunk_index
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetChunkIndex resets all changes to the "chunk_index" field.
+func (m *ProcGetFileByHashChunksMutation) ResetChunkIndex() {
+	m.chunk_index = nil
+	m.addchunk_index = nil
+}
+
+// SetState sets the "state" field.
+func (m *ProcGetFileByHashChunksMutation) SetState(s string) {
+	m.state = &s
+}
+
+// State returns the value of the "state" field in the mutation.
+func (m *ProcGetFileByHashChunksMutation) State() (r string, exists bool) {
+	v := m.state
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldState returns the old "state" field's value of the ProcGetFileByHashChunks entity.
+// If the ProcGetFileByHashChunks object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashChunksMutation) OldState(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldState is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldState requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldState: %w", err)
+	}
+	return oldValue.State, nil
+}
+
+// ResetState resets all changes to the "state" field.
+func (m *ProcGetFileByHashChunksMutation) ResetState() {
+	m.state = nil
+}
+
+// SetSellerPubkeyHex sets the "seller_pubkey_hex" field.
+func (m *ProcGetFileByHashChunksMutation) SetSellerPubkeyHex(s string) {
+	m.seller_pubkey_hex = &s
+}
+
+// SellerPubkeyHex returns the value of the "seller_pubkey_hex" field in the mutation.
+func (m *ProcGetFileByHashChunksMutation) SellerPubkeyHex() (r string, exists bool) {
+	v := m.seller_pubkey_hex
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSellerPubkeyHex returns the old "seller_pubkey_hex" field's value of the ProcGetFileByHashChunks entity.
+// If the ProcGetFileByHashChunks object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashChunksMutation) OldSellerPubkeyHex(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSellerPubkeyHex is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSellerPubkeyHex requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSellerPubkeyHex: %w", err)
+	}
+	return oldValue.SellerPubkeyHex, nil
+}
+
+// ResetSellerPubkeyHex resets all changes to the "seller_pubkey_hex" field.
+func (m *ProcGetFileByHashChunksMutation) ResetSellerPubkeyHex() {
+	m.seller_pubkey_hex = nil
+}
+
+// SetChunkPriceSat sets the "chunk_price_sat" field.
+func (m *ProcGetFileByHashChunksMutation) SetChunkPriceSat(i int64) {
+	m.chunk_price_sat = &i
+	m.addchunk_price_sat = nil
+}
+
+// ChunkPriceSat returns the value of the "chunk_price_sat" field in the mutation.
+func (m *ProcGetFileByHashChunksMutation) ChunkPriceSat() (r int64, exists bool) {
+	v := m.chunk_price_sat
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldChunkPriceSat returns the old "chunk_price_sat" field's value of the ProcGetFileByHashChunks entity.
+// If the ProcGetFileByHashChunks object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashChunksMutation) OldChunkPriceSat(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldChunkPriceSat is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldChunkPriceSat requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldChunkPriceSat: %w", err)
+	}
+	return oldValue.ChunkPriceSat, nil
+}
+
+// AddChunkPriceSat adds i to the "chunk_price_sat" field.
+func (m *ProcGetFileByHashChunksMutation) AddChunkPriceSat(i int64) {
+	if m.addchunk_price_sat != nil {
+		*m.addchunk_price_sat += i
+	} else {
+		m.addchunk_price_sat = &i
+	}
+}
+
+// AddedChunkPriceSat returns the value that was added to the "chunk_price_sat" field in this mutation.
+func (m *ProcGetFileByHashChunksMutation) AddedChunkPriceSat() (r int64, exists bool) {
+	v := m.addchunk_price_sat
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetChunkPriceSat resets all changes to the "chunk_price_sat" field.
+func (m *ProcGetFileByHashChunksMutation) ResetChunkPriceSat() {
+	m.chunk_price_sat = nil
+	m.addchunk_price_sat = nil
+}
+
+// SetSpeedBps sets the "speed_bps" field.
+func (m *ProcGetFileByHashChunksMutation) SetSpeedBps(i int64) {
+	m.speed_bps = &i
+	m.addspeed_bps = nil
+}
+
+// SpeedBps returns the value of the "speed_bps" field in the mutation.
+func (m *ProcGetFileByHashChunksMutation) SpeedBps() (r int64, exists bool) {
+	v := m.speed_bps
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSpeedBps returns the old "speed_bps" field's value of the ProcGetFileByHashChunks entity.
+// If the ProcGetFileByHashChunks object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashChunksMutation) OldSpeedBps(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSpeedBps is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSpeedBps requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSpeedBps: %w", err)
+	}
+	return oldValue.SpeedBps, nil
+}
+
+// AddSpeedBps adds i to the "speed_bps" field.
+func (m *ProcGetFileByHashChunksMutation) AddSpeedBps(i int64) {
+	if m.addspeed_bps != nil {
+		*m.addspeed_bps += i
+	} else {
+		m.addspeed_bps = &i
+	}
+}
+
+// AddedSpeedBps returns the value that was added to the "speed_bps" field in this mutation.
+func (m *ProcGetFileByHashChunksMutation) AddedSpeedBps() (r int64, exists bool) {
+	v := m.addspeed_bps
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSpeedBps resets all changes to the "speed_bps" field.
+func (m *ProcGetFileByHashChunksMutation) ResetSpeedBps() {
+	m.speed_bps = nil
+	m.addspeed_bps = nil
+}
+
+// SetSelected sets the "selected" field.
+func (m *ProcGetFileByHashChunksMutation) SetSelected(b bool) {
+	m.selected = &b
+}
+
+// Selected returns the value of the "selected" field in the mutation.
+func (m *ProcGetFileByHashChunksMutation) Selected() (r bool, exists bool) {
+	v := m.selected
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSelected returns the old "selected" field's value of the ProcGetFileByHashChunks entity.
+// If the ProcGetFileByHashChunks object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashChunksMutation) OldSelected(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSelected is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSelected requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSelected: %w", err)
+	}
+	return oldValue.Selected, nil
+}
+
+// ResetSelected resets all changes to the "selected" field.
+func (m *ProcGetFileByHashChunksMutation) ResetSelected() {
+	m.selected = nil
+}
+
+// SetRejectReason sets the "reject_reason" field.
+func (m *ProcGetFileByHashChunksMutation) SetRejectReason(s string) {
+	m.reject_reason = &s
+}
+
+// RejectReason returns the value of the "reject_reason" field in the mutation.
+func (m *ProcGetFileByHashChunksMutation) RejectReason() (r string, exists bool) {
+	v := m.reject_reason
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRejectReason returns the old "reject_reason" field's value of the ProcGetFileByHashChunks entity.
+// If the ProcGetFileByHashChunks object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashChunksMutation) OldRejectReason(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRejectReason is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRejectReason requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRejectReason: %w", err)
+	}
+	return oldValue.RejectReason, nil
+}
+
+// ResetRejectReason resets all changes to the "reject_reason" field.
+func (m *ProcGetFileByHashChunksMutation) ResetRejectReason() {
+	m.reject_reason = nil
+}
+
+// SetUpdatedAtUnix sets the "updated_at_unix" field.
+func (m *ProcGetFileByHashChunksMutation) SetUpdatedAtUnix(i int64) {
+	m.updated_at_unix = &i
+	m.addupdated_at_unix = nil
+}
+
+// UpdatedAtUnix returns the value of the "updated_at_unix" field in the mutation.
+func (m *ProcGetFileByHashChunksMutation) UpdatedAtUnix() (r int64, exists bool) {
+	v := m.updated_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAtUnix returns the old "updated_at_unix" field's value of the ProcGetFileByHashChunks entity.
+// If the ProcGetFileByHashChunks object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashChunksMutation) OldUpdatedAtUnix(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAtUnix is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAtUnix requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAtUnix: %w", err)
+	}
+	return oldValue.UpdatedAtUnix, nil
+}
+
+// AddUpdatedAtUnix adds i to the "updated_at_unix" field.
+func (m *ProcGetFileByHashChunksMutation) AddUpdatedAtUnix(i int64) {
+	if m.addupdated_at_unix != nil {
+		*m.addupdated_at_unix += i
+	} else {
+		m.addupdated_at_unix = &i
+	}
+}
+
+// AddedUpdatedAtUnix returns the value that was added to the "updated_at_unix" field in this mutation.
+func (m *ProcGetFileByHashChunksMutation) AddedUpdatedAtUnix() (r int64, exists bool) {
+	v := m.addupdated_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUpdatedAtUnix resets all changes to the "updated_at_unix" field.
+func (m *ProcGetFileByHashChunksMutation) ResetUpdatedAtUnix() {
+	m.updated_at_unix = nil
+	m.addupdated_at_unix = nil
+}
+
+// Where appends a list predicates to the ProcGetFileByHashChunksMutation builder.
+func (m *ProcGetFileByHashChunksMutation) Where(ps ...predicate.ProcGetFileByHashChunks) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the ProcGetFileByHashChunksMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *ProcGetFileByHashChunksMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.ProcGetFileByHashChunks, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *ProcGetFileByHashChunksMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *ProcGetFileByHashChunksMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (ProcGetFileByHashChunks).
+func (m *ProcGetFileByHashChunksMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *ProcGetFileByHashChunksMutation) Fields() []string {
+	fields := make([]string, 0, 10)
+	if m.job_id != nil {
+		fields = append(fields, procgetfilebyhashchunks.FieldJobID)
+	}
+	if m.seed_hash != nil {
+		fields = append(fields, procgetfilebyhashchunks.FieldSeedHash)
+	}
+	if m.chunk_index != nil {
+		fields = append(fields, procgetfilebyhashchunks.FieldChunkIndex)
+	}
+	if m.state != nil {
+		fields = append(fields, procgetfilebyhashchunks.FieldState)
+	}
+	if m.seller_pubkey_hex != nil {
+		fields = append(fields, procgetfilebyhashchunks.FieldSellerPubkeyHex)
+	}
+	if m.chunk_price_sat != nil {
+		fields = append(fields, procgetfilebyhashchunks.FieldChunkPriceSat)
+	}
+	if m.speed_bps != nil {
+		fields = append(fields, procgetfilebyhashchunks.FieldSpeedBps)
+	}
+	if m.selected != nil {
+		fields = append(fields, procgetfilebyhashchunks.FieldSelected)
+	}
+	if m.reject_reason != nil {
+		fields = append(fields, procgetfilebyhashchunks.FieldRejectReason)
+	}
+	if m.updated_at_unix != nil {
+		fields = append(fields, procgetfilebyhashchunks.FieldUpdatedAtUnix)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *ProcGetFileByHashChunksMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case procgetfilebyhashchunks.FieldJobID:
+		return m.JobID()
+	case procgetfilebyhashchunks.FieldSeedHash:
+		return m.SeedHash()
+	case procgetfilebyhashchunks.FieldChunkIndex:
+		return m.ChunkIndex()
+	case procgetfilebyhashchunks.FieldState:
+		return m.State()
+	case procgetfilebyhashchunks.FieldSellerPubkeyHex:
+		return m.SellerPubkeyHex()
+	case procgetfilebyhashchunks.FieldChunkPriceSat:
+		return m.ChunkPriceSat()
+	case procgetfilebyhashchunks.FieldSpeedBps:
+		return m.SpeedBps()
+	case procgetfilebyhashchunks.FieldSelected:
+		return m.Selected()
+	case procgetfilebyhashchunks.FieldRejectReason:
+		return m.RejectReason()
+	case procgetfilebyhashchunks.FieldUpdatedAtUnix:
+		return m.UpdatedAtUnix()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *ProcGetFileByHashChunksMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case procgetfilebyhashchunks.FieldJobID:
+		return m.OldJobID(ctx)
+	case procgetfilebyhashchunks.FieldSeedHash:
+		return m.OldSeedHash(ctx)
+	case procgetfilebyhashchunks.FieldChunkIndex:
+		return m.OldChunkIndex(ctx)
+	case procgetfilebyhashchunks.FieldState:
+		return m.OldState(ctx)
+	case procgetfilebyhashchunks.FieldSellerPubkeyHex:
+		return m.OldSellerPubkeyHex(ctx)
+	case procgetfilebyhashchunks.FieldChunkPriceSat:
+		return m.OldChunkPriceSat(ctx)
+	case procgetfilebyhashchunks.FieldSpeedBps:
+		return m.OldSpeedBps(ctx)
+	case procgetfilebyhashchunks.FieldSelected:
+		return m.OldSelected(ctx)
+	case procgetfilebyhashchunks.FieldRejectReason:
+		return m.OldRejectReason(ctx)
+	case procgetfilebyhashchunks.FieldUpdatedAtUnix:
+		return m.OldUpdatedAtUnix(ctx)
+	}
+	return nil, fmt.Errorf("unknown ProcGetFileByHashChunks field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ProcGetFileByHashChunksMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case procgetfilebyhashchunks.FieldJobID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetJobID(v)
+		return nil
+	case procgetfilebyhashchunks.FieldSeedHash:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSeedHash(v)
+		return nil
+	case procgetfilebyhashchunks.FieldChunkIndex:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetChunkIndex(v)
+		return nil
+	case procgetfilebyhashchunks.FieldState:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetState(v)
+		return nil
+	case procgetfilebyhashchunks.FieldSellerPubkeyHex:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSellerPubkeyHex(v)
+		return nil
+	case procgetfilebyhashchunks.FieldChunkPriceSat:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetChunkPriceSat(v)
+		return nil
+	case procgetfilebyhashchunks.FieldSpeedBps:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSpeedBps(v)
+		return nil
+	case procgetfilebyhashchunks.FieldSelected:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSelected(v)
+		return nil
+	case procgetfilebyhashchunks.FieldRejectReason:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRejectReason(v)
+		return nil
+	case procgetfilebyhashchunks.FieldUpdatedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ProcGetFileByHashChunks field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *ProcGetFileByHashChunksMutation) AddedFields() []string {
+	var fields []string
+	if m.addchunk_index != nil {
+		fields = append(fields, procgetfilebyhashchunks.FieldChunkIndex)
+	}
+	if m.addchunk_price_sat != nil {
+		fields = append(fields, procgetfilebyhashchunks.FieldChunkPriceSat)
+	}
+	if m.addspeed_bps != nil {
+		fields = append(fields, procgetfilebyhashchunks.FieldSpeedBps)
+	}
+	if m.addupdated_at_unix != nil {
+		fields = append(fields, procgetfilebyhashchunks.FieldUpdatedAtUnix)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *ProcGetFileByHashChunksMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case procgetfilebyhashchunks.FieldChunkIndex:
+		return m.AddedChunkIndex()
+	case procgetfilebyhashchunks.FieldChunkPriceSat:
+		return m.AddedChunkPriceSat()
+	case procgetfilebyhashchunks.FieldSpeedBps:
+		return m.AddedSpeedBps()
+	case procgetfilebyhashchunks.FieldUpdatedAtUnix:
+		return m.AddedUpdatedAtUnix()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ProcGetFileByHashChunksMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case procgetfilebyhashchunks.FieldChunkIndex:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddChunkIndex(v)
+		return nil
+	case procgetfilebyhashchunks.FieldChunkPriceSat:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddChunkPriceSat(v)
+		return nil
+	case procgetfilebyhashchunks.FieldSpeedBps:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSpeedBps(v)
+		return nil
+	case procgetfilebyhashchunks.FieldUpdatedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ProcGetFileByHashChunks numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *ProcGetFileByHashChunksMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *ProcGetFileByHashChunksMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *ProcGetFileByHashChunksMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown ProcGetFileByHashChunks nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *ProcGetFileByHashChunksMutation) ResetField(name string) error {
+	switch name {
+	case procgetfilebyhashchunks.FieldJobID:
+		m.ResetJobID()
+		return nil
+	case procgetfilebyhashchunks.FieldSeedHash:
+		m.ResetSeedHash()
+		return nil
+	case procgetfilebyhashchunks.FieldChunkIndex:
+		m.ResetChunkIndex()
+		return nil
+	case procgetfilebyhashchunks.FieldState:
+		m.ResetState()
+		return nil
+	case procgetfilebyhashchunks.FieldSellerPubkeyHex:
+		m.ResetSellerPubkeyHex()
+		return nil
+	case procgetfilebyhashchunks.FieldChunkPriceSat:
+		m.ResetChunkPriceSat()
+		return nil
+	case procgetfilebyhashchunks.FieldSpeedBps:
+		m.ResetSpeedBps()
+		return nil
+	case procgetfilebyhashchunks.FieldSelected:
+		m.ResetSelected()
+		return nil
+	case procgetfilebyhashchunks.FieldRejectReason:
+		m.ResetRejectReason()
+		return nil
+	case procgetfilebyhashchunks.FieldUpdatedAtUnix:
+		m.ResetUpdatedAtUnix()
+		return nil
+	}
+	return fmt.Errorf("unknown ProcGetFileByHashChunks field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *ProcGetFileByHashChunksMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *ProcGetFileByHashChunksMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *ProcGetFileByHashChunksMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *ProcGetFileByHashChunksMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *ProcGetFileByHashChunksMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *ProcGetFileByHashChunksMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *ProcGetFileByHashChunksMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown ProcGetFileByHashChunks unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *ProcGetFileByHashChunksMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown ProcGetFileByHashChunks edge %s", name)
+}
+
+// ProcGetFileByHashJobsMutation represents an operation that mutates the ProcGetFileByHashJobs nodes in the graph.
+type ProcGetFileByHashJobsMutation struct {
+	config
+	op                  Op
+	typ                 string
+	id                  *int
+	job_id              *string
+	seed_hash           *string
+	demand_id           *string
+	state               *string
+	chunk_count         *int64
+	addchunk_count      *int64
+	completed_chunks    *int64
+	addcompleted_chunks *int64
+	paid_total_sat      *int64
+	addpaid_total_sat   *int64
+	output_file_path    *string
+	part_file_path      *string
+	error               *string
+	created_at_unix     *int64
+	addcreated_at_unix  *int64
+	updated_at_unix     *int64
+	addupdated_at_unix  *int64
+	clearedFields       map[string]struct{}
+	done                bool
+	oldValue            func(context.Context) (*ProcGetFileByHashJobs, error)
+	predicates          []predicate.ProcGetFileByHashJobs
+}
+
+var _ ent.Mutation = (*ProcGetFileByHashJobsMutation)(nil)
+
+// procgetfilebyhashjobsOption allows management of the mutation configuration using functional options.
+type procgetfilebyhashjobsOption func(*ProcGetFileByHashJobsMutation)
+
+// newProcGetFileByHashJobsMutation creates new mutation for the ProcGetFileByHashJobs entity.
+func newProcGetFileByHashJobsMutation(c config, op Op, opts ...procgetfilebyhashjobsOption) *ProcGetFileByHashJobsMutation {
+	m := &ProcGetFileByHashJobsMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeProcGetFileByHashJobs,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withProcGetFileByHashJobsID sets the ID field of the mutation.
+func withProcGetFileByHashJobsID(id int) procgetfilebyhashjobsOption {
+	return func(m *ProcGetFileByHashJobsMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *ProcGetFileByHashJobs
+		)
+		m.oldValue = func(ctx context.Context) (*ProcGetFileByHashJobs, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().ProcGetFileByHashJobs.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withProcGetFileByHashJobs sets the old ProcGetFileByHashJobs of the mutation.
+func withProcGetFileByHashJobs(node *ProcGetFileByHashJobs) procgetfilebyhashjobsOption {
+	return func(m *ProcGetFileByHashJobsMutation) {
+		m.oldValue = func(context.Context) (*ProcGetFileByHashJobs, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m ProcGetFileByHashJobsMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m ProcGetFileByHashJobsMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("gen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *ProcGetFileByHashJobsMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *ProcGetFileByHashJobsMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().ProcGetFileByHashJobs.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetJobID sets the "job_id" field.
+func (m *ProcGetFileByHashJobsMutation) SetJobID(s string) {
+	m.job_id = &s
+}
+
+// JobID returns the value of the "job_id" field in the mutation.
+func (m *ProcGetFileByHashJobsMutation) JobID() (r string, exists bool) {
+	v := m.job_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldJobID returns the old "job_id" field's value of the ProcGetFileByHashJobs entity.
+// If the ProcGetFileByHashJobs object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashJobsMutation) OldJobID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldJobID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldJobID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldJobID: %w", err)
+	}
+	return oldValue.JobID, nil
+}
+
+// ResetJobID resets all changes to the "job_id" field.
+func (m *ProcGetFileByHashJobsMutation) ResetJobID() {
+	m.job_id = nil
+}
+
+// SetSeedHash sets the "seed_hash" field.
+func (m *ProcGetFileByHashJobsMutation) SetSeedHash(s string) {
+	m.seed_hash = &s
+}
+
+// SeedHash returns the value of the "seed_hash" field in the mutation.
+func (m *ProcGetFileByHashJobsMutation) SeedHash() (r string, exists bool) {
+	v := m.seed_hash
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSeedHash returns the old "seed_hash" field's value of the ProcGetFileByHashJobs entity.
+// If the ProcGetFileByHashJobs object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashJobsMutation) OldSeedHash(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSeedHash is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSeedHash requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSeedHash: %w", err)
+	}
+	return oldValue.SeedHash, nil
+}
+
+// ResetSeedHash resets all changes to the "seed_hash" field.
+func (m *ProcGetFileByHashJobsMutation) ResetSeedHash() {
+	m.seed_hash = nil
+}
+
+// SetDemandID sets the "demand_id" field.
+func (m *ProcGetFileByHashJobsMutation) SetDemandID(s string) {
+	m.demand_id = &s
+}
+
+// DemandID returns the value of the "demand_id" field in the mutation.
+func (m *ProcGetFileByHashJobsMutation) DemandID() (r string, exists bool) {
+	v := m.demand_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDemandID returns the old "demand_id" field's value of the ProcGetFileByHashJobs entity.
+// If the ProcGetFileByHashJobs object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashJobsMutation) OldDemandID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDemandID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDemandID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDemandID: %w", err)
+	}
+	return oldValue.DemandID, nil
+}
+
+// ResetDemandID resets all changes to the "demand_id" field.
+func (m *ProcGetFileByHashJobsMutation) ResetDemandID() {
+	m.demand_id = nil
+}
+
+// SetState sets the "state" field.
+func (m *ProcGetFileByHashJobsMutation) SetState(s string) {
+	m.state = &s
+}
+
+// State returns the value of the "state" field in the mutation.
+func (m *ProcGetFileByHashJobsMutation) State() (r string, exists bool) {
+	v := m.state
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldState returns the old "state" field's value of the ProcGetFileByHashJobs entity.
+// If the ProcGetFileByHashJobs object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashJobsMutation) OldState(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldState is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldState requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldState: %w", err)
+	}
+	return oldValue.State, nil
+}
+
+// ResetState resets all changes to the "state" field.
+func (m *ProcGetFileByHashJobsMutation) ResetState() {
+	m.state = nil
+}
+
+// SetChunkCount sets the "chunk_count" field.
+func (m *ProcGetFileByHashJobsMutation) SetChunkCount(i int64) {
+	m.chunk_count = &i
+	m.addchunk_count = nil
+}
+
+// ChunkCount returns the value of the "chunk_count" field in the mutation.
+func (m *ProcGetFileByHashJobsMutation) ChunkCount() (r int64, exists bool) {
+	v := m.chunk_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldChunkCount returns the old "chunk_count" field's value of the ProcGetFileByHashJobs entity.
+// If the ProcGetFileByHashJobs object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashJobsMutation) OldChunkCount(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldChunkCount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldChunkCount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldChunkCount: %w", err)
+	}
+	return oldValue.ChunkCount, nil
+}
+
+// AddChunkCount adds i to the "chunk_count" field.
+func (m *ProcGetFileByHashJobsMutation) AddChunkCount(i int64) {
+	if m.addchunk_count != nil {
+		*m.addchunk_count += i
+	} else {
+		m.addchunk_count = &i
+	}
+}
+
+// AddedChunkCount returns the value that was added to the "chunk_count" field in this mutation.
+func (m *ProcGetFileByHashJobsMutation) AddedChunkCount() (r int64, exists bool) {
+	v := m.addchunk_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetChunkCount resets all changes to the "chunk_count" field.
+func (m *ProcGetFileByHashJobsMutation) ResetChunkCount() {
+	m.chunk_count = nil
+	m.addchunk_count = nil
+}
+
+// SetCompletedChunks sets the "completed_chunks" field.
+func (m *ProcGetFileByHashJobsMutation) SetCompletedChunks(i int64) {
+	m.completed_chunks = &i
+	m.addcompleted_chunks = nil
+}
+
+// CompletedChunks returns the value of the "completed_chunks" field in the mutation.
+func (m *ProcGetFileByHashJobsMutation) CompletedChunks() (r int64, exists bool) {
+	v := m.completed_chunks
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCompletedChunks returns the old "completed_chunks" field's value of the ProcGetFileByHashJobs entity.
+// If the ProcGetFileByHashJobs object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashJobsMutation) OldCompletedChunks(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCompletedChunks is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCompletedChunks requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCompletedChunks: %w", err)
+	}
+	return oldValue.CompletedChunks, nil
+}
+
+// AddCompletedChunks adds i to the "completed_chunks" field.
+func (m *ProcGetFileByHashJobsMutation) AddCompletedChunks(i int64) {
+	if m.addcompleted_chunks != nil {
+		*m.addcompleted_chunks += i
+	} else {
+		m.addcompleted_chunks = &i
+	}
+}
+
+// AddedCompletedChunks returns the value that was added to the "completed_chunks" field in this mutation.
+func (m *ProcGetFileByHashJobsMutation) AddedCompletedChunks() (r int64, exists bool) {
+	v := m.addcompleted_chunks
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetCompletedChunks resets all changes to the "completed_chunks" field.
+func (m *ProcGetFileByHashJobsMutation) ResetCompletedChunks() {
+	m.completed_chunks = nil
+	m.addcompleted_chunks = nil
+}
+
+// SetPaidTotalSat sets the "paid_total_sat" field.
+func (m *ProcGetFileByHashJobsMutation) SetPaidTotalSat(i int64) {
+	m.paid_total_sat = &i
+	m.addpaid_total_sat = nil
+}
+
+// PaidTotalSat returns the value of the "paid_total_sat" field in the mutation.
+func (m *ProcGetFileByHashJobsMutation) PaidTotalSat() (r int64, exists bool) {
+	v := m.paid_total_sat
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPaidTotalSat returns the old "paid_total_sat" field's value of the ProcGetFileByHashJobs entity.
+// If the ProcGetFileByHashJobs object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashJobsMutation) OldPaidTotalSat(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPaidTotalSat is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPaidTotalSat requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPaidTotalSat: %w", err)
+	}
+	return oldValue.PaidTotalSat, nil
+}
+
+// AddPaidTotalSat adds i to the "paid_total_sat" field.
+func (m *ProcGetFileByHashJobsMutation) AddPaidTotalSat(i int64) {
+	if m.addpaid_total_sat != nil {
+		*m.addpaid_total_sat += i
+	} else {
+		m.addpaid_total_sat = &i
+	}
+}
+
+// AddedPaidTotalSat returns the value that was added to the "paid_total_sat" field in this mutation.
+func (m *ProcGetFileByHashJobsMutation) AddedPaidTotalSat() (r int64, exists bool) {
+	v := m.addpaid_total_sat
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetPaidTotalSat resets all changes to the "paid_total_sat" field.
+func (m *ProcGetFileByHashJobsMutation) ResetPaidTotalSat() {
+	m.paid_total_sat = nil
+	m.addpaid_total_sat = nil
+}
+
+// SetOutputFilePath sets the "output_file_path" field.
+func (m *ProcGetFileByHashJobsMutation) SetOutputFilePath(s string) {
+	m.output_file_path = &s
+}
+
+// OutputFilePath returns the value of the "output_file_path" field in the mutation.
+func (m *ProcGetFileByHashJobsMutation) OutputFilePath() (r string, exists bool) {
+	v := m.output_file_path
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOutputFilePath returns the old "output_file_path" field's value of the ProcGetFileByHashJobs entity.
+// If the ProcGetFileByHashJobs object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashJobsMutation) OldOutputFilePath(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOutputFilePath is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOutputFilePath requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOutputFilePath: %w", err)
+	}
+	return oldValue.OutputFilePath, nil
+}
+
+// ResetOutputFilePath resets all changes to the "output_file_path" field.
+func (m *ProcGetFileByHashJobsMutation) ResetOutputFilePath() {
+	m.output_file_path = nil
+}
+
+// SetPartFilePath sets the "part_file_path" field.
+func (m *ProcGetFileByHashJobsMutation) SetPartFilePath(s string) {
+	m.part_file_path = &s
+}
+
+// PartFilePath returns the value of the "part_file_path" field in the mutation.
+func (m *ProcGetFileByHashJobsMutation) PartFilePath() (r string, exists bool) {
+	v := m.part_file_path
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPartFilePath returns the old "part_file_path" field's value of the ProcGetFileByHashJobs entity.
+// If the ProcGetFileByHashJobs object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashJobsMutation) OldPartFilePath(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPartFilePath is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPartFilePath requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPartFilePath: %w", err)
+	}
+	return oldValue.PartFilePath, nil
+}
+
+// ResetPartFilePath resets all changes to the "part_file_path" field.
+func (m *ProcGetFileByHashJobsMutation) ResetPartFilePath() {
+	m.part_file_path = nil
+}
+
+// SetError sets the "error" field.
+func (m *ProcGetFileByHashJobsMutation) SetError(s string) {
+	m.error = &s
+}
+
+// Error returns the value of the "error" field in the mutation.
+func (m *ProcGetFileByHashJobsMutation) Error() (r string, exists bool) {
+	v := m.error
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldError returns the old "error" field's value of the ProcGetFileByHashJobs entity.
+// If the ProcGetFileByHashJobs object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashJobsMutation) OldError(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldError is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldError requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldError: %w", err)
+	}
+	return oldValue.Error, nil
+}
+
+// ResetError resets all changes to the "error" field.
+func (m *ProcGetFileByHashJobsMutation) ResetError() {
+	m.error = nil
+}
+
+// SetCreatedAtUnix sets the "created_at_unix" field.
+func (m *ProcGetFileByHashJobsMutation) SetCreatedAtUnix(i int64) {
+	m.created_at_unix = &i
+	m.addcreated_at_unix = nil
+}
+
+// CreatedAtUnix returns the value of the "created_at_unix" field in the mutation.
+func (m *ProcGetFileByHashJobsMutation) CreatedAtUnix() (r int64, exists bool) {
+	v := m.created_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAtUnix returns the old "created_at_unix" field's value of the ProcGetFileByHashJobs entity.
+// If the ProcGetFileByHashJobs object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashJobsMutation) OldCreatedAtUnix(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAtUnix is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAtUnix requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAtUnix: %w", err)
+	}
+	return oldValue.CreatedAtUnix, nil
+}
+
+// AddCreatedAtUnix adds i to the "created_at_unix" field.
+func (m *ProcGetFileByHashJobsMutation) AddCreatedAtUnix(i int64) {
+	if m.addcreated_at_unix != nil {
+		*m.addcreated_at_unix += i
+	} else {
+		m.addcreated_at_unix = &i
+	}
+}
+
+// AddedCreatedAtUnix returns the value that was added to the "created_at_unix" field in this mutation.
+func (m *ProcGetFileByHashJobsMutation) AddedCreatedAtUnix() (r int64, exists bool) {
+	v := m.addcreated_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetCreatedAtUnix resets all changes to the "created_at_unix" field.
+func (m *ProcGetFileByHashJobsMutation) ResetCreatedAtUnix() {
+	m.created_at_unix = nil
+	m.addcreated_at_unix = nil
+}
+
+// SetUpdatedAtUnix sets the "updated_at_unix" field.
+func (m *ProcGetFileByHashJobsMutation) SetUpdatedAtUnix(i int64) {
+	m.updated_at_unix = &i
+	m.addupdated_at_unix = nil
+}
+
+// UpdatedAtUnix returns the value of the "updated_at_unix" field in the mutation.
+func (m *ProcGetFileByHashJobsMutation) UpdatedAtUnix() (r int64, exists bool) {
+	v := m.updated_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAtUnix returns the old "updated_at_unix" field's value of the ProcGetFileByHashJobs entity.
+// If the ProcGetFileByHashJobs object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashJobsMutation) OldUpdatedAtUnix(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAtUnix is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAtUnix requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAtUnix: %w", err)
+	}
+	return oldValue.UpdatedAtUnix, nil
+}
+
+// AddUpdatedAtUnix adds i to the "updated_at_unix" field.
+func (m *ProcGetFileByHashJobsMutation) AddUpdatedAtUnix(i int64) {
+	if m.addupdated_at_unix != nil {
+		*m.addupdated_at_unix += i
+	} else {
+		m.addupdated_at_unix = &i
+	}
+}
+
+// AddedUpdatedAtUnix returns the value that was added to the "updated_at_unix" field in this mutation.
+func (m *ProcGetFileByHashJobsMutation) AddedUpdatedAtUnix() (r int64, exists bool) {
+	v := m.addupdated_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUpdatedAtUnix resets all changes to the "updated_at_unix" field.
+func (m *ProcGetFileByHashJobsMutation) ResetUpdatedAtUnix() {
+	m.updated_at_unix = nil
+	m.addupdated_at_unix = nil
+}
+
+// Where appends a list predicates to the ProcGetFileByHashJobsMutation builder.
+func (m *ProcGetFileByHashJobsMutation) Where(ps ...predicate.ProcGetFileByHashJobs) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the ProcGetFileByHashJobsMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *ProcGetFileByHashJobsMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.ProcGetFileByHashJobs, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *ProcGetFileByHashJobsMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *ProcGetFileByHashJobsMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (ProcGetFileByHashJobs).
+func (m *ProcGetFileByHashJobsMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *ProcGetFileByHashJobsMutation) Fields() []string {
+	fields := make([]string, 0, 12)
+	if m.job_id != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldJobID)
+	}
+	if m.seed_hash != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldSeedHash)
+	}
+	if m.demand_id != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldDemandID)
+	}
+	if m.state != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldState)
+	}
+	if m.chunk_count != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldChunkCount)
+	}
+	if m.completed_chunks != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldCompletedChunks)
+	}
+	if m.paid_total_sat != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldPaidTotalSat)
+	}
+	if m.output_file_path != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldOutputFilePath)
+	}
+	if m.part_file_path != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldPartFilePath)
+	}
+	if m.error != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldError)
+	}
+	if m.created_at_unix != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldCreatedAtUnix)
+	}
+	if m.updated_at_unix != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldUpdatedAtUnix)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *ProcGetFileByHashJobsMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case procgetfilebyhashjobs.FieldJobID:
+		return m.JobID()
+	case procgetfilebyhashjobs.FieldSeedHash:
+		return m.SeedHash()
+	case procgetfilebyhashjobs.FieldDemandID:
+		return m.DemandID()
+	case procgetfilebyhashjobs.FieldState:
+		return m.State()
+	case procgetfilebyhashjobs.FieldChunkCount:
+		return m.ChunkCount()
+	case procgetfilebyhashjobs.FieldCompletedChunks:
+		return m.CompletedChunks()
+	case procgetfilebyhashjobs.FieldPaidTotalSat:
+		return m.PaidTotalSat()
+	case procgetfilebyhashjobs.FieldOutputFilePath:
+		return m.OutputFilePath()
+	case procgetfilebyhashjobs.FieldPartFilePath:
+		return m.PartFilePath()
+	case procgetfilebyhashjobs.FieldError:
+		return m.Error()
+	case procgetfilebyhashjobs.FieldCreatedAtUnix:
+		return m.CreatedAtUnix()
+	case procgetfilebyhashjobs.FieldUpdatedAtUnix:
+		return m.UpdatedAtUnix()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *ProcGetFileByHashJobsMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case procgetfilebyhashjobs.FieldJobID:
+		return m.OldJobID(ctx)
+	case procgetfilebyhashjobs.FieldSeedHash:
+		return m.OldSeedHash(ctx)
+	case procgetfilebyhashjobs.FieldDemandID:
+		return m.OldDemandID(ctx)
+	case procgetfilebyhashjobs.FieldState:
+		return m.OldState(ctx)
+	case procgetfilebyhashjobs.FieldChunkCount:
+		return m.OldChunkCount(ctx)
+	case procgetfilebyhashjobs.FieldCompletedChunks:
+		return m.OldCompletedChunks(ctx)
+	case procgetfilebyhashjobs.FieldPaidTotalSat:
+		return m.OldPaidTotalSat(ctx)
+	case procgetfilebyhashjobs.FieldOutputFilePath:
+		return m.OldOutputFilePath(ctx)
+	case procgetfilebyhashjobs.FieldPartFilePath:
+		return m.OldPartFilePath(ctx)
+	case procgetfilebyhashjobs.FieldError:
+		return m.OldError(ctx)
+	case procgetfilebyhashjobs.FieldCreatedAtUnix:
+		return m.OldCreatedAtUnix(ctx)
+	case procgetfilebyhashjobs.FieldUpdatedAtUnix:
+		return m.OldUpdatedAtUnix(ctx)
+	}
+	return nil, fmt.Errorf("unknown ProcGetFileByHashJobs field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ProcGetFileByHashJobsMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case procgetfilebyhashjobs.FieldJobID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetJobID(v)
+		return nil
+	case procgetfilebyhashjobs.FieldSeedHash:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSeedHash(v)
+		return nil
+	case procgetfilebyhashjobs.FieldDemandID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDemandID(v)
+		return nil
+	case procgetfilebyhashjobs.FieldState:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetState(v)
+		return nil
+	case procgetfilebyhashjobs.FieldChunkCount:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetChunkCount(v)
+		return nil
+	case procgetfilebyhashjobs.FieldCompletedChunks:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCompletedChunks(v)
+		return nil
+	case procgetfilebyhashjobs.FieldPaidTotalSat:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPaidTotalSat(v)
+		return nil
+	case procgetfilebyhashjobs.FieldOutputFilePath:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOutputFilePath(v)
+		return nil
+	case procgetfilebyhashjobs.FieldPartFilePath:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPartFilePath(v)
+		return nil
+	case procgetfilebyhashjobs.FieldError:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetError(v)
+		return nil
+	case procgetfilebyhashjobs.FieldCreatedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAtUnix(v)
+		return nil
+	case procgetfilebyhashjobs.FieldUpdatedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ProcGetFileByHashJobs field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *ProcGetFileByHashJobsMutation) AddedFields() []string {
+	var fields []string
+	if m.addchunk_count != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldChunkCount)
+	}
+	if m.addcompleted_chunks != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldCompletedChunks)
+	}
+	if m.addpaid_total_sat != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldPaidTotalSat)
+	}
+	if m.addcreated_at_unix != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldCreatedAtUnix)
+	}
+	if m.addupdated_at_unix != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldUpdatedAtUnix)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *ProcGetFileByHashJobsMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case procgetfilebyhashjobs.FieldChunkCount:
+		return m.AddedChunkCount()
+	case procgetfilebyhashjobs.FieldCompletedChunks:
+		return m.AddedCompletedChunks()
+	case procgetfilebyhashjobs.FieldPaidTotalSat:
+		return m.AddedPaidTotalSat()
+	case procgetfilebyhashjobs.FieldCreatedAtUnix:
+		return m.AddedCreatedAtUnix()
+	case procgetfilebyhashjobs.FieldUpdatedAtUnix:
+		return m.AddedUpdatedAtUnix()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ProcGetFileByHashJobsMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case procgetfilebyhashjobs.FieldChunkCount:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddChunkCount(v)
+		return nil
+	case procgetfilebyhashjobs.FieldCompletedChunks:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCompletedChunks(v)
+		return nil
+	case procgetfilebyhashjobs.FieldPaidTotalSat:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPaidTotalSat(v)
+		return nil
+	case procgetfilebyhashjobs.FieldCreatedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedAtUnix(v)
+		return nil
+	case procgetfilebyhashjobs.FieldUpdatedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ProcGetFileByHashJobs numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *ProcGetFileByHashJobsMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *ProcGetFileByHashJobsMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *ProcGetFileByHashJobsMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown ProcGetFileByHashJobs nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *ProcGetFileByHashJobsMutation) ResetField(name string) error {
+	switch name {
+	case procgetfilebyhashjobs.FieldJobID:
+		m.ResetJobID()
+		return nil
+	case procgetfilebyhashjobs.FieldSeedHash:
+		m.ResetSeedHash()
+		return nil
+	case procgetfilebyhashjobs.FieldDemandID:
+		m.ResetDemandID()
+		return nil
+	case procgetfilebyhashjobs.FieldState:
+		m.ResetState()
+		return nil
+	case procgetfilebyhashjobs.FieldChunkCount:
+		m.ResetChunkCount()
+		return nil
+	case procgetfilebyhashjobs.FieldCompletedChunks:
+		m.ResetCompletedChunks()
+		return nil
+	case procgetfilebyhashjobs.FieldPaidTotalSat:
+		m.ResetPaidTotalSat()
+		return nil
+	case procgetfilebyhashjobs.FieldOutputFilePath:
+		m.ResetOutputFilePath()
+		return nil
+	case procgetfilebyhashjobs.FieldPartFilePath:
+		m.ResetPartFilePath()
+		return nil
+	case procgetfilebyhashjobs.FieldError:
+		m.ResetError()
+		return nil
+	case procgetfilebyhashjobs.FieldCreatedAtUnix:
+		m.ResetCreatedAtUnix()
+		return nil
+	case procgetfilebyhashjobs.FieldUpdatedAtUnix:
+		m.ResetUpdatedAtUnix()
+		return nil
+	}
+	return fmt.Errorf("unknown ProcGetFileByHashJobs field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *ProcGetFileByHashJobsMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *ProcGetFileByHashJobsMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *ProcGetFileByHashJobsMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *ProcGetFileByHashJobsMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *ProcGetFileByHashJobsMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *ProcGetFileByHashJobsMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *ProcGetFileByHashJobsMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown ProcGetFileByHashJobs unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *ProcGetFileByHashJobsMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown ProcGetFileByHashJobs edge %s", name)
+}
+
+// ProcGetFileByHashQuotesMutation represents an operation that mutates the ProcGetFileByHashQuotes nodes in the graph.
+type ProcGetFileByHashQuotesMutation struct {
+	config
+	op                    Op
+	typ                   string
+	id                    *int
+	job_id                *string
+	seed_hash             *string
+	seller_pubkey_hex     *string
+	seed_price_sat        *int64
+	addseed_price_sat     *int64
+	chunk_price_sat       *int64
+	addchunk_price_sat    *int64
+	chunk_count           *int64
+	addchunk_count        *int64
+	available_chunks_json *string
+	recommended_file_name *string
+	mime_type             *string
+	file_size_bytes       *int64
+	addfile_size_bytes    *int64
+	quote_timestamp       *int64
+	addquote_timestamp    *int64
+	expires_at_unix       *int64
+	addexpires_at_unix    *int64
+	selected              *bool
+	reject_reason         *string
+	clearedFields         map[string]struct{}
+	done                  bool
+	oldValue              func(context.Context) (*ProcGetFileByHashQuotes, error)
+	predicates            []predicate.ProcGetFileByHashQuotes
+}
+
+var _ ent.Mutation = (*ProcGetFileByHashQuotesMutation)(nil)
+
+// procgetfilebyhashquotesOption allows management of the mutation configuration using functional options.
+type procgetfilebyhashquotesOption func(*ProcGetFileByHashQuotesMutation)
+
+// newProcGetFileByHashQuotesMutation creates new mutation for the ProcGetFileByHashQuotes entity.
+func newProcGetFileByHashQuotesMutation(c config, op Op, opts ...procgetfilebyhashquotesOption) *ProcGetFileByHashQuotesMutation {
+	m := &ProcGetFileByHashQuotesMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeProcGetFileByHashQuotes,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withProcGetFileByHashQuotesID sets the ID field of the mutation.
+func withProcGetFileByHashQuotesID(id int) procgetfilebyhashquotesOption {
+	return func(m *ProcGetFileByHashQuotesMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *ProcGetFileByHashQuotes
+		)
+		m.oldValue = func(ctx context.Context) (*ProcGetFileByHashQuotes, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().ProcGetFileByHashQuotes.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withProcGetFileByHashQuotes sets the old ProcGetFileByHashQuotes of the mutation.
+func withProcGetFileByHashQuotes(node *ProcGetFileByHashQuotes) procgetfilebyhashquotesOption {
+	return func(m *ProcGetFileByHashQuotesMutation) {
+		m.oldValue = func(context.Context) (*ProcGetFileByHashQuotes, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m ProcGetFileByHashQuotesMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m ProcGetFileByHashQuotesMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("gen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of ProcGetFileByHashQuotes entities.
+func (m *ProcGetFileByHashQuotesMutation) SetID(id int) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *ProcGetFileByHashQuotesMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *ProcGetFileByHashQuotesMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().ProcGetFileByHashQuotes.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetJobID sets the "job_id" field.
+func (m *ProcGetFileByHashQuotesMutation) SetJobID(s string) {
+	m.job_id = &s
+}
+
+// JobID returns the value of the "job_id" field in the mutation.
+func (m *ProcGetFileByHashQuotesMutation) JobID() (r string, exists bool) {
+	v := m.job_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldJobID returns the old "job_id" field's value of the ProcGetFileByHashQuotes entity.
+// If the ProcGetFileByHashQuotes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashQuotesMutation) OldJobID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldJobID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldJobID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldJobID: %w", err)
+	}
+	return oldValue.JobID, nil
+}
+
+// ResetJobID resets all changes to the "job_id" field.
+func (m *ProcGetFileByHashQuotesMutation) ResetJobID() {
+	m.job_id = nil
+}
+
+// SetSeedHash sets the "seed_hash" field.
+func (m *ProcGetFileByHashQuotesMutation) SetSeedHash(s string) {
+	m.seed_hash = &s
+}
+
+// SeedHash returns the value of the "seed_hash" field in the mutation.
+func (m *ProcGetFileByHashQuotesMutation) SeedHash() (r string, exists bool) {
+	v := m.seed_hash
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSeedHash returns the old "seed_hash" field's value of the ProcGetFileByHashQuotes entity.
+// If the ProcGetFileByHashQuotes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashQuotesMutation) OldSeedHash(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSeedHash is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSeedHash requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSeedHash: %w", err)
+	}
+	return oldValue.SeedHash, nil
+}
+
+// ResetSeedHash resets all changes to the "seed_hash" field.
+func (m *ProcGetFileByHashQuotesMutation) ResetSeedHash() {
+	m.seed_hash = nil
+}
+
+// SetSellerPubkeyHex sets the "seller_pubkey_hex" field.
+func (m *ProcGetFileByHashQuotesMutation) SetSellerPubkeyHex(s string) {
+	m.seller_pubkey_hex = &s
+}
+
+// SellerPubkeyHex returns the value of the "seller_pubkey_hex" field in the mutation.
+func (m *ProcGetFileByHashQuotesMutation) SellerPubkeyHex() (r string, exists bool) {
+	v := m.seller_pubkey_hex
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSellerPubkeyHex returns the old "seller_pubkey_hex" field's value of the ProcGetFileByHashQuotes entity.
+// If the ProcGetFileByHashQuotes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashQuotesMutation) OldSellerPubkeyHex(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSellerPubkeyHex is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSellerPubkeyHex requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSellerPubkeyHex: %w", err)
+	}
+	return oldValue.SellerPubkeyHex, nil
+}
+
+// ResetSellerPubkeyHex resets all changes to the "seller_pubkey_hex" field.
+func (m *ProcGetFileByHashQuotesMutation) ResetSellerPubkeyHex() {
+	m.seller_pubkey_hex = nil
+}
+
+// SetSeedPriceSat sets the "seed_price_sat" field.
+func (m *ProcGetFileByHashQuotesMutation) SetSeedPriceSat(i int64) {
+	m.seed_price_sat = &i
+	m.addseed_price_sat = nil
+}
+
+// SeedPriceSat returns the value of the "seed_price_sat" field in the mutation.
+func (m *ProcGetFileByHashQuotesMutation) SeedPriceSat() (r int64, exists bool) {
+	v := m.seed_price_sat
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSeedPriceSat returns the old "seed_price_sat" field's value of the ProcGetFileByHashQuotes entity.
+// If the ProcGetFileByHashQuotes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashQuotesMutation) OldSeedPriceSat(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSeedPriceSat is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSeedPriceSat requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSeedPriceSat: %w", err)
+	}
+	return oldValue.SeedPriceSat, nil
+}
+
+// AddSeedPriceSat adds i to the "seed_price_sat" field.
+func (m *ProcGetFileByHashQuotesMutation) AddSeedPriceSat(i int64) {
+	if m.addseed_price_sat != nil {
+		*m.addseed_price_sat += i
+	} else {
+		m.addseed_price_sat = &i
+	}
+}
+
+// AddedSeedPriceSat returns the value that was added to the "seed_price_sat" field in this mutation.
+func (m *ProcGetFileByHashQuotesMutation) AddedSeedPriceSat() (r int64, exists bool) {
+	v := m.addseed_price_sat
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSeedPriceSat resets all changes to the "seed_price_sat" field.
+func (m *ProcGetFileByHashQuotesMutation) ResetSeedPriceSat() {
+	m.seed_price_sat = nil
+	m.addseed_price_sat = nil
+}
+
+// SetChunkPriceSat sets the "chunk_price_sat" field.
+func (m *ProcGetFileByHashQuotesMutation) SetChunkPriceSat(i int64) {
+	m.chunk_price_sat = &i
+	m.addchunk_price_sat = nil
+}
+
+// ChunkPriceSat returns the value of the "chunk_price_sat" field in the mutation.
+func (m *ProcGetFileByHashQuotesMutation) ChunkPriceSat() (r int64, exists bool) {
+	v := m.chunk_price_sat
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldChunkPriceSat returns the old "chunk_price_sat" field's value of the ProcGetFileByHashQuotes entity.
+// If the ProcGetFileByHashQuotes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashQuotesMutation) OldChunkPriceSat(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldChunkPriceSat is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldChunkPriceSat requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldChunkPriceSat: %w", err)
+	}
+	return oldValue.ChunkPriceSat, nil
+}
+
+// AddChunkPriceSat adds i to the "chunk_price_sat" field.
+func (m *ProcGetFileByHashQuotesMutation) AddChunkPriceSat(i int64) {
+	if m.addchunk_price_sat != nil {
+		*m.addchunk_price_sat += i
+	} else {
+		m.addchunk_price_sat = &i
+	}
+}
+
+// AddedChunkPriceSat returns the value that was added to the "chunk_price_sat" field in this mutation.
+func (m *ProcGetFileByHashQuotesMutation) AddedChunkPriceSat() (r int64, exists bool) {
+	v := m.addchunk_price_sat
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetChunkPriceSat resets all changes to the "chunk_price_sat" field.
+func (m *ProcGetFileByHashQuotesMutation) ResetChunkPriceSat() {
+	m.chunk_price_sat = nil
+	m.addchunk_price_sat = nil
+}
+
+// SetChunkCount sets the "chunk_count" field.
+func (m *ProcGetFileByHashQuotesMutation) SetChunkCount(i int64) {
+	m.chunk_count = &i
+	m.addchunk_count = nil
+}
+
+// ChunkCount returns the value of the "chunk_count" field in the mutation.
+func (m *ProcGetFileByHashQuotesMutation) ChunkCount() (r int64, exists bool) {
+	v := m.chunk_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldChunkCount returns the old "chunk_count" field's value of the ProcGetFileByHashQuotes entity.
+// If the ProcGetFileByHashQuotes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashQuotesMutation) OldChunkCount(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldChunkCount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldChunkCount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldChunkCount: %w", err)
+	}
+	return oldValue.ChunkCount, nil
+}
+
+// AddChunkCount adds i to the "chunk_count" field.
+func (m *ProcGetFileByHashQuotesMutation) AddChunkCount(i int64) {
+	if m.addchunk_count != nil {
+		*m.addchunk_count += i
+	} else {
+		m.addchunk_count = &i
+	}
+}
+
+// AddedChunkCount returns the value that was added to the "chunk_count" field in this mutation.
+func (m *ProcGetFileByHashQuotesMutation) AddedChunkCount() (r int64, exists bool) {
+	v := m.addchunk_count
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetChunkCount resets all changes to the "chunk_count" field.
+func (m *ProcGetFileByHashQuotesMutation) ResetChunkCount() {
+	m.chunk_count = nil
+	m.addchunk_count = nil
+}
+
+// SetAvailableChunksJSON sets the "available_chunks_json" field.
+func (m *ProcGetFileByHashQuotesMutation) SetAvailableChunksJSON(s string) {
+	m.available_chunks_json = &s
+}
+
+// AvailableChunksJSON returns the value of the "available_chunks_json" field in the mutation.
+func (m *ProcGetFileByHashQuotesMutation) AvailableChunksJSON() (r string, exists bool) {
+	v := m.available_chunks_json
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAvailableChunksJSON returns the old "available_chunks_json" field's value of the ProcGetFileByHashQuotes entity.
+// If the ProcGetFileByHashQuotes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashQuotesMutation) OldAvailableChunksJSON(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAvailableChunksJSON is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAvailableChunksJSON requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAvailableChunksJSON: %w", err)
+	}
+	return oldValue.AvailableChunksJSON, nil
+}
+
+// ResetAvailableChunksJSON resets all changes to the "available_chunks_json" field.
+func (m *ProcGetFileByHashQuotesMutation) ResetAvailableChunksJSON() {
+	m.available_chunks_json = nil
+}
+
+// SetRecommendedFileName sets the "recommended_file_name" field.
+func (m *ProcGetFileByHashQuotesMutation) SetRecommendedFileName(s string) {
+	m.recommended_file_name = &s
+}
+
+// RecommendedFileName returns the value of the "recommended_file_name" field in the mutation.
+func (m *ProcGetFileByHashQuotesMutation) RecommendedFileName() (r string, exists bool) {
+	v := m.recommended_file_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRecommendedFileName returns the old "recommended_file_name" field's value of the ProcGetFileByHashQuotes entity.
+// If the ProcGetFileByHashQuotes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashQuotesMutation) OldRecommendedFileName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRecommendedFileName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRecommendedFileName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRecommendedFileName: %w", err)
+	}
+	return oldValue.RecommendedFileName, nil
+}
+
+// ResetRecommendedFileName resets all changes to the "recommended_file_name" field.
+func (m *ProcGetFileByHashQuotesMutation) ResetRecommendedFileName() {
+	m.recommended_file_name = nil
+}
+
+// SetMimeType sets the "mime_type" field.
+func (m *ProcGetFileByHashQuotesMutation) SetMimeType(s string) {
+	m.mime_type = &s
+}
+
+// MimeType returns the value of the "mime_type" field in the mutation.
+func (m *ProcGetFileByHashQuotesMutation) MimeType() (r string, exists bool) {
+	v := m.mime_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMimeType returns the old "mime_type" field's value of the ProcGetFileByHashQuotes entity.
+// If the ProcGetFileByHashQuotes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashQuotesMutation) OldMimeType(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMimeType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMimeType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMimeType: %w", err)
+	}
+	return oldValue.MimeType, nil
+}
+
+// ResetMimeType resets all changes to the "mime_type" field.
+func (m *ProcGetFileByHashQuotesMutation) ResetMimeType() {
+	m.mime_type = nil
+}
+
+// SetFileSizeBytes sets the "file_size_bytes" field.
+func (m *ProcGetFileByHashQuotesMutation) SetFileSizeBytes(i int64) {
+	m.file_size_bytes = &i
+	m.addfile_size_bytes = nil
+}
+
+// FileSizeBytes returns the value of the "file_size_bytes" field in the mutation.
+func (m *ProcGetFileByHashQuotesMutation) FileSizeBytes() (r int64, exists bool) {
+	v := m.file_size_bytes
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFileSizeBytes returns the old "file_size_bytes" field's value of the ProcGetFileByHashQuotes entity.
+// If the ProcGetFileByHashQuotes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashQuotesMutation) OldFileSizeBytes(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldFileSizeBytes is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldFileSizeBytes requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFileSizeBytes: %w", err)
+	}
+	return oldValue.FileSizeBytes, nil
+}
+
+// AddFileSizeBytes adds i to the "file_size_bytes" field.
+func (m *ProcGetFileByHashQuotesMutation) AddFileSizeBytes(i int64) {
+	if m.addfile_size_bytes != nil {
+		*m.addfile_size_bytes += i
+	} else {
+		m.addfile_size_bytes = &i
+	}
+}
+
+// AddedFileSizeBytes returns the value that was added to the "file_size_bytes" field in this mutation.
+func (m *ProcGetFileByHashQuotesMutation) AddedFileSizeBytes() (r int64, exists bool) {
+	v := m.addfile_size_bytes
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetFileSizeBytes resets all changes to the "file_size_bytes" field.
+func (m *ProcGetFileByHashQuotesMutation) ResetFileSizeBytes() {
+	m.file_size_bytes = nil
+	m.addfile_size_bytes = nil
+}
+
+// SetQuoteTimestamp sets the "quote_timestamp" field.
+func (m *ProcGetFileByHashQuotesMutation) SetQuoteTimestamp(i int64) {
+	m.quote_timestamp = &i
+	m.addquote_timestamp = nil
+}
+
+// QuoteTimestamp returns the value of the "quote_timestamp" field in the mutation.
+func (m *ProcGetFileByHashQuotesMutation) QuoteTimestamp() (r int64, exists bool) {
+	v := m.quote_timestamp
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldQuoteTimestamp returns the old "quote_timestamp" field's value of the ProcGetFileByHashQuotes entity.
+// If the ProcGetFileByHashQuotes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashQuotesMutation) OldQuoteTimestamp(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldQuoteTimestamp is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldQuoteTimestamp requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldQuoteTimestamp: %w", err)
+	}
+	return oldValue.QuoteTimestamp, nil
+}
+
+// AddQuoteTimestamp adds i to the "quote_timestamp" field.
+func (m *ProcGetFileByHashQuotesMutation) AddQuoteTimestamp(i int64) {
+	if m.addquote_timestamp != nil {
+		*m.addquote_timestamp += i
+	} else {
+		m.addquote_timestamp = &i
+	}
+}
+
+// AddedQuoteTimestamp returns the value that was added to the "quote_timestamp" field in this mutation.
+func (m *ProcGetFileByHashQuotesMutation) AddedQuoteTimestamp() (r int64, exists bool) {
+	v := m.addquote_timestamp
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetQuoteTimestamp resets all changes to the "quote_timestamp" field.
+func (m *ProcGetFileByHashQuotesMutation) ResetQuoteTimestamp() {
+	m.quote_timestamp = nil
+	m.addquote_timestamp = nil
+}
+
+// SetExpiresAtUnix sets the "expires_at_unix" field.
+func (m *ProcGetFileByHashQuotesMutation) SetExpiresAtUnix(i int64) {
+	m.expires_at_unix = &i
+	m.addexpires_at_unix = nil
+}
+
+// ExpiresAtUnix returns the value of the "expires_at_unix" field in the mutation.
+func (m *ProcGetFileByHashQuotesMutation) ExpiresAtUnix() (r int64, exists bool) {
+	v := m.expires_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldExpiresAtUnix returns the old "expires_at_unix" field's value of the ProcGetFileByHashQuotes entity.
+// If the ProcGetFileByHashQuotes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashQuotesMutation) OldExpiresAtUnix(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldExpiresAtUnix is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldExpiresAtUnix requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldExpiresAtUnix: %w", err)
+	}
+	return oldValue.ExpiresAtUnix, nil
+}
+
+// AddExpiresAtUnix adds i to the "expires_at_unix" field.
+func (m *ProcGetFileByHashQuotesMutation) AddExpiresAtUnix(i int64) {
+	if m.addexpires_at_unix != nil {
+		*m.addexpires_at_unix += i
+	} else {
+		m.addexpires_at_unix = &i
+	}
+}
+
+// AddedExpiresAtUnix returns the value that was added to the "expires_at_unix" field in this mutation.
+func (m *ProcGetFileByHashQuotesMutation) AddedExpiresAtUnix() (r int64, exists bool) {
+	v := m.addexpires_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetExpiresAtUnix resets all changes to the "expires_at_unix" field.
+func (m *ProcGetFileByHashQuotesMutation) ResetExpiresAtUnix() {
+	m.expires_at_unix = nil
+	m.addexpires_at_unix = nil
+}
+
+// SetSelected sets the "selected" field.
+func (m *ProcGetFileByHashQuotesMutation) SetSelected(b bool) {
+	m.selected = &b
+}
+
+// Selected returns the value of the "selected" field in the mutation.
+func (m *ProcGetFileByHashQuotesMutation) Selected() (r bool, exists bool) {
+	v := m.selected
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSelected returns the old "selected" field's value of the ProcGetFileByHashQuotes entity.
+// If the ProcGetFileByHashQuotes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashQuotesMutation) OldSelected(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSelected is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSelected requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSelected: %w", err)
+	}
+	return oldValue.Selected, nil
+}
+
+// ResetSelected resets all changes to the "selected" field.
+func (m *ProcGetFileByHashQuotesMutation) ResetSelected() {
+	m.selected = nil
+}
+
+// SetRejectReason sets the "reject_reason" field.
+func (m *ProcGetFileByHashQuotesMutation) SetRejectReason(s string) {
+	m.reject_reason = &s
+}
+
+// RejectReason returns the value of the "reject_reason" field in the mutation.
+func (m *ProcGetFileByHashQuotesMutation) RejectReason() (r string, exists bool) {
+	v := m.reject_reason
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRejectReason returns the old "reject_reason" field's value of the ProcGetFileByHashQuotes entity.
+// If the ProcGetFileByHashQuotes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashQuotesMutation) OldRejectReason(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRejectReason is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRejectReason requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRejectReason: %w", err)
+	}
+	return oldValue.RejectReason, nil
+}
+
+// ResetRejectReason resets all changes to the "reject_reason" field.
+func (m *ProcGetFileByHashQuotesMutation) ResetRejectReason() {
+	m.reject_reason = nil
+}
+
+// Where appends a list predicates to the ProcGetFileByHashQuotesMutation builder.
+func (m *ProcGetFileByHashQuotesMutation) Where(ps ...predicate.ProcGetFileByHashQuotes) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the ProcGetFileByHashQuotesMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *ProcGetFileByHashQuotesMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.ProcGetFileByHashQuotes, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *ProcGetFileByHashQuotesMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *ProcGetFileByHashQuotesMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (ProcGetFileByHashQuotes).
+func (m *ProcGetFileByHashQuotesMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *ProcGetFileByHashQuotesMutation) Fields() []string {
+	fields := make([]string, 0, 14)
+	if m.job_id != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldJobID)
+	}
+	if m.seed_hash != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldSeedHash)
+	}
+	if m.seller_pubkey_hex != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldSellerPubkeyHex)
+	}
+	if m.seed_price_sat != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldSeedPriceSat)
+	}
+	if m.chunk_price_sat != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldChunkPriceSat)
+	}
+	if m.chunk_count != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldChunkCount)
+	}
+	if m.available_chunks_json != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldAvailableChunksJSON)
+	}
+	if m.recommended_file_name != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldRecommendedFileName)
+	}
+	if m.mime_type != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldMimeType)
+	}
+	if m.file_size_bytes != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldFileSizeBytes)
+	}
+	if m.quote_timestamp != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldQuoteTimestamp)
+	}
+	if m.expires_at_unix != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldExpiresAtUnix)
+	}
+	if m.selected != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldSelected)
+	}
+	if m.reject_reason != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldRejectReason)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *ProcGetFileByHashQuotesMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case procgetfilebyhashquotes.FieldJobID:
+		return m.JobID()
+	case procgetfilebyhashquotes.FieldSeedHash:
+		return m.SeedHash()
+	case procgetfilebyhashquotes.FieldSellerPubkeyHex:
+		return m.SellerPubkeyHex()
+	case procgetfilebyhashquotes.FieldSeedPriceSat:
+		return m.SeedPriceSat()
+	case procgetfilebyhashquotes.FieldChunkPriceSat:
+		return m.ChunkPriceSat()
+	case procgetfilebyhashquotes.FieldChunkCount:
+		return m.ChunkCount()
+	case procgetfilebyhashquotes.FieldAvailableChunksJSON:
+		return m.AvailableChunksJSON()
+	case procgetfilebyhashquotes.FieldRecommendedFileName:
+		return m.RecommendedFileName()
+	case procgetfilebyhashquotes.FieldMimeType:
+		return m.MimeType()
+	case procgetfilebyhashquotes.FieldFileSizeBytes:
+		return m.FileSizeBytes()
+	case procgetfilebyhashquotes.FieldQuoteTimestamp:
+		return m.QuoteTimestamp()
+	case procgetfilebyhashquotes.FieldExpiresAtUnix:
+		return m.ExpiresAtUnix()
+	case procgetfilebyhashquotes.FieldSelected:
+		return m.Selected()
+	case procgetfilebyhashquotes.FieldRejectReason:
+		return m.RejectReason()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *ProcGetFileByHashQuotesMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case procgetfilebyhashquotes.FieldJobID:
+		return m.OldJobID(ctx)
+	case procgetfilebyhashquotes.FieldSeedHash:
+		return m.OldSeedHash(ctx)
+	case procgetfilebyhashquotes.FieldSellerPubkeyHex:
+		return m.OldSellerPubkeyHex(ctx)
+	case procgetfilebyhashquotes.FieldSeedPriceSat:
+		return m.OldSeedPriceSat(ctx)
+	case procgetfilebyhashquotes.FieldChunkPriceSat:
+		return m.OldChunkPriceSat(ctx)
+	case procgetfilebyhashquotes.FieldChunkCount:
+		return m.OldChunkCount(ctx)
+	case procgetfilebyhashquotes.FieldAvailableChunksJSON:
+		return m.OldAvailableChunksJSON(ctx)
+	case procgetfilebyhashquotes.FieldRecommendedFileName:
+		return m.OldRecommendedFileName(ctx)
+	case procgetfilebyhashquotes.FieldMimeType:
+		return m.OldMimeType(ctx)
+	case procgetfilebyhashquotes.FieldFileSizeBytes:
+		return m.OldFileSizeBytes(ctx)
+	case procgetfilebyhashquotes.FieldQuoteTimestamp:
+		return m.OldQuoteTimestamp(ctx)
+	case procgetfilebyhashquotes.FieldExpiresAtUnix:
+		return m.OldExpiresAtUnix(ctx)
+	case procgetfilebyhashquotes.FieldSelected:
+		return m.OldSelected(ctx)
+	case procgetfilebyhashquotes.FieldRejectReason:
+		return m.OldRejectReason(ctx)
+	}
+	return nil, fmt.Errorf("unknown ProcGetFileByHashQuotes field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ProcGetFileByHashQuotesMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case procgetfilebyhashquotes.FieldJobID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetJobID(v)
+		return nil
+	case procgetfilebyhashquotes.FieldSeedHash:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSeedHash(v)
+		return nil
+	case procgetfilebyhashquotes.FieldSellerPubkeyHex:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSellerPubkeyHex(v)
+		return nil
+	case procgetfilebyhashquotes.FieldSeedPriceSat:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSeedPriceSat(v)
+		return nil
+	case procgetfilebyhashquotes.FieldChunkPriceSat:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetChunkPriceSat(v)
+		return nil
+	case procgetfilebyhashquotes.FieldChunkCount:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetChunkCount(v)
+		return nil
+	case procgetfilebyhashquotes.FieldAvailableChunksJSON:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAvailableChunksJSON(v)
+		return nil
+	case procgetfilebyhashquotes.FieldRecommendedFileName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRecommendedFileName(v)
+		return nil
+	case procgetfilebyhashquotes.FieldMimeType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMimeType(v)
+		return nil
+	case procgetfilebyhashquotes.FieldFileSizeBytes:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFileSizeBytes(v)
+		return nil
+	case procgetfilebyhashquotes.FieldQuoteTimestamp:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetQuoteTimestamp(v)
+		return nil
+	case procgetfilebyhashquotes.FieldExpiresAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetExpiresAtUnix(v)
+		return nil
+	case procgetfilebyhashquotes.FieldSelected:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSelected(v)
+		return nil
+	case procgetfilebyhashquotes.FieldRejectReason:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRejectReason(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ProcGetFileByHashQuotes field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *ProcGetFileByHashQuotesMutation) AddedFields() []string {
+	var fields []string
+	if m.addseed_price_sat != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldSeedPriceSat)
+	}
+	if m.addchunk_price_sat != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldChunkPriceSat)
+	}
+	if m.addchunk_count != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldChunkCount)
+	}
+	if m.addfile_size_bytes != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldFileSizeBytes)
+	}
+	if m.addquote_timestamp != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldQuoteTimestamp)
+	}
+	if m.addexpires_at_unix != nil {
+		fields = append(fields, procgetfilebyhashquotes.FieldExpiresAtUnix)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *ProcGetFileByHashQuotesMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case procgetfilebyhashquotes.FieldSeedPriceSat:
+		return m.AddedSeedPriceSat()
+	case procgetfilebyhashquotes.FieldChunkPriceSat:
+		return m.AddedChunkPriceSat()
+	case procgetfilebyhashquotes.FieldChunkCount:
+		return m.AddedChunkCount()
+	case procgetfilebyhashquotes.FieldFileSizeBytes:
+		return m.AddedFileSizeBytes()
+	case procgetfilebyhashquotes.FieldQuoteTimestamp:
+		return m.AddedQuoteTimestamp()
+	case procgetfilebyhashquotes.FieldExpiresAtUnix:
+		return m.AddedExpiresAtUnix()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ProcGetFileByHashQuotesMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case procgetfilebyhashquotes.FieldSeedPriceSat:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSeedPriceSat(v)
+		return nil
+	case procgetfilebyhashquotes.FieldChunkPriceSat:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddChunkPriceSat(v)
+		return nil
+	case procgetfilebyhashquotes.FieldChunkCount:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddChunkCount(v)
+		return nil
+	case procgetfilebyhashquotes.FieldFileSizeBytes:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddFileSizeBytes(v)
+		return nil
+	case procgetfilebyhashquotes.FieldQuoteTimestamp:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddQuoteTimestamp(v)
+		return nil
+	case procgetfilebyhashquotes.FieldExpiresAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddExpiresAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ProcGetFileByHashQuotes numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *ProcGetFileByHashQuotesMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *ProcGetFileByHashQuotesMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *ProcGetFileByHashQuotesMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown ProcGetFileByHashQuotes nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *ProcGetFileByHashQuotesMutation) ResetField(name string) error {
+	switch name {
+	case procgetfilebyhashquotes.FieldJobID:
+		m.ResetJobID()
+		return nil
+	case procgetfilebyhashquotes.FieldSeedHash:
+		m.ResetSeedHash()
+		return nil
+	case procgetfilebyhashquotes.FieldSellerPubkeyHex:
+		m.ResetSellerPubkeyHex()
+		return nil
+	case procgetfilebyhashquotes.FieldSeedPriceSat:
+		m.ResetSeedPriceSat()
+		return nil
+	case procgetfilebyhashquotes.FieldChunkPriceSat:
+		m.ResetChunkPriceSat()
+		return nil
+	case procgetfilebyhashquotes.FieldChunkCount:
+		m.ResetChunkCount()
+		return nil
+	case procgetfilebyhashquotes.FieldAvailableChunksJSON:
+		m.ResetAvailableChunksJSON()
+		return nil
+	case procgetfilebyhashquotes.FieldRecommendedFileName:
+		m.ResetRecommendedFileName()
+		return nil
+	case procgetfilebyhashquotes.FieldMimeType:
+		m.ResetMimeType()
+		return nil
+	case procgetfilebyhashquotes.FieldFileSizeBytes:
+		m.ResetFileSizeBytes()
+		return nil
+	case procgetfilebyhashquotes.FieldQuoteTimestamp:
+		m.ResetQuoteTimestamp()
+		return nil
+	case procgetfilebyhashquotes.FieldExpiresAtUnix:
+		m.ResetExpiresAtUnix()
+		return nil
+	case procgetfilebyhashquotes.FieldSelected:
+		m.ResetSelected()
+		return nil
+	case procgetfilebyhashquotes.FieldRejectReason:
+		m.ResetRejectReason()
+		return nil
+	}
+	return fmt.Errorf("unknown ProcGetFileByHashQuotes field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *ProcGetFileByHashQuotesMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *ProcGetFileByHashQuotesMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *ProcGetFileByHashQuotesMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *ProcGetFileByHashQuotesMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *ProcGetFileByHashQuotesMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *ProcGetFileByHashQuotesMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *ProcGetFileByHashQuotesMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown ProcGetFileByHashQuotes unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *ProcGetFileByHashQuotesMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown ProcGetFileByHashQuotes edge %s", name)
 }
 
 // ProcInboxMessagesMutation represents an operation that mutates the ProcInboxMessages nodes in the graph.

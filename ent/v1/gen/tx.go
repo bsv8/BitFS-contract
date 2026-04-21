@@ -94,6 +94,12 @@ type Tx struct {
 	ProcFileDownloads *ProcFileDownloadsClient
 	// ProcGatewayEvents is the client for interacting with the ProcGatewayEvents builders.
 	ProcGatewayEvents *ProcGatewayEventsClient
+	// ProcGetFileByHashChunks is the client for interacting with the ProcGetFileByHashChunks builders.
+	ProcGetFileByHashChunks *ProcGetFileByHashChunksClient
+	// ProcGetFileByHashJobs is the client for interacting with the ProcGetFileByHashJobs builders.
+	ProcGetFileByHashJobs *ProcGetFileByHashJobsClient
+	// ProcGetFileByHashQuotes is the client for interacting with the ProcGetFileByHashQuotes builders.
+	ProcGetFileByHashQuotes *ProcGetFileByHashQuotesClient
 	// ProcInboxMessages is the client for interacting with the ProcInboxMessages builders.
 	ProcInboxMessages *ProcInboxMessagesClient
 	// ProcLiveFollows is the client for interacting with the ProcLiveFollows builders.
@@ -296,6 +302,9 @@ func (tx *Tx) init() {
 	tx.ProcFileDownloadChunks = NewProcFileDownloadChunksClient(tx.config)
 	tx.ProcFileDownloads = NewProcFileDownloadsClient(tx.config)
 	tx.ProcGatewayEvents = NewProcGatewayEventsClient(tx.config)
+	tx.ProcGetFileByHashChunks = NewProcGetFileByHashChunksClient(tx.config)
+	tx.ProcGetFileByHashJobs = NewProcGetFileByHashJobsClient(tx.config)
+	tx.ProcGetFileByHashQuotes = NewProcGetFileByHashQuotesClient(tx.config)
 	tx.ProcInboxMessages = NewProcInboxMessagesClient(tx.config)
 	tx.ProcLiveFollows = NewProcLiveFollowsClient(tx.config)
 	tx.ProcNodeReachabilityCache = NewProcNodeReachabilityCacheClient(tx.config)

@@ -501,6 +501,42 @@ func (f ProcGatewayEventsFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.ProcGatewayEventsMutation", m)
 }
 
+// The ProcGetFileByHashChunksFunc type is an adapter to allow the use of ordinary
+// function as ProcGetFileByHashChunks mutator.
+type ProcGetFileByHashChunksFunc func(context.Context, *gen.ProcGetFileByHashChunksMutation) (gen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ProcGetFileByHashChunksFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.Value, error) {
+	if mv, ok := m.(*gen.ProcGetFileByHashChunksMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.ProcGetFileByHashChunksMutation", m)
+}
+
+// The ProcGetFileByHashJobsFunc type is an adapter to allow the use of ordinary
+// function as ProcGetFileByHashJobs mutator.
+type ProcGetFileByHashJobsFunc func(context.Context, *gen.ProcGetFileByHashJobsMutation) (gen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ProcGetFileByHashJobsFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.Value, error) {
+	if mv, ok := m.(*gen.ProcGetFileByHashJobsMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.ProcGetFileByHashJobsMutation", m)
+}
+
+// The ProcGetFileByHashQuotesFunc type is an adapter to allow the use of ordinary
+// function as ProcGetFileByHashQuotes mutator.
+type ProcGetFileByHashQuotesFunc func(context.Context, *gen.ProcGetFileByHashQuotesMutation) (gen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ProcGetFileByHashQuotesFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.Value, error) {
+	if mv, ok := m.(*gen.ProcGetFileByHashQuotesMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.ProcGetFileByHashQuotesMutation", m)
+}
+
 // The ProcInboxMessagesFunc type is an adapter to allow the use of ordinary
 // function as ProcInboxMessages mutator.
 type ProcInboxMessagesFunc func(context.Context, *gen.ProcInboxMessagesMutation) (gen.Value, error)

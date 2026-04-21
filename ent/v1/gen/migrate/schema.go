@@ -1484,6 +1484,108 @@ var (
 			},
 		},
 	}
+	// ProcGetfilebyhashChunksColumns holds the columns for the "proc_getfilebyhash_chunks" table.
+	ProcGetfilebyhashChunksColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "job_id", Type: field.TypeString},
+		{Name: "seed_hash", Type: field.TypeString},
+		{Name: "chunk_index", Type: field.TypeInt64},
+		{Name: "state", Type: field.TypeString},
+		{Name: "seller_pubkey_hex", Type: field.TypeString},
+		{Name: "chunk_price_sat", Type: field.TypeInt64},
+		{Name: "speed_bps", Type: field.TypeInt64},
+		{Name: "selected", Type: field.TypeBool},
+		{Name: "reject_reason", Type: field.TypeString},
+		{Name: "updated_at_unix", Type: field.TypeInt64},
+	}
+	// ProcGetfilebyhashChunksTable holds the schema information for the "proc_getfilebyhash_chunks" table.
+	ProcGetfilebyhashChunksTable = &schema.Table{
+		Name:       "proc_getfilebyhash_chunks",
+		Columns:    ProcGetfilebyhashChunksColumns,
+		PrimaryKey: []*schema.Column{ProcGetfilebyhashChunksColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "procgetfilebyhashchunks_job_id_chunk_index",
+				Unique:  true,
+				Columns: []*schema.Column{ProcGetfilebyhashChunksColumns[1], ProcGetfilebyhashChunksColumns[3]},
+			},
+			{
+				Name:    "procgetfilebyhashchunks_seed_hash",
+				Unique:  false,
+				Columns: []*schema.Column{ProcGetfilebyhashChunksColumns[2]},
+			},
+		},
+	}
+	// ProcGetfilebyhashJobsColumns holds the columns for the "proc_getfilebyhash_jobs" table.
+	ProcGetfilebyhashJobsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "job_id", Type: field.TypeString, Unique: true},
+		{Name: "seed_hash", Type: field.TypeString, Unique: true},
+		{Name: "demand_id", Type: field.TypeString},
+		{Name: "state", Type: field.TypeString},
+		{Name: "chunk_count", Type: field.TypeInt64},
+		{Name: "completed_chunks", Type: field.TypeInt64},
+		{Name: "paid_total_sat", Type: field.TypeInt64},
+		{Name: "output_file_path", Type: field.TypeString},
+		{Name: "part_file_path", Type: field.TypeString},
+		{Name: "error", Type: field.TypeString},
+		{Name: "created_at_unix", Type: field.TypeInt64},
+		{Name: "updated_at_unix", Type: field.TypeInt64},
+	}
+	// ProcGetfilebyhashJobsTable holds the schema information for the "proc_getfilebyhash_jobs" table.
+	ProcGetfilebyhashJobsTable = &schema.Table{
+		Name:       "proc_getfilebyhash_jobs",
+		Columns:    ProcGetfilebyhashJobsColumns,
+		PrimaryKey: []*schema.Column{ProcGetfilebyhashJobsColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "procgetfilebyhashjobs_state",
+				Unique:  false,
+				Columns: []*schema.Column{ProcGetfilebyhashJobsColumns[4]},
+			},
+			{
+				Name:    "procgetfilebyhashjobs_updated_at_unix",
+				Unique:  false,
+				Columns: []*schema.Column{ProcGetfilebyhashJobsColumns[12]},
+			},
+		},
+	}
+	// ProcGetfilebyhashQuotesColumns holds the columns for the "proc_getfilebyhash_quotes" table.
+	ProcGetfilebyhashQuotesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "job_id", Type: field.TypeString},
+		{Name: "seed_hash", Type: field.TypeString},
+		{Name: "seller_pubkey_hex", Type: field.TypeString},
+		{Name: "seed_price_sat", Type: field.TypeInt64},
+		{Name: "chunk_price_sat", Type: field.TypeInt64},
+		{Name: "chunk_count", Type: field.TypeInt64},
+		{Name: "available_chunks_json", Type: field.TypeString},
+		{Name: "recommended_file_name", Type: field.TypeString},
+		{Name: "mime_type", Type: field.TypeString},
+		{Name: "file_size_bytes", Type: field.TypeInt64},
+		{Name: "quote_timestamp", Type: field.TypeInt64},
+		{Name: "expires_at_unix", Type: field.TypeInt64},
+		{Name: "selected", Type: field.TypeBool},
+		{Name: "reject_reason", Type: field.TypeString},
+	}
+	// ProcGetfilebyhashQuotesTable holds the schema information for the "proc_getfilebyhash_quotes" table.
+	ProcGetfilebyhashQuotesTable = &schema.Table{
+		Name:       "proc_getfilebyhash_quotes",
+		Columns:    ProcGetfilebyhashQuotesColumns,
+		PrimaryKey: []*schema.Column{ProcGetfilebyhashQuotesColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "procgetfilebyhashquotes_job_id_seller_pubkey_hex",
+				Unique:  true,
+				Columns: []*schema.Column{ProcGetfilebyhashQuotesColumns[1], ProcGetfilebyhashQuotesColumns[3]},
+			},
+			{
+				Name:    "procgetfilebyhashquotes_seed_hash",
+				Unique:  false,
+				Columns: []*schema.Column{ProcGetfilebyhashQuotesColumns[2]},
+			},
+		},
+	}
 	// ProcInboxMessagesColumns holds the columns for the "proc_inbox_messages" table.
 	ProcInboxMessagesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -2004,6 +2106,9 @@ var (
 		ProcFileDownloadChunksTable,
 		ProcFileDownloadsTable,
 		ProcGatewayEventsTable,
+		ProcGetfilebyhashChunksTable,
+		ProcGetfilebyhashJobsTable,
+		ProcGetfilebyhashQuotesTable,
 		ProcInboxMessagesTable,
 		ProcLiveFollowsTable,
 		ProcNodeReachabilityCacheTable,
@@ -2161,6 +2266,15 @@ func init() {
 	}
 	ProcGatewayEventsTable.Annotation = &entsql.Annotation{
 		Table: "proc_gateway_events",
+	}
+	ProcGetfilebyhashChunksTable.Annotation = &entsql.Annotation{
+		Table: "proc_getfilebyhash_chunks",
+	}
+	ProcGetfilebyhashJobsTable.Annotation = &entsql.Annotation{
+		Table: "proc_getfilebyhash_jobs",
+	}
+	ProcGetfilebyhashQuotesTable.Annotation = &entsql.Annotation{
+		Table: "proc_getfilebyhash_quotes",
 	}
 	ProcInboxMessagesTable.Annotation = &entsql.Annotation{
 		Table: "proc_inbox_messages",

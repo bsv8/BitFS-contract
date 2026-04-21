@@ -53,6 +53,9 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procfiledownloadchunks"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procfiledownloads"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgatewayevents"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashchunks"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashjobs"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashquotes"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procinboxmessages"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/proclivefollows"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procnodereachabilitycache"
@@ -169,6 +172,9 @@ func checkColumn(t, c string) error {
 			procfiledownloadchunks.Table:                   procfiledownloadchunks.ValidColumn,
 			procfiledownloads.Table:                        procfiledownloads.ValidColumn,
 			procgatewayevents.Table:                        procgatewayevents.ValidColumn,
+			procgetfilebyhashchunks.Table:                  procgetfilebyhashchunks.ValidColumn,
+			procgetfilebyhashjobs.Table:                    procgetfilebyhashjobs.ValidColumn,
+			procgetfilebyhashquotes.Table:                  procgetfilebyhashquotes.ValidColumn,
 			procinboxmessages.Table:                        procinboxmessages.ValidColumn,
 			proclivefollows.Table:                          proclivefollows.ValidColumn,
 			procnodereachabilitycache.Table:                procnodereachabilitycache.ValidColumn,

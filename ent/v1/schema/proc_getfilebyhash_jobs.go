@@ -20,7 +20,7 @@ func (ProcGetFileByHashJobs) Annotations() []schema.Annotation {
 func (ProcGetFileByHashJobs) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("job_id").Unique(),
-		field.String("seed_hash").Immutable(),
+		field.String("seed_hash").Unique(),
 		field.String("demand_id"),
 		field.String("state"),
 		field.Int64("chunk_count"),
@@ -36,7 +36,6 @@ func (ProcGetFileByHashJobs) Fields() []ent.Field {
 
 func (ProcGetFileByHashJobs) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("seed_hash"),
 		index.Fields("state"),
 		index.Fields("updated_at_unix"),
 	}

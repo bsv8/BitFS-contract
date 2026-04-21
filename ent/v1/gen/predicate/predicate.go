@@ -129,6 +129,15 @@ type ProcFileDownloads func(*sql.Selector)
 // ProcGatewayEvents is the predicate function for procgatewayevents builders.
 type ProcGatewayEvents func(*sql.Selector)
 
+// ProcGetFileByHashChunks is the predicate function for procgetfilebyhashchunks builders.
+type ProcGetFileByHashChunks func(*sql.Selector)
+
+// ProcGetFileByHashJobs is the predicate function for procgetfilebyhashjobs builders.
+type ProcGetFileByHashJobs func(*sql.Selector)
+
+// ProcGetFileByHashQuotes is the predicate function for procgetfilebyhashquotes builders.
+type ProcGetFileByHashQuotes func(*sql.Selector)
+
 // ProcInboxMessages is the predicate function for procinboxmessages builders.
 type ProcInboxMessages func(*sql.Selector)
 
