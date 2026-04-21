@@ -21,6 +21,7 @@ func (ProcGetFileByHashJobs) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("job_id").Unique(),
 		field.String("seed_hash").Unique(),
+		field.String("front_order_id").Optional().Nillable(),
 		field.String("demand_id"),
 		field.String("state"),
 		field.Int64("chunk_count"),
@@ -36,6 +37,7 @@ func (ProcGetFileByHashJobs) Fields() []ent.Field {
 
 func (ProcGetFileByHashJobs) Indexes() []ent.Index {
 	return []ent.Index{
+		index.Fields("front_order_id"),
 		index.Fields("state"),
 		index.Fields("updated_at_unix"),
 	}

@@ -55,6 +55,26 @@ func (_u *ProcGetFileByHashJobsUpdate) SetNillableSeedHash(v *string) *ProcGetFi
 	return _u
 }
 
+// SetFrontOrderID sets the "front_order_id" field.
+func (_u *ProcGetFileByHashJobsUpdate) SetFrontOrderID(v string) *ProcGetFileByHashJobsUpdate {
+	_u.mutation.SetFrontOrderID(v)
+	return _u
+}
+
+// SetNillableFrontOrderID sets the "front_order_id" field if the given value is not nil.
+func (_u *ProcGetFileByHashJobsUpdate) SetNillableFrontOrderID(v *string) *ProcGetFileByHashJobsUpdate {
+	if v != nil {
+		_u.SetFrontOrderID(*v)
+	}
+	return _u
+}
+
+// ClearFrontOrderID clears the value of the "front_order_id" field.
+func (_u *ProcGetFileByHashJobsUpdate) ClearFrontOrderID() *ProcGetFileByHashJobsUpdate {
+	_u.mutation.ClearFrontOrderID()
+	return _u
+}
+
 // SetDemandID sets the "demand_id" field.
 func (_u *ProcGetFileByHashJobsUpdate) SetDemandID(v string) *ProcGetFileByHashJobsUpdate {
 	_u.mutation.SetDemandID(v)
@@ -277,6 +297,12 @@ func (_u *ProcGetFileByHashJobsUpdate) sqlSave(ctx context.Context) (_node int, 
 	if value, ok := _u.mutation.SeedHash(); ok {
 		_spec.SetField(procgetfilebyhashjobs.FieldSeedHash, field.TypeString, value)
 	}
+	if value, ok := _u.mutation.FrontOrderID(); ok {
+		_spec.SetField(procgetfilebyhashjobs.FieldFrontOrderID, field.TypeString, value)
+	}
+	if _u.mutation.FrontOrderIDCleared() {
+		_spec.ClearField(procgetfilebyhashjobs.FieldFrontOrderID, field.TypeString)
+	}
 	if value, ok := _u.mutation.DemandID(); ok {
 		_spec.SetField(procgetfilebyhashjobs.FieldDemandID, field.TypeString, value)
 	}
@@ -367,6 +393,26 @@ func (_u *ProcGetFileByHashJobsUpdateOne) SetNillableSeedHash(v *string) *ProcGe
 	if v != nil {
 		_u.SetSeedHash(*v)
 	}
+	return _u
+}
+
+// SetFrontOrderID sets the "front_order_id" field.
+func (_u *ProcGetFileByHashJobsUpdateOne) SetFrontOrderID(v string) *ProcGetFileByHashJobsUpdateOne {
+	_u.mutation.SetFrontOrderID(v)
+	return _u
+}
+
+// SetNillableFrontOrderID sets the "front_order_id" field if the given value is not nil.
+func (_u *ProcGetFileByHashJobsUpdateOne) SetNillableFrontOrderID(v *string) *ProcGetFileByHashJobsUpdateOne {
+	if v != nil {
+		_u.SetFrontOrderID(*v)
+	}
+	return _u
+}
+
+// ClearFrontOrderID clears the value of the "front_order_id" field.
+func (_u *ProcGetFileByHashJobsUpdateOne) ClearFrontOrderID() *ProcGetFileByHashJobsUpdateOne {
+	_u.mutation.ClearFrontOrderID()
 	return _u
 }
 
@@ -621,6 +667,12 @@ func (_u *ProcGetFileByHashJobsUpdateOne) sqlSave(ctx context.Context) (_node *P
 	}
 	if value, ok := _u.mutation.SeedHash(); ok {
 		_spec.SetField(procgetfilebyhashjobs.FieldSeedHash, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.FrontOrderID(); ok {
+		_spec.SetField(procgetfilebyhashjobs.FieldFrontOrderID, field.TypeString, value)
+	}
+	if _u.mutation.FrontOrderIDCleared() {
+		_spec.ClearField(procgetfilebyhashjobs.FieldFrontOrderID, field.TypeString)
 	}
 	if value, ok := _u.mutation.DemandID(); ok {
 		_spec.SetField(procgetfilebyhashjobs.FieldDemandID, field.TypeString, value)

@@ -15,6 +15,8 @@ const (
 	FieldJobID = "job_id"
 	// FieldSeedHash holds the string denoting the seed_hash field in the database.
 	FieldSeedHash = "seed_hash"
+	// FieldFrontOrderID holds the string denoting the front_order_id field in the database.
+	FieldFrontOrderID = "front_order_id"
 	// FieldDemandID holds the string denoting the demand_id field in the database.
 	FieldDemandID = "demand_id"
 	// FieldState holds the string denoting the state field in the database.
@@ -44,6 +46,7 @@ var Columns = []string{
 	FieldID,
 	FieldJobID,
 	FieldSeedHash,
+	FieldFrontOrderID,
 	FieldDemandID,
 	FieldState,
 	FieldChunkCount,
@@ -82,6 +85,11 @@ func ByJobID(opts ...sql.OrderTermOption) OrderOption {
 // BySeedHash orders the results by the seed_hash field.
 func BySeedHash(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSeedHash, opts...).ToFunc()
+}
+
+// ByFrontOrderID orders the results by the front_order_id field.
+func ByFrontOrderID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldFrontOrderID, opts...).ToFunc()
 }
 
 // ByDemandID orders the results by the demand_id field.

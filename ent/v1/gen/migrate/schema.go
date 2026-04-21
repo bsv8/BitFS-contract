@@ -1521,6 +1521,7 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "job_id", Type: field.TypeString, Unique: true},
 		{Name: "seed_hash", Type: field.TypeString, Unique: true},
+		{Name: "front_order_id", Type: field.TypeString, Nullable: true},
 		{Name: "demand_id", Type: field.TypeString},
 		{Name: "state", Type: field.TypeString},
 		{Name: "chunk_count", Type: field.TypeInt64},
@@ -1539,14 +1540,19 @@ var (
 		PrimaryKey: []*schema.Column{ProcGetfilebyhashJobsColumns[0]},
 		Indexes: []*schema.Index{
 			{
+				Name:    "procgetfilebyhashjobs_front_order_id",
+				Unique:  false,
+				Columns: []*schema.Column{ProcGetfilebyhashJobsColumns[3]},
+			},
+			{
 				Name:    "procgetfilebyhashjobs_state",
 				Unique:  false,
-				Columns: []*schema.Column{ProcGetfilebyhashJobsColumns[4]},
+				Columns: []*schema.Column{ProcGetfilebyhashJobsColumns[5]},
 			},
 			{
 				Name:    "procgetfilebyhashjobs_updated_at_unix",
 				Unique:  false,
-				Columns: []*schema.Column{ProcGetfilebyhashJobsColumns[12]},
+				Columns: []*schema.Column{ProcGetfilebyhashJobsColumns[13]},
 			},
 		},
 	}

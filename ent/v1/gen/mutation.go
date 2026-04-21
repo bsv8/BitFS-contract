@@ -41109,6 +41109,7 @@ type ProcGetFileByHashJobsMutation struct {
 	id                  *int
 	job_id              *string
 	seed_hash           *string
+	front_order_id      *string
 	demand_id           *string
 	state               *string
 	chunk_count         *int64
@@ -41298,6 +41299,55 @@ func (m *ProcGetFileByHashJobsMutation) OldSeedHash(ctx context.Context) (v stri
 // ResetSeedHash resets all changes to the "seed_hash" field.
 func (m *ProcGetFileByHashJobsMutation) ResetSeedHash() {
 	m.seed_hash = nil
+}
+
+// SetFrontOrderID sets the "front_order_id" field.
+func (m *ProcGetFileByHashJobsMutation) SetFrontOrderID(s string) {
+	m.front_order_id = &s
+}
+
+// FrontOrderID returns the value of the "front_order_id" field in the mutation.
+func (m *ProcGetFileByHashJobsMutation) FrontOrderID() (r string, exists bool) {
+	v := m.front_order_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFrontOrderID returns the old "front_order_id" field's value of the ProcGetFileByHashJobs entity.
+// If the ProcGetFileByHashJobs object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcGetFileByHashJobsMutation) OldFrontOrderID(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldFrontOrderID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldFrontOrderID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFrontOrderID: %w", err)
+	}
+	return oldValue.FrontOrderID, nil
+}
+
+// ClearFrontOrderID clears the value of the "front_order_id" field.
+func (m *ProcGetFileByHashJobsMutation) ClearFrontOrderID() {
+	m.front_order_id = nil
+	m.clearedFields[procgetfilebyhashjobs.FieldFrontOrderID] = struct{}{}
+}
+
+// FrontOrderIDCleared returns if the "front_order_id" field was cleared in this mutation.
+func (m *ProcGetFileByHashJobsMutation) FrontOrderIDCleared() bool {
+	_, ok := m.clearedFields[procgetfilebyhashjobs.FieldFrontOrderID]
+	return ok
+}
+
+// ResetFrontOrderID resets all changes to the "front_order_id" field.
+func (m *ProcGetFileByHashJobsMutation) ResetFrontOrderID() {
+	m.front_order_id = nil
+	delete(m.clearedFields, procgetfilebyhashjobs.FieldFrontOrderID)
 }
 
 // SetDemandID sets the "demand_id" field.
@@ -41794,12 +41844,15 @@ func (m *ProcGetFileByHashJobsMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ProcGetFileByHashJobsMutation) Fields() []string {
-	fields := make([]string, 0, 12)
+	fields := make([]string, 0, 13)
 	if m.job_id != nil {
 		fields = append(fields, procgetfilebyhashjobs.FieldJobID)
 	}
 	if m.seed_hash != nil {
 		fields = append(fields, procgetfilebyhashjobs.FieldSeedHash)
+	}
+	if m.front_order_id != nil {
+		fields = append(fields, procgetfilebyhashjobs.FieldFrontOrderID)
 	}
 	if m.demand_id != nil {
 		fields = append(fields, procgetfilebyhashjobs.FieldDemandID)
@@ -41843,6 +41896,8 @@ func (m *ProcGetFileByHashJobsMutation) Field(name string) (ent.Value, bool) {
 		return m.JobID()
 	case procgetfilebyhashjobs.FieldSeedHash:
 		return m.SeedHash()
+	case procgetfilebyhashjobs.FieldFrontOrderID:
+		return m.FrontOrderID()
 	case procgetfilebyhashjobs.FieldDemandID:
 		return m.DemandID()
 	case procgetfilebyhashjobs.FieldState:
@@ -41876,6 +41931,8 @@ func (m *ProcGetFileByHashJobsMutation) OldField(ctx context.Context, name strin
 		return m.OldJobID(ctx)
 	case procgetfilebyhashjobs.FieldSeedHash:
 		return m.OldSeedHash(ctx)
+	case procgetfilebyhashjobs.FieldFrontOrderID:
+		return m.OldFrontOrderID(ctx)
 	case procgetfilebyhashjobs.FieldDemandID:
 		return m.OldDemandID(ctx)
 	case procgetfilebyhashjobs.FieldState:
@@ -41918,6 +41975,13 @@ func (m *ProcGetFileByHashJobsMutation) SetField(name string, value ent.Value) e
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetSeedHash(v)
+		return nil
+	case procgetfilebyhashjobs.FieldFrontOrderID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFrontOrderID(v)
 		return nil
 	case procgetfilebyhashjobs.FieldDemandID:
 		v, ok := value.(string)
@@ -42081,7 +42145,11 @@ func (m *ProcGetFileByHashJobsMutation) AddField(name string, value ent.Value) e
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *ProcGetFileByHashJobsMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(procgetfilebyhashjobs.FieldFrontOrderID) {
+		fields = append(fields, procgetfilebyhashjobs.FieldFrontOrderID)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -42094,6 +42162,11 @@ func (m *ProcGetFileByHashJobsMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *ProcGetFileByHashJobsMutation) ClearField(name string) error {
+	switch name {
+	case procgetfilebyhashjobs.FieldFrontOrderID:
+		m.ClearFrontOrderID()
+		return nil
+	}
 	return fmt.Errorf("unknown ProcGetFileByHashJobs nullable field %s", name)
 }
 
@@ -42106,6 +42179,9 @@ func (m *ProcGetFileByHashJobsMutation) ResetField(name string) error {
 		return nil
 	case procgetfilebyhashjobs.FieldSeedHash:
 		m.ResetSeedHash()
+		return nil
+	case procgetfilebyhashjobs.FieldFrontOrderID:
+		m.ResetFrontOrderID()
 		return nil
 	case procgetfilebyhashjobs.FieldDemandID:
 		m.ResetDemandID()

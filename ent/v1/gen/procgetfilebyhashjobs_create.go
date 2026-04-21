@@ -31,6 +31,20 @@ func (_c *ProcGetFileByHashJobsCreate) SetSeedHash(v string) *ProcGetFileByHashJ
 	return _c
 }
 
+// SetFrontOrderID sets the "front_order_id" field.
+func (_c *ProcGetFileByHashJobsCreate) SetFrontOrderID(v string) *ProcGetFileByHashJobsCreate {
+	_c.mutation.SetFrontOrderID(v)
+	return _c
+}
+
+// SetNillableFrontOrderID sets the "front_order_id" field if the given value is not nil.
+func (_c *ProcGetFileByHashJobsCreate) SetNillableFrontOrderID(v *string) *ProcGetFileByHashJobsCreate {
+	if v != nil {
+		_c.SetFrontOrderID(*v)
+	}
+	return _c
+}
+
 // SetDemandID sets the "demand_id" field.
 func (_c *ProcGetFileByHashJobsCreate) SetDemandID(v string) *ProcGetFileByHashJobsCreate {
 	_c.mutation.SetDemandID(v)
@@ -194,6 +208,10 @@ func (_c *ProcGetFileByHashJobsCreate) createSpec() (*ProcGetFileByHashJobs, *sq
 	if value, ok := _c.mutation.SeedHash(); ok {
 		_spec.SetField(procgetfilebyhashjobs.FieldSeedHash, field.TypeString, value)
 		_node.SeedHash = value
+	}
+	if value, ok := _c.mutation.FrontOrderID(); ok {
+		_spec.SetField(procgetfilebyhashjobs.FieldFrontOrderID, field.TypeString, value)
+		_node.FrontOrderID = &value
 	}
 	if value, ok := _c.mutation.DemandID(); ok {
 		_spec.SetField(procgetfilebyhashjobs.FieldDemandID, field.TypeString, value)

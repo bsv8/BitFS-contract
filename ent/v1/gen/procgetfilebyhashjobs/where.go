@@ -62,6 +62,11 @@ func SeedHash(v string) predicate.ProcGetFileByHashJobs {
 	return predicate.ProcGetFileByHashJobs(sql.FieldEQ(FieldSeedHash, v))
 }
 
+// FrontOrderID applies equality check predicate on the "front_order_id" field. It's identical to FrontOrderIDEQ.
+func FrontOrderID(v string) predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldEQ(FieldFrontOrderID, v))
+}
+
 // DemandID applies equality check predicate on the "demand_id" field. It's identical to DemandIDEQ.
 func DemandID(v string) predicate.ProcGetFileByHashJobs {
 	return predicate.ProcGetFileByHashJobs(sql.FieldEQ(FieldDemandID, v))
@@ -240,6 +245,81 @@ func SeedHashEqualFold(v string) predicate.ProcGetFileByHashJobs {
 // SeedHashContainsFold applies the ContainsFold predicate on the "seed_hash" field.
 func SeedHashContainsFold(v string) predicate.ProcGetFileByHashJobs {
 	return predicate.ProcGetFileByHashJobs(sql.FieldContainsFold(FieldSeedHash, v))
+}
+
+// FrontOrderIDEQ applies the EQ predicate on the "front_order_id" field.
+func FrontOrderIDEQ(v string) predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldEQ(FieldFrontOrderID, v))
+}
+
+// FrontOrderIDNEQ applies the NEQ predicate on the "front_order_id" field.
+func FrontOrderIDNEQ(v string) predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldNEQ(FieldFrontOrderID, v))
+}
+
+// FrontOrderIDIn applies the In predicate on the "front_order_id" field.
+func FrontOrderIDIn(vs ...string) predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldIn(FieldFrontOrderID, vs...))
+}
+
+// FrontOrderIDNotIn applies the NotIn predicate on the "front_order_id" field.
+func FrontOrderIDNotIn(vs ...string) predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldNotIn(FieldFrontOrderID, vs...))
+}
+
+// FrontOrderIDGT applies the GT predicate on the "front_order_id" field.
+func FrontOrderIDGT(v string) predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldGT(FieldFrontOrderID, v))
+}
+
+// FrontOrderIDGTE applies the GTE predicate on the "front_order_id" field.
+func FrontOrderIDGTE(v string) predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldGTE(FieldFrontOrderID, v))
+}
+
+// FrontOrderIDLT applies the LT predicate on the "front_order_id" field.
+func FrontOrderIDLT(v string) predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldLT(FieldFrontOrderID, v))
+}
+
+// FrontOrderIDLTE applies the LTE predicate on the "front_order_id" field.
+func FrontOrderIDLTE(v string) predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldLTE(FieldFrontOrderID, v))
+}
+
+// FrontOrderIDContains applies the Contains predicate on the "front_order_id" field.
+func FrontOrderIDContains(v string) predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldContains(FieldFrontOrderID, v))
+}
+
+// FrontOrderIDHasPrefix applies the HasPrefix predicate on the "front_order_id" field.
+func FrontOrderIDHasPrefix(v string) predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldHasPrefix(FieldFrontOrderID, v))
+}
+
+// FrontOrderIDHasSuffix applies the HasSuffix predicate on the "front_order_id" field.
+func FrontOrderIDHasSuffix(v string) predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldHasSuffix(FieldFrontOrderID, v))
+}
+
+// FrontOrderIDIsNil applies the IsNil predicate on the "front_order_id" field.
+func FrontOrderIDIsNil() predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldIsNull(FieldFrontOrderID))
+}
+
+// FrontOrderIDNotNil applies the NotNil predicate on the "front_order_id" field.
+func FrontOrderIDNotNil() predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldNotNull(FieldFrontOrderID))
+}
+
+// FrontOrderIDEqualFold applies the EqualFold predicate on the "front_order_id" field.
+func FrontOrderIDEqualFold(v string) predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldEqualFold(FieldFrontOrderID, v))
+}
+
+// FrontOrderIDContainsFold applies the ContainsFold predicate on the "front_order_id" field.
+func FrontOrderIDContainsFold(v string) predicate.ProcGetFileByHashJobs {
+	return predicate.ProcGetFileByHashJobs(sql.FieldContainsFold(FieldFrontOrderID, v))
 }
 
 // DemandIDEQ applies the EQ predicate on the "demand_id" field.

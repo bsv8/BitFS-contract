@@ -20,6 +20,8 @@ type ProcGetFileByHashJobs struct {
 	JobID string `json:"job_id,omitempty"`
 	// SeedHash holds the value of the "seed_hash" field.
 	SeedHash string `json:"seed_hash,omitempty"`
+	// FrontOrderID holds the value of the "front_order_id" field.
+	FrontOrderID *string `json:"front_order_id,omitempty"`
 	// DemandID holds the value of the "demand_id" field.
 	DemandID string `json:"demand_id,omitempty"`
 	// State holds the value of the "state" field.
@@ -50,7 +52,7 @@ func (*ProcGetFileByHashJobs) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case procgetfilebyhashjobs.FieldID, procgetfilebyhashjobs.FieldChunkCount, procgetfilebyhashjobs.FieldCompletedChunks, procgetfilebyhashjobs.FieldPaidTotalSat, procgetfilebyhashjobs.FieldCreatedAtUnix, procgetfilebyhashjobs.FieldUpdatedAtUnix:
 			values[i] = new(sql.NullInt64)
-		case procgetfilebyhashjobs.FieldJobID, procgetfilebyhashjobs.FieldSeedHash, procgetfilebyhashjobs.FieldDemandID, procgetfilebyhashjobs.FieldState, procgetfilebyhashjobs.FieldOutputFilePath, procgetfilebyhashjobs.FieldPartFilePath, procgetfilebyhashjobs.FieldError:
+		case procgetfilebyhashjobs.FieldJobID, procgetfilebyhashjobs.FieldSeedHash, procgetfilebyhashjobs.FieldFrontOrderID, procgetfilebyhashjobs.FieldDemandID, procgetfilebyhashjobs.FieldState, procgetfilebyhashjobs.FieldOutputFilePath, procgetfilebyhashjobs.FieldPartFilePath, procgetfilebyhashjobs.FieldError:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -84,6 +86,13 @@ func (_m *ProcGetFileByHashJobs) assignValues(columns []string, values []any) er
 				return fmt.Errorf("unexpected type %T for field seed_hash", values[i])
 			} else if value.Valid {
 				_m.SeedHash = value.String
+			}
+		case procgetfilebyhashjobs.FieldFrontOrderID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field front_order_id", values[i])
+			} else if value.Valid {
+				_m.FrontOrderID = new(string)
+				*_m.FrontOrderID = value.String
 			}
 		case procgetfilebyhashjobs.FieldDemandID:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -186,6 +195,11 @@ func (_m *ProcGetFileByHashJobs) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("seed_hash=")
 	builder.WriteString(_m.SeedHash)
+	builder.WriteString(", ")
+	if v := _m.FrontOrderID; v != nil {
+		builder.WriteString("front_order_id=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
 	builder.WriteString("demand_id=")
 	builder.WriteString(_m.DemandID)
