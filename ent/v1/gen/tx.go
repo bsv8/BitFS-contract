@@ -28,6 +28,12 @@ type Tx struct {
 	BizPool *BizPoolClient
 	// BizPoolAllocations is the client for interacting with the BizPoolAllocations builders.
 	BizPoolAllocations *BizPoolAllocationsClient
+	// BizPricingAutopilotAudit is the client for interacting with the BizPricingAutopilotAudit builders.
+	BizPricingAutopilotAudit *BizPricingAutopilotAuditClient
+	// BizPricingAutopilotConfig is the client for interacting with the BizPricingAutopilotConfig builders.
+	BizPricingAutopilotConfig *BizPricingAutopilotConfigClient
+	// BizPricingAutopilotState is the client for interacting with the BizPricingAutopilotState builders.
+	BizPricingAutopilotState *BizPricingAutopilotStateClient
 	// BizPurchases is the client for interacting with the BizPurchases builders.
 	BizPurchases *BizPurchasesClient
 	// BizSeedChunkSupply is the client for interacting with the BizSeedChunkSupply builders.
@@ -102,6 +108,8 @@ type Tx struct {
 	ProcGetFileByHashQuotes *ProcGetFileByHashQuotesClient
 	// ProcInboxMessages is the client for interacting with the ProcInboxMessages builders.
 	ProcInboxMessages *ProcInboxMessagesClient
+	// ProcIndexResolveRoutes is the client for interacting with the ProcIndexResolveRoutes builders.
+	ProcIndexResolveRoutes *ProcIndexResolveRoutesClient
 	// ProcLiveFollows is the client for interacting with the ProcLiveFollows builders.
 	ProcLiveFollows *ProcLiveFollowsClient
 	// ProcNodeReachabilityCache is the client for interacting with the ProcNodeReachabilityCache builders.
@@ -269,6 +277,9 @@ func (tx *Tx) init() {
 	tx.BizLiveQuotes = NewBizLiveQuotesClient(tx.config)
 	tx.BizPool = NewBizPoolClient(tx.config)
 	tx.BizPoolAllocations = NewBizPoolAllocationsClient(tx.config)
+	tx.BizPricingAutopilotAudit = NewBizPricingAutopilotAuditClient(tx.config)
+	tx.BizPricingAutopilotConfig = NewBizPricingAutopilotConfigClient(tx.config)
+	tx.BizPricingAutopilotState = NewBizPricingAutopilotStateClient(tx.config)
 	tx.BizPurchases = NewBizPurchasesClient(tx.config)
 	tx.BizSeedChunkSupply = NewBizSeedChunkSupplyClient(tx.config)
 	tx.BizSeedPricingPolicy = NewBizSeedPricingPolicyClient(tx.config)
@@ -306,6 +317,7 @@ func (tx *Tx) init() {
 	tx.ProcGetFileByHashJobs = NewProcGetFileByHashJobsClient(tx.config)
 	tx.ProcGetFileByHashQuotes = NewProcGetFileByHashQuotesClient(tx.config)
 	tx.ProcInboxMessages = NewProcInboxMessagesClient(tx.config)
+	tx.ProcIndexResolveRoutes = NewProcIndexResolveRoutesClient(tx.config)
 	tx.ProcLiveFollows = NewProcLiveFollowsClient(tx.config)
 	tx.ProcNodeReachabilityCache = NewProcNodeReachabilityCacheClient(tx.config)
 	tx.ProcObservedGatewayStates = NewProcObservedGatewayStatesClient(tx.config)

@@ -20,6 +20,9 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizlivequotes"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpool"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpoolallocations"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpricingautopilotaudit"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpricingautopilotconfig"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpricingautopilotstate"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpurchases"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizseedchunksupply"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizseedpricingpolicy"
@@ -57,6 +60,7 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashjobs"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashquotes"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procinboxmessages"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/procindexresolveroutes"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/proclivefollows"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procnodereachabilitycache"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procobservedgatewaystates"
@@ -139,6 +143,9 @@ func checkColumn(t, c string) error {
 			bizlivequotes.Table:                            bizlivequotes.ValidColumn,
 			bizpool.Table:                                  bizpool.ValidColumn,
 			bizpoolallocations.Table:                       bizpoolallocations.ValidColumn,
+			bizpricingautopilotaudit.Table:                 bizpricingautopilotaudit.ValidColumn,
+			bizpricingautopilotconfig.Table:                bizpricingautopilotconfig.ValidColumn,
+			bizpricingautopilotstate.Table:                 bizpricingautopilotstate.ValidColumn,
 			bizpurchases.Table:                             bizpurchases.ValidColumn,
 			bizseedchunksupply.Table:                       bizseedchunksupply.ValidColumn,
 			bizseedpricingpolicy.Table:                     bizseedpricingpolicy.ValidColumn,
@@ -176,6 +183,7 @@ func checkColumn(t, c string) error {
 			procgetfilebyhashjobs.Table:                    procgetfilebyhashjobs.ValidColumn,
 			procgetfilebyhashquotes.Table:                  procgetfilebyhashquotes.ValidColumn,
 			procinboxmessages.Table:                        procinboxmessages.ValidColumn,
+			procindexresolveroutes.Table:                   procindexresolveroutes.ValidColumn,
 			proclivefollows.Table:                          proclivefollows.ValidColumn,
 			procnodereachabilitycache.Table:                procnodereachabilitycache.ValidColumn,
 			procobservedgatewaystates.Table:                procobservedgatewaystates.ValidColumn,

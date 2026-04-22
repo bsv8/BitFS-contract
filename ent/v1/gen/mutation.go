@@ -18,6 +18,9 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizlivequotes"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpool"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpoolallocations"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpricingautopilotaudit"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpricingautopilotconfig"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpricingautopilotstate"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpurchases"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizseedchunksupply"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizseedpricingpolicy"
@@ -56,6 +59,7 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashjobs"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashquotes"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procinboxmessages"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/procindexresolveroutes"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/proclivefollows"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procnodereachabilitycache"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procobservedgatewaystates"
@@ -89,6 +93,9 @@ const (
 	TypeBizLiveQuotes                            = "BizLiveQuotes"
 	TypeBizPool                                  = "BizPool"
 	TypeBizPoolAllocations                       = "BizPoolAllocations"
+	TypeBizPricingAutopilotAudit                 = "BizPricingAutopilotAudit"
+	TypeBizPricingAutopilotConfig                = "BizPricingAutopilotConfig"
+	TypeBizPricingAutopilotState                 = "BizPricingAutopilotState"
 	TypeBizPurchases                             = "BizPurchases"
 	TypeBizSeedChunkSupply                       = "BizSeedChunkSupply"
 	TypeBizSeedPricingPolicy                     = "BizSeedPricingPolicy"
@@ -126,6 +133,7 @@ const (
 	TypeProcGetFileByHashJobs                    = "ProcGetFileByHashJobs"
 	TypeProcGetFileByHashQuotes                  = "ProcGetFileByHashQuotes"
 	TypeProcInboxMessages                        = "ProcInboxMessages"
+	TypeProcIndexResolveRoutes                   = "ProcIndexResolveRoutes"
 	TypeProcLiveFollows                          = "ProcLiveFollows"
 	TypeProcNodeReachabilityCache                = "ProcNodeReachabilityCache"
 	TypeProcObservedGatewayStates                = "ProcObservedGatewayStates"
@@ -7023,6 +7031,1422 @@ func (m *BizPoolAllocationsMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *BizPoolAllocationsMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown BizPoolAllocations edge %s", name)
+}
+
+// BizPricingAutopilotAuditMutation represents an operation that mutates the BizPricingAutopilotAudit nodes in the graph.
+type BizPricingAutopilotAuditMutation struct {
+	config
+	op                Op
+	typ               string
+	id                *int64
+	seed_hash         *string
+	payload_json      *string
+	ticked_at_unix    *int64
+	addticked_at_unix *int64
+	clearedFields     map[string]struct{}
+	done              bool
+	oldValue          func(context.Context) (*BizPricingAutopilotAudit, error)
+	predicates        []predicate.BizPricingAutopilotAudit
+}
+
+var _ ent.Mutation = (*BizPricingAutopilotAuditMutation)(nil)
+
+// bizpricingautopilotauditOption allows management of the mutation configuration using functional options.
+type bizpricingautopilotauditOption func(*BizPricingAutopilotAuditMutation)
+
+// newBizPricingAutopilotAuditMutation creates new mutation for the BizPricingAutopilotAudit entity.
+func newBizPricingAutopilotAuditMutation(c config, op Op, opts ...bizpricingautopilotauditOption) *BizPricingAutopilotAuditMutation {
+	m := &BizPricingAutopilotAuditMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeBizPricingAutopilotAudit,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withBizPricingAutopilotAuditID sets the ID field of the mutation.
+func withBizPricingAutopilotAuditID(id int64) bizpricingautopilotauditOption {
+	return func(m *BizPricingAutopilotAuditMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *BizPricingAutopilotAudit
+		)
+		m.oldValue = func(ctx context.Context) (*BizPricingAutopilotAudit, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().BizPricingAutopilotAudit.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withBizPricingAutopilotAudit sets the old BizPricingAutopilotAudit of the mutation.
+func withBizPricingAutopilotAudit(node *BizPricingAutopilotAudit) bizpricingautopilotauditOption {
+	return func(m *BizPricingAutopilotAuditMutation) {
+		m.oldValue = func(context.Context) (*BizPricingAutopilotAudit, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m BizPricingAutopilotAuditMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m BizPricingAutopilotAuditMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("gen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of BizPricingAutopilotAudit entities.
+func (m *BizPricingAutopilotAuditMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *BizPricingAutopilotAuditMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *BizPricingAutopilotAuditMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().BizPricingAutopilotAudit.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetSeedHash sets the "seed_hash" field.
+func (m *BizPricingAutopilotAuditMutation) SetSeedHash(s string) {
+	m.seed_hash = &s
+}
+
+// SeedHash returns the value of the "seed_hash" field in the mutation.
+func (m *BizPricingAutopilotAuditMutation) SeedHash() (r string, exists bool) {
+	v := m.seed_hash
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSeedHash returns the old "seed_hash" field's value of the BizPricingAutopilotAudit entity.
+// If the BizPricingAutopilotAudit object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BizPricingAutopilotAuditMutation) OldSeedHash(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSeedHash is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSeedHash requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSeedHash: %w", err)
+	}
+	return oldValue.SeedHash, nil
+}
+
+// ResetSeedHash resets all changes to the "seed_hash" field.
+func (m *BizPricingAutopilotAuditMutation) ResetSeedHash() {
+	m.seed_hash = nil
+}
+
+// SetPayloadJSON sets the "payload_json" field.
+func (m *BizPricingAutopilotAuditMutation) SetPayloadJSON(s string) {
+	m.payload_json = &s
+}
+
+// PayloadJSON returns the value of the "payload_json" field in the mutation.
+func (m *BizPricingAutopilotAuditMutation) PayloadJSON() (r string, exists bool) {
+	v := m.payload_json
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPayloadJSON returns the old "payload_json" field's value of the BizPricingAutopilotAudit entity.
+// If the BizPricingAutopilotAudit object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BizPricingAutopilotAuditMutation) OldPayloadJSON(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPayloadJSON is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPayloadJSON requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPayloadJSON: %w", err)
+	}
+	return oldValue.PayloadJSON, nil
+}
+
+// ResetPayloadJSON resets all changes to the "payload_json" field.
+func (m *BizPricingAutopilotAuditMutation) ResetPayloadJSON() {
+	m.payload_json = nil
+}
+
+// SetTickedAtUnix sets the "ticked_at_unix" field.
+func (m *BizPricingAutopilotAuditMutation) SetTickedAtUnix(i int64) {
+	m.ticked_at_unix = &i
+	m.addticked_at_unix = nil
+}
+
+// TickedAtUnix returns the value of the "ticked_at_unix" field in the mutation.
+func (m *BizPricingAutopilotAuditMutation) TickedAtUnix() (r int64, exists bool) {
+	v := m.ticked_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTickedAtUnix returns the old "ticked_at_unix" field's value of the BizPricingAutopilotAudit entity.
+// If the BizPricingAutopilotAudit object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BizPricingAutopilotAuditMutation) OldTickedAtUnix(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTickedAtUnix is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTickedAtUnix requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTickedAtUnix: %w", err)
+	}
+	return oldValue.TickedAtUnix, nil
+}
+
+// AddTickedAtUnix adds i to the "ticked_at_unix" field.
+func (m *BizPricingAutopilotAuditMutation) AddTickedAtUnix(i int64) {
+	if m.addticked_at_unix != nil {
+		*m.addticked_at_unix += i
+	} else {
+		m.addticked_at_unix = &i
+	}
+}
+
+// AddedTickedAtUnix returns the value that was added to the "ticked_at_unix" field in this mutation.
+func (m *BizPricingAutopilotAuditMutation) AddedTickedAtUnix() (r int64, exists bool) {
+	v := m.addticked_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetTickedAtUnix resets all changes to the "ticked_at_unix" field.
+func (m *BizPricingAutopilotAuditMutation) ResetTickedAtUnix() {
+	m.ticked_at_unix = nil
+	m.addticked_at_unix = nil
+}
+
+// Where appends a list predicates to the BizPricingAutopilotAuditMutation builder.
+func (m *BizPricingAutopilotAuditMutation) Where(ps ...predicate.BizPricingAutopilotAudit) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the BizPricingAutopilotAuditMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *BizPricingAutopilotAuditMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.BizPricingAutopilotAudit, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *BizPricingAutopilotAuditMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *BizPricingAutopilotAuditMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (BizPricingAutopilotAudit).
+func (m *BizPricingAutopilotAuditMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *BizPricingAutopilotAuditMutation) Fields() []string {
+	fields := make([]string, 0, 3)
+	if m.seed_hash != nil {
+		fields = append(fields, bizpricingautopilotaudit.FieldSeedHash)
+	}
+	if m.payload_json != nil {
+		fields = append(fields, bizpricingautopilotaudit.FieldPayloadJSON)
+	}
+	if m.ticked_at_unix != nil {
+		fields = append(fields, bizpricingautopilotaudit.FieldTickedAtUnix)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *BizPricingAutopilotAuditMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case bizpricingautopilotaudit.FieldSeedHash:
+		return m.SeedHash()
+	case bizpricingautopilotaudit.FieldPayloadJSON:
+		return m.PayloadJSON()
+	case bizpricingautopilotaudit.FieldTickedAtUnix:
+		return m.TickedAtUnix()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *BizPricingAutopilotAuditMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case bizpricingautopilotaudit.FieldSeedHash:
+		return m.OldSeedHash(ctx)
+	case bizpricingautopilotaudit.FieldPayloadJSON:
+		return m.OldPayloadJSON(ctx)
+	case bizpricingautopilotaudit.FieldTickedAtUnix:
+		return m.OldTickedAtUnix(ctx)
+	}
+	return nil, fmt.Errorf("unknown BizPricingAutopilotAudit field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *BizPricingAutopilotAuditMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case bizpricingautopilotaudit.FieldSeedHash:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSeedHash(v)
+		return nil
+	case bizpricingautopilotaudit.FieldPayloadJSON:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPayloadJSON(v)
+		return nil
+	case bizpricingautopilotaudit.FieldTickedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTickedAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown BizPricingAutopilotAudit field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *BizPricingAutopilotAuditMutation) AddedFields() []string {
+	var fields []string
+	if m.addticked_at_unix != nil {
+		fields = append(fields, bizpricingautopilotaudit.FieldTickedAtUnix)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *BizPricingAutopilotAuditMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case bizpricingautopilotaudit.FieldTickedAtUnix:
+		return m.AddedTickedAtUnix()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *BizPricingAutopilotAuditMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case bizpricingautopilotaudit.FieldTickedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddTickedAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown BizPricingAutopilotAudit numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *BizPricingAutopilotAuditMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *BizPricingAutopilotAuditMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *BizPricingAutopilotAuditMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown BizPricingAutopilotAudit nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *BizPricingAutopilotAuditMutation) ResetField(name string) error {
+	switch name {
+	case bizpricingautopilotaudit.FieldSeedHash:
+		m.ResetSeedHash()
+		return nil
+	case bizpricingautopilotaudit.FieldPayloadJSON:
+		m.ResetPayloadJSON()
+		return nil
+	case bizpricingautopilotaudit.FieldTickedAtUnix:
+		m.ResetTickedAtUnix()
+		return nil
+	}
+	return fmt.Errorf("unknown BizPricingAutopilotAudit field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *BizPricingAutopilotAuditMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *BizPricingAutopilotAuditMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *BizPricingAutopilotAuditMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *BizPricingAutopilotAuditMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *BizPricingAutopilotAuditMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *BizPricingAutopilotAuditMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *BizPricingAutopilotAuditMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown BizPricingAutopilotAudit unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *BizPricingAutopilotAuditMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown BizPricingAutopilotAudit edge %s", name)
+}
+
+// BizPricingAutopilotConfigMutation represents an operation that mutates the BizPricingAutopilotConfig nodes in the graph.
+type BizPricingAutopilotConfigMutation struct {
+	config
+	op                 Op
+	typ                string
+	id                 *int
+	config_key         *string
+	payload_json       *string
+	updated_at_unix    *int64
+	addupdated_at_unix *int64
+	clearedFields      map[string]struct{}
+	done               bool
+	oldValue           func(context.Context) (*BizPricingAutopilotConfig, error)
+	predicates         []predicate.BizPricingAutopilotConfig
+}
+
+var _ ent.Mutation = (*BizPricingAutopilotConfigMutation)(nil)
+
+// bizpricingautopilotconfigOption allows management of the mutation configuration using functional options.
+type bizpricingautopilotconfigOption func(*BizPricingAutopilotConfigMutation)
+
+// newBizPricingAutopilotConfigMutation creates new mutation for the BizPricingAutopilotConfig entity.
+func newBizPricingAutopilotConfigMutation(c config, op Op, opts ...bizpricingautopilotconfigOption) *BizPricingAutopilotConfigMutation {
+	m := &BizPricingAutopilotConfigMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeBizPricingAutopilotConfig,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withBizPricingAutopilotConfigID sets the ID field of the mutation.
+func withBizPricingAutopilotConfigID(id int) bizpricingautopilotconfigOption {
+	return func(m *BizPricingAutopilotConfigMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *BizPricingAutopilotConfig
+		)
+		m.oldValue = func(ctx context.Context) (*BizPricingAutopilotConfig, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().BizPricingAutopilotConfig.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withBizPricingAutopilotConfig sets the old BizPricingAutopilotConfig of the mutation.
+func withBizPricingAutopilotConfig(node *BizPricingAutopilotConfig) bizpricingautopilotconfigOption {
+	return func(m *BizPricingAutopilotConfigMutation) {
+		m.oldValue = func(context.Context) (*BizPricingAutopilotConfig, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m BizPricingAutopilotConfigMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m BizPricingAutopilotConfigMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("gen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *BizPricingAutopilotConfigMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *BizPricingAutopilotConfigMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().BizPricingAutopilotConfig.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetConfigKey sets the "config_key" field.
+func (m *BizPricingAutopilotConfigMutation) SetConfigKey(s string) {
+	m.config_key = &s
+}
+
+// ConfigKey returns the value of the "config_key" field in the mutation.
+func (m *BizPricingAutopilotConfigMutation) ConfigKey() (r string, exists bool) {
+	v := m.config_key
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldConfigKey returns the old "config_key" field's value of the BizPricingAutopilotConfig entity.
+// If the BizPricingAutopilotConfig object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BizPricingAutopilotConfigMutation) OldConfigKey(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldConfigKey is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldConfigKey requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldConfigKey: %w", err)
+	}
+	return oldValue.ConfigKey, nil
+}
+
+// ResetConfigKey resets all changes to the "config_key" field.
+func (m *BizPricingAutopilotConfigMutation) ResetConfigKey() {
+	m.config_key = nil
+}
+
+// SetPayloadJSON sets the "payload_json" field.
+func (m *BizPricingAutopilotConfigMutation) SetPayloadJSON(s string) {
+	m.payload_json = &s
+}
+
+// PayloadJSON returns the value of the "payload_json" field in the mutation.
+func (m *BizPricingAutopilotConfigMutation) PayloadJSON() (r string, exists bool) {
+	v := m.payload_json
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPayloadJSON returns the old "payload_json" field's value of the BizPricingAutopilotConfig entity.
+// If the BizPricingAutopilotConfig object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BizPricingAutopilotConfigMutation) OldPayloadJSON(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPayloadJSON is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPayloadJSON requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPayloadJSON: %w", err)
+	}
+	return oldValue.PayloadJSON, nil
+}
+
+// ResetPayloadJSON resets all changes to the "payload_json" field.
+func (m *BizPricingAutopilotConfigMutation) ResetPayloadJSON() {
+	m.payload_json = nil
+}
+
+// SetUpdatedAtUnix sets the "updated_at_unix" field.
+func (m *BizPricingAutopilotConfigMutation) SetUpdatedAtUnix(i int64) {
+	m.updated_at_unix = &i
+	m.addupdated_at_unix = nil
+}
+
+// UpdatedAtUnix returns the value of the "updated_at_unix" field in the mutation.
+func (m *BizPricingAutopilotConfigMutation) UpdatedAtUnix() (r int64, exists bool) {
+	v := m.updated_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAtUnix returns the old "updated_at_unix" field's value of the BizPricingAutopilotConfig entity.
+// If the BizPricingAutopilotConfig object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BizPricingAutopilotConfigMutation) OldUpdatedAtUnix(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAtUnix is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAtUnix requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAtUnix: %w", err)
+	}
+	return oldValue.UpdatedAtUnix, nil
+}
+
+// AddUpdatedAtUnix adds i to the "updated_at_unix" field.
+func (m *BizPricingAutopilotConfigMutation) AddUpdatedAtUnix(i int64) {
+	if m.addupdated_at_unix != nil {
+		*m.addupdated_at_unix += i
+	} else {
+		m.addupdated_at_unix = &i
+	}
+}
+
+// AddedUpdatedAtUnix returns the value that was added to the "updated_at_unix" field in this mutation.
+func (m *BizPricingAutopilotConfigMutation) AddedUpdatedAtUnix() (r int64, exists bool) {
+	v := m.addupdated_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUpdatedAtUnix resets all changes to the "updated_at_unix" field.
+func (m *BizPricingAutopilotConfigMutation) ResetUpdatedAtUnix() {
+	m.updated_at_unix = nil
+	m.addupdated_at_unix = nil
+}
+
+// Where appends a list predicates to the BizPricingAutopilotConfigMutation builder.
+func (m *BizPricingAutopilotConfigMutation) Where(ps ...predicate.BizPricingAutopilotConfig) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the BizPricingAutopilotConfigMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *BizPricingAutopilotConfigMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.BizPricingAutopilotConfig, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *BizPricingAutopilotConfigMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *BizPricingAutopilotConfigMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (BizPricingAutopilotConfig).
+func (m *BizPricingAutopilotConfigMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *BizPricingAutopilotConfigMutation) Fields() []string {
+	fields := make([]string, 0, 3)
+	if m.config_key != nil {
+		fields = append(fields, bizpricingautopilotconfig.FieldConfigKey)
+	}
+	if m.payload_json != nil {
+		fields = append(fields, bizpricingautopilotconfig.FieldPayloadJSON)
+	}
+	if m.updated_at_unix != nil {
+		fields = append(fields, bizpricingautopilotconfig.FieldUpdatedAtUnix)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *BizPricingAutopilotConfigMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case bizpricingautopilotconfig.FieldConfigKey:
+		return m.ConfigKey()
+	case bizpricingautopilotconfig.FieldPayloadJSON:
+		return m.PayloadJSON()
+	case bizpricingautopilotconfig.FieldUpdatedAtUnix:
+		return m.UpdatedAtUnix()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *BizPricingAutopilotConfigMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case bizpricingautopilotconfig.FieldConfigKey:
+		return m.OldConfigKey(ctx)
+	case bizpricingautopilotconfig.FieldPayloadJSON:
+		return m.OldPayloadJSON(ctx)
+	case bizpricingautopilotconfig.FieldUpdatedAtUnix:
+		return m.OldUpdatedAtUnix(ctx)
+	}
+	return nil, fmt.Errorf("unknown BizPricingAutopilotConfig field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *BizPricingAutopilotConfigMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case bizpricingautopilotconfig.FieldConfigKey:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetConfigKey(v)
+		return nil
+	case bizpricingautopilotconfig.FieldPayloadJSON:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPayloadJSON(v)
+		return nil
+	case bizpricingautopilotconfig.FieldUpdatedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown BizPricingAutopilotConfig field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *BizPricingAutopilotConfigMutation) AddedFields() []string {
+	var fields []string
+	if m.addupdated_at_unix != nil {
+		fields = append(fields, bizpricingautopilotconfig.FieldUpdatedAtUnix)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *BizPricingAutopilotConfigMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case bizpricingautopilotconfig.FieldUpdatedAtUnix:
+		return m.AddedUpdatedAtUnix()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *BizPricingAutopilotConfigMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case bizpricingautopilotconfig.FieldUpdatedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown BizPricingAutopilotConfig numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *BizPricingAutopilotConfigMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *BizPricingAutopilotConfigMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *BizPricingAutopilotConfigMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown BizPricingAutopilotConfig nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *BizPricingAutopilotConfigMutation) ResetField(name string) error {
+	switch name {
+	case bizpricingautopilotconfig.FieldConfigKey:
+		m.ResetConfigKey()
+		return nil
+	case bizpricingautopilotconfig.FieldPayloadJSON:
+		m.ResetPayloadJSON()
+		return nil
+	case bizpricingautopilotconfig.FieldUpdatedAtUnix:
+		m.ResetUpdatedAtUnix()
+		return nil
+	}
+	return fmt.Errorf("unknown BizPricingAutopilotConfig field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *BizPricingAutopilotConfigMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *BizPricingAutopilotConfigMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *BizPricingAutopilotConfigMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *BizPricingAutopilotConfigMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *BizPricingAutopilotConfigMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *BizPricingAutopilotConfigMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *BizPricingAutopilotConfigMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown BizPricingAutopilotConfig unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *BizPricingAutopilotConfigMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown BizPricingAutopilotConfig edge %s", name)
+}
+
+// BizPricingAutopilotStateMutation represents an operation that mutates the BizPricingAutopilotState nodes in the graph.
+type BizPricingAutopilotStateMutation struct {
+	config
+	op                 Op
+	typ                string
+	id                 *int
+	seed_hash          *string
+	payload_json       *string
+	updated_at_unix    *int64
+	addupdated_at_unix *int64
+	clearedFields      map[string]struct{}
+	done               bool
+	oldValue           func(context.Context) (*BizPricingAutopilotState, error)
+	predicates         []predicate.BizPricingAutopilotState
+}
+
+var _ ent.Mutation = (*BizPricingAutopilotStateMutation)(nil)
+
+// bizpricingautopilotstateOption allows management of the mutation configuration using functional options.
+type bizpricingautopilotstateOption func(*BizPricingAutopilotStateMutation)
+
+// newBizPricingAutopilotStateMutation creates new mutation for the BizPricingAutopilotState entity.
+func newBizPricingAutopilotStateMutation(c config, op Op, opts ...bizpricingautopilotstateOption) *BizPricingAutopilotStateMutation {
+	m := &BizPricingAutopilotStateMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeBizPricingAutopilotState,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withBizPricingAutopilotStateID sets the ID field of the mutation.
+func withBizPricingAutopilotStateID(id int) bizpricingautopilotstateOption {
+	return func(m *BizPricingAutopilotStateMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *BizPricingAutopilotState
+		)
+		m.oldValue = func(ctx context.Context) (*BizPricingAutopilotState, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().BizPricingAutopilotState.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withBizPricingAutopilotState sets the old BizPricingAutopilotState of the mutation.
+func withBizPricingAutopilotState(node *BizPricingAutopilotState) bizpricingautopilotstateOption {
+	return func(m *BizPricingAutopilotStateMutation) {
+		m.oldValue = func(context.Context) (*BizPricingAutopilotState, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m BizPricingAutopilotStateMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m BizPricingAutopilotStateMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("gen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *BizPricingAutopilotStateMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *BizPricingAutopilotStateMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().BizPricingAutopilotState.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetSeedHash sets the "seed_hash" field.
+func (m *BizPricingAutopilotStateMutation) SetSeedHash(s string) {
+	m.seed_hash = &s
+}
+
+// SeedHash returns the value of the "seed_hash" field in the mutation.
+func (m *BizPricingAutopilotStateMutation) SeedHash() (r string, exists bool) {
+	v := m.seed_hash
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSeedHash returns the old "seed_hash" field's value of the BizPricingAutopilotState entity.
+// If the BizPricingAutopilotState object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BizPricingAutopilotStateMutation) OldSeedHash(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSeedHash is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSeedHash requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSeedHash: %w", err)
+	}
+	return oldValue.SeedHash, nil
+}
+
+// ResetSeedHash resets all changes to the "seed_hash" field.
+func (m *BizPricingAutopilotStateMutation) ResetSeedHash() {
+	m.seed_hash = nil
+}
+
+// SetPayloadJSON sets the "payload_json" field.
+func (m *BizPricingAutopilotStateMutation) SetPayloadJSON(s string) {
+	m.payload_json = &s
+}
+
+// PayloadJSON returns the value of the "payload_json" field in the mutation.
+func (m *BizPricingAutopilotStateMutation) PayloadJSON() (r string, exists bool) {
+	v := m.payload_json
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPayloadJSON returns the old "payload_json" field's value of the BizPricingAutopilotState entity.
+// If the BizPricingAutopilotState object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BizPricingAutopilotStateMutation) OldPayloadJSON(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPayloadJSON is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPayloadJSON requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPayloadJSON: %w", err)
+	}
+	return oldValue.PayloadJSON, nil
+}
+
+// ResetPayloadJSON resets all changes to the "payload_json" field.
+func (m *BizPricingAutopilotStateMutation) ResetPayloadJSON() {
+	m.payload_json = nil
+}
+
+// SetUpdatedAtUnix sets the "updated_at_unix" field.
+func (m *BizPricingAutopilotStateMutation) SetUpdatedAtUnix(i int64) {
+	m.updated_at_unix = &i
+	m.addupdated_at_unix = nil
+}
+
+// UpdatedAtUnix returns the value of the "updated_at_unix" field in the mutation.
+func (m *BizPricingAutopilotStateMutation) UpdatedAtUnix() (r int64, exists bool) {
+	v := m.updated_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAtUnix returns the old "updated_at_unix" field's value of the BizPricingAutopilotState entity.
+// If the BizPricingAutopilotState object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BizPricingAutopilotStateMutation) OldUpdatedAtUnix(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAtUnix is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAtUnix requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAtUnix: %w", err)
+	}
+	return oldValue.UpdatedAtUnix, nil
+}
+
+// AddUpdatedAtUnix adds i to the "updated_at_unix" field.
+func (m *BizPricingAutopilotStateMutation) AddUpdatedAtUnix(i int64) {
+	if m.addupdated_at_unix != nil {
+		*m.addupdated_at_unix += i
+	} else {
+		m.addupdated_at_unix = &i
+	}
+}
+
+// AddedUpdatedAtUnix returns the value that was added to the "updated_at_unix" field in this mutation.
+func (m *BizPricingAutopilotStateMutation) AddedUpdatedAtUnix() (r int64, exists bool) {
+	v := m.addupdated_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUpdatedAtUnix resets all changes to the "updated_at_unix" field.
+func (m *BizPricingAutopilotStateMutation) ResetUpdatedAtUnix() {
+	m.updated_at_unix = nil
+	m.addupdated_at_unix = nil
+}
+
+// Where appends a list predicates to the BizPricingAutopilotStateMutation builder.
+func (m *BizPricingAutopilotStateMutation) Where(ps ...predicate.BizPricingAutopilotState) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the BizPricingAutopilotStateMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *BizPricingAutopilotStateMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.BizPricingAutopilotState, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *BizPricingAutopilotStateMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *BizPricingAutopilotStateMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (BizPricingAutopilotState).
+func (m *BizPricingAutopilotStateMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *BizPricingAutopilotStateMutation) Fields() []string {
+	fields := make([]string, 0, 3)
+	if m.seed_hash != nil {
+		fields = append(fields, bizpricingautopilotstate.FieldSeedHash)
+	}
+	if m.payload_json != nil {
+		fields = append(fields, bizpricingautopilotstate.FieldPayloadJSON)
+	}
+	if m.updated_at_unix != nil {
+		fields = append(fields, bizpricingautopilotstate.FieldUpdatedAtUnix)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *BizPricingAutopilotStateMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case bizpricingautopilotstate.FieldSeedHash:
+		return m.SeedHash()
+	case bizpricingautopilotstate.FieldPayloadJSON:
+		return m.PayloadJSON()
+	case bizpricingautopilotstate.FieldUpdatedAtUnix:
+		return m.UpdatedAtUnix()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *BizPricingAutopilotStateMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case bizpricingautopilotstate.FieldSeedHash:
+		return m.OldSeedHash(ctx)
+	case bizpricingautopilotstate.FieldPayloadJSON:
+		return m.OldPayloadJSON(ctx)
+	case bizpricingautopilotstate.FieldUpdatedAtUnix:
+		return m.OldUpdatedAtUnix(ctx)
+	}
+	return nil, fmt.Errorf("unknown BizPricingAutopilotState field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *BizPricingAutopilotStateMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case bizpricingautopilotstate.FieldSeedHash:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSeedHash(v)
+		return nil
+	case bizpricingautopilotstate.FieldPayloadJSON:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPayloadJSON(v)
+		return nil
+	case bizpricingautopilotstate.FieldUpdatedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown BizPricingAutopilotState field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *BizPricingAutopilotStateMutation) AddedFields() []string {
+	var fields []string
+	if m.addupdated_at_unix != nil {
+		fields = append(fields, bizpricingautopilotstate.FieldUpdatedAtUnix)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *BizPricingAutopilotStateMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case bizpricingautopilotstate.FieldUpdatedAtUnix:
+		return m.AddedUpdatedAtUnix()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *BizPricingAutopilotStateMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case bizpricingautopilotstate.FieldUpdatedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown BizPricingAutopilotState numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *BizPricingAutopilotStateMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *BizPricingAutopilotStateMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *BizPricingAutopilotStateMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown BizPricingAutopilotState nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *BizPricingAutopilotStateMutation) ResetField(name string) error {
+	switch name {
+	case bizpricingautopilotstate.FieldSeedHash:
+		m.ResetSeedHash()
+		return nil
+	case bizpricingautopilotstate.FieldPayloadJSON:
+		m.ResetPayloadJSON()
+		return nil
+	case bizpricingautopilotstate.FieldUpdatedAtUnix:
+		m.ResetUpdatedAtUnix()
+		return nil
+	}
+	return fmt.Errorf("unknown BizPricingAutopilotState field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *BizPricingAutopilotStateMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *BizPricingAutopilotStateMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *BizPricingAutopilotStateMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *BizPricingAutopilotStateMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *BizPricingAutopilotStateMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *BizPricingAutopilotStateMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *BizPricingAutopilotStateMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown BizPricingAutopilotState unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *BizPricingAutopilotStateMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown BizPricingAutopilotState edge %s", name)
 }
 
 // BizPurchasesMutation represents an operation that mutates the BizPurchases nodes in the graph.
@@ -44271,6 +45695,482 @@ func (m *ProcInboxMessagesMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *ProcInboxMessagesMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown ProcInboxMessages edge %s", name)
+}
+
+// ProcIndexResolveRoutesMutation represents an operation that mutates the ProcIndexResolveRoutes nodes in the graph.
+type ProcIndexResolveRoutesMutation struct {
+	config
+	op                 Op
+	typ                string
+	id                 *int
+	route              *string
+	seed_hash          *string
+	updated_at_unix    *int64
+	addupdated_at_unix *int64
+	clearedFields      map[string]struct{}
+	done               bool
+	oldValue           func(context.Context) (*ProcIndexResolveRoutes, error)
+	predicates         []predicate.ProcIndexResolveRoutes
+}
+
+var _ ent.Mutation = (*ProcIndexResolveRoutesMutation)(nil)
+
+// procindexresolveroutesOption allows management of the mutation configuration using functional options.
+type procindexresolveroutesOption func(*ProcIndexResolveRoutesMutation)
+
+// newProcIndexResolveRoutesMutation creates new mutation for the ProcIndexResolveRoutes entity.
+func newProcIndexResolveRoutesMutation(c config, op Op, opts ...procindexresolveroutesOption) *ProcIndexResolveRoutesMutation {
+	m := &ProcIndexResolveRoutesMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeProcIndexResolveRoutes,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withProcIndexResolveRoutesID sets the ID field of the mutation.
+func withProcIndexResolveRoutesID(id int) procindexresolveroutesOption {
+	return func(m *ProcIndexResolveRoutesMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *ProcIndexResolveRoutes
+		)
+		m.oldValue = func(ctx context.Context) (*ProcIndexResolveRoutes, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().ProcIndexResolveRoutes.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withProcIndexResolveRoutes sets the old ProcIndexResolveRoutes of the mutation.
+func withProcIndexResolveRoutes(node *ProcIndexResolveRoutes) procindexresolveroutesOption {
+	return func(m *ProcIndexResolveRoutesMutation) {
+		m.oldValue = func(context.Context) (*ProcIndexResolveRoutes, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m ProcIndexResolveRoutesMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m ProcIndexResolveRoutesMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("gen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of ProcIndexResolveRoutes entities.
+func (m *ProcIndexResolveRoutesMutation) SetID(id int) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *ProcIndexResolveRoutesMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *ProcIndexResolveRoutesMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().ProcIndexResolveRoutes.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetRoute sets the "route" field.
+func (m *ProcIndexResolveRoutesMutation) SetRoute(s string) {
+	m.route = &s
+}
+
+// Route returns the value of the "route" field in the mutation.
+func (m *ProcIndexResolveRoutesMutation) Route() (r string, exists bool) {
+	v := m.route
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRoute returns the old "route" field's value of the ProcIndexResolveRoutes entity.
+// If the ProcIndexResolveRoutes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcIndexResolveRoutesMutation) OldRoute(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRoute is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRoute requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRoute: %w", err)
+	}
+	return oldValue.Route, nil
+}
+
+// ResetRoute resets all changes to the "route" field.
+func (m *ProcIndexResolveRoutesMutation) ResetRoute() {
+	m.route = nil
+}
+
+// SetSeedHash sets the "seed_hash" field.
+func (m *ProcIndexResolveRoutesMutation) SetSeedHash(s string) {
+	m.seed_hash = &s
+}
+
+// SeedHash returns the value of the "seed_hash" field in the mutation.
+func (m *ProcIndexResolveRoutesMutation) SeedHash() (r string, exists bool) {
+	v := m.seed_hash
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSeedHash returns the old "seed_hash" field's value of the ProcIndexResolveRoutes entity.
+// If the ProcIndexResolveRoutes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcIndexResolveRoutesMutation) OldSeedHash(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSeedHash is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSeedHash requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSeedHash: %w", err)
+	}
+	return oldValue.SeedHash, nil
+}
+
+// ResetSeedHash resets all changes to the "seed_hash" field.
+func (m *ProcIndexResolveRoutesMutation) ResetSeedHash() {
+	m.seed_hash = nil
+}
+
+// SetUpdatedAtUnix sets the "updated_at_unix" field.
+func (m *ProcIndexResolveRoutesMutation) SetUpdatedAtUnix(i int64) {
+	m.updated_at_unix = &i
+	m.addupdated_at_unix = nil
+}
+
+// UpdatedAtUnix returns the value of the "updated_at_unix" field in the mutation.
+func (m *ProcIndexResolveRoutesMutation) UpdatedAtUnix() (r int64, exists bool) {
+	v := m.updated_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAtUnix returns the old "updated_at_unix" field's value of the ProcIndexResolveRoutes entity.
+// If the ProcIndexResolveRoutes object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ProcIndexResolveRoutesMutation) OldUpdatedAtUnix(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAtUnix is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAtUnix requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAtUnix: %w", err)
+	}
+	return oldValue.UpdatedAtUnix, nil
+}
+
+// AddUpdatedAtUnix adds i to the "updated_at_unix" field.
+func (m *ProcIndexResolveRoutesMutation) AddUpdatedAtUnix(i int64) {
+	if m.addupdated_at_unix != nil {
+		*m.addupdated_at_unix += i
+	} else {
+		m.addupdated_at_unix = &i
+	}
+}
+
+// AddedUpdatedAtUnix returns the value that was added to the "updated_at_unix" field in this mutation.
+func (m *ProcIndexResolveRoutesMutation) AddedUpdatedAtUnix() (r int64, exists bool) {
+	v := m.addupdated_at_unix
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUpdatedAtUnix resets all changes to the "updated_at_unix" field.
+func (m *ProcIndexResolveRoutesMutation) ResetUpdatedAtUnix() {
+	m.updated_at_unix = nil
+	m.addupdated_at_unix = nil
+}
+
+// Where appends a list predicates to the ProcIndexResolveRoutesMutation builder.
+func (m *ProcIndexResolveRoutesMutation) Where(ps ...predicate.ProcIndexResolveRoutes) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the ProcIndexResolveRoutesMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *ProcIndexResolveRoutesMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.ProcIndexResolveRoutes, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *ProcIndexResolveRoutesMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *ProcIndexResolveRoutesMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (ProcIndexResolveRoutes).
+func (m *ProcIndexResolveRoutesMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *ProcIndexResolveRoutesMutation) Fields() []string {
+	fields := make([]string, 0, 3)
+	if m.route != nil {
+		fields = append(fields, procindexresolveroutes.FieldRoute)
+	}
+	if m.seed_hash != nil {
+		fields = append(fields, procindexresolveroutes.FieldSeedHash)
+	}
+	if m.updated_at_unix != nil {
+		fields = append(fields, procindexresolveroutes.FieldUpdatedAtUnix)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *ProcIndexResolveRoutesMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case procindexresolveroutes.FieldRoute:
+		return m.Route()
+	case procindexresolveroutes.FieldSeedHash:
+		return m.SeedHash()
+	case procindexresolveroutes.FieldUpdatedAtUnix:
+		return m.UpdatedAtUnix()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *ProcIndexResolveRoutesMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case procindexresolveroutes.FieldRoute:
+		return m.OldRoute(ctx)
+	case procindexresolveroutes.FieldSeedHash:
+		return m.OldSeedHash(ctx)
+	case procindexresolveroutes.FieldUpdatedAtUnix:
+		return m.OldUpdatedAtUnix(ctx)
+	}
+	return nil, fmt.Errorf("unknown ProcIndexResolveRoutes field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ProcIndexResolveRoutesMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case procindexresolveroutes.FieldRoute:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRoute(v)
+		return nil
+	case procindexresolveroutes.FieldSeedHash:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSeedHash(v)
+		return nil
+	case procindexresolveroutes.FieldUpdatedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ProcIndexResolveRoutes field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *ProcIndexResolveRoutesMutation) AddedFields() []string {
+	var fields []string
+	if m.addupdated_at_unix != nil {
+		fields = append(fields, procindexresolveroutes.FieldUpdatedAtUnix)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *ProcIndexResolveRoutesMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case procindexresolveroutes.FieldUpdatedAtUnix:
+		return m.AddedUpdatedAtUnix()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ProcIndexResolveRoutesMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case procindexresolveroutes.FieldUpdatedAtUnix:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedAtUnix(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ProcIndexResolveRoutes numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *ProcIndexResolveRoutesMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *ProcIndexResolveRoutesMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *ProcIndexResolveRoutesMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown ProcIndexResolveRoutes nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *ProcIndexResolveRoutesMutation) ResetField(name string) error {
+	switch name {
+	case procindexresolveroutes.FieldRoute:
+		m.ResetRoute()
+		return nil
+	case procindexresolveroutes.FieldSeedHash:
+		m.ResetSeedHash()
+		return nil
+	case procindexresolveroutes.FieldUpdatedAtUnix:
+		m.ResetUpdatedAtUnix()
+		return nil
+	}
+	return fmt.Errorf("unknown ProcIndexResolveRoutes field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *ProcIndexResolveRoutesMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *ProcIndexResolveRoutesMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *ProcIndexResolveRoutesMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *ProcIndexResolveRoutesMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *ProcIndexResolveRoutesMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *ProcIndexResolveRoutesMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *ProcIndexResolveRoutesMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown ProcIndexResolveRoutes unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *ProcIndexResolveRoutesMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown ProcIndexResolveRoutes edge %s", name)
 }
 
 // ProcLiveFollowsMutation represents an operation that mutates the ProcLiveFollows nodes in the graph.

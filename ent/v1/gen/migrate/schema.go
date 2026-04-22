@@ -253,6 +253,52 @@ var (
 			},
 		},
 	}
+	// BizPricingAutopilotAuditColumns holds the columns for the "biz_pricing_autopilot_audit" table.
+	BizPricingAutopilotAuditColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true},
+		{Name: "seed_hash", Type: field.TypeString},
+		{Name: "payload_json", Type: field.TypeString},
+		{Name: "ticked_at_unix", Type: field.TypeInt64},
+	}
+	// BizPricingAutopilotAuditTable holds the schema information for the "biz_pricing_autopilot_audit" table.
+	BizPricingAutopilotAuditTable = &schema.Table{
+		Name:       "biz_pricing_autopilot_audit",
+		Columns:    BizPricingAutopilotAuditColumns,
+		PrimaryKey: []*schema.Column{BizPricingAutopilotAuditColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "idx_biz_pricing_autopilot_audit_seed_time",
+				Unique:  false,
+				Columns: []*schema.Column{BizPricingAutopilotAuditColumns[1], BizPricingAutopilotAuditColumns[3], BizPricingAutopilotAuditColumns[0]},
+			},
+		},
+	}
+	// BizPricingAutopilotConfigColumns holds the columns for the "biz_pricing_autopilot_config" table.
+	BizPricingAutopilotConfigColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "config_key", Type: field.TypeString, Unique: true},
+		{Name: "payload_json", Type: field.TypeString},
+		{Name: "updated_at_unix", Type: field.TypeInt64},
+	}
+	// BizPricingAutopilotConfigTable holds the schema information for the "biz_pricing_autopilot_config" table.
+	BizPricingAutopilotConfigTable = &schema.Table{
+		Name:       "biz_pricing_autopilot_config",
+		Columns:    BizPricingAutopilotConfigColumns,
+		PrimaryKey: []*schema.Column{BizPricingAutopilotConfigColumns[0]},
+	}
+	// BizPricingAutopilotStateColumns holds the columns for the "biz_pricing_autopilot_state" table.
+	BizPricingAutopilotStateColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "seed_hash", Type: field.TypeString, Unique: true},
+		{Name: "payload_json", Type: field.TypeString},
+		{Name: "updated_at_unix", Type: field.TypeInt64},
+	}
+	// BizPricingAutopilotStateTable holds the schema information for the "biz_pricing_autopilot_state" table.
+	BizPricingAutopilotStateTable = &schema.Table{
+		Name:       "biz_pricing_autopilot_state",
+		Columns:    BizPricingAutopilotStateColumns,
+		PrimaryKey: []*schema.Column{BizPricingAutopilotStateColumns[0]},
+	}
 	// BizPurchasesColumns holds the columns for the "biz_purchases" table.
 	BizPurchasesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -1622,6 +1668,31 @@ var (
 			},
 		},
 	}
+	// ProcIndexResolveRoutesColumns holds the columns for the "proc_index_resolve_routes" table.
+	ProcIndexResolveRoutesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "route", Type: field.TypeString, Unique: true},
+		{Name: "seed_hash", Type: field.TypeString},
+		{Name: "updated_at_unix", Type: field.TypeInt64},
+	}
+	// ProcIndexResolveRoutesTable holds the schema information for the "proc_index_resolve_routes" table.
+	ProcIndexResolveRoutesTable = &schema.Table{
+		Name:       "proc_index_resolve_routes",
+		Columns:    ProcIndexResolveRoutesColumns,
+		PrimaryKey: []*schema.Column{ProcIndexResolveRoutesColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "idx_proc_index_resolve_routes_seed_hash",
+				Unique:  false,
+				Columns: []*schema.Column{ProcIndexResolveRoutesColumns[2]},
+			},
+			{
+				Name:    "idx_proc_index_resolve_routes_updated_at",
+				Unique:  false,
+				Columns: []*schema.Column{ProcIndexResolveRoutesColumns[3], ProcIndexResolveRoutesColumns[1]},
+			},
+		},
+	}
 	// ProcLiveFollowsColumns holds the columns for the "proc_live_follows" table.
 	ProcLiveFollowsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -2079,6 +2150,9 @@ var (
 		BizLiveQuotesTable,
 		BizPoolTable,
 		BizPoolAllocationsTable,
+		BizPricingAutopilotAuditTable,
+		BizPricingAutopilotConfigTable,
+		BizPricingAutopilotStateTable,
 		BizPurchasesTable,
 		BizSeedChunkSupplyTable,
 		BizSeedPricingPolicyTable,
@@ -2116,6 +2190,7 @@ var (
 		ProcGetfilebyhashJobsTable,
 		ProcGetfilebyhashQuotesTable,
 		ProcInboxMessagesTable,
+		ProcIndexResolveRoutesTable,
 		ProcLiveFollowsTable,
 		ProcNodeReachabilityCacheTable,
 		ProcObservedGatewayStatesTable,
@@ -2157,6 +2232,15 @@ func init() {
 	}
 	BizPoolAllocationsTable.Annotation = &entsql.Annotation{
 		Table: "biz_pool_allocations",
+	}
+	BizPricingAutopilotAuditTable.Annotation = &entsql.Annotation{
+		Table: "biz_pricing_autopilot_audit",
+	}
+	BizPricingAutopilotConfigTable.Annotation = &entsql.Annotation{
+		Table: "biz_pricing_autopilot_config",
+	}
+	BizPricingAutopilotStateTable.Annotation = &entsql.Annotation{
+		Table: "biz_pricing_autopilot_state",
 	}
 	BizPurchasesTable.Annotation = &entsql.Annotation{
 		Table: "biz_purchases",
@@ -2284,6 +2368,9 @@ func init() {
 	}
 	ProcInboxMessagesTable.Annotation = &entsql.Annotation{
 		Table: "proc_inbox_messages",
+	}
+	ProcIndexResolveRoutesTable.Annotation = &entsql.Annotation{
+		Table: "proc_index_resolve_routes",
 	}
 	ProcLiveFollowsTable.Annotation = &entsql.Annotation{
 		Table: "proc_live_follows",

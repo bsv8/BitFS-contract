@@ -23,6 +23,9 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizlivequotes"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpool"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpoolallocations"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpricingautopilotaudit"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpricingautopilotconfig"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpricingautopilotstate"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizpurchases"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizseedchunksupply"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/bizseedpricingpolicy"
@@ -60,6 +63,7 @@ import (
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashjobs"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procgetfilebyhashquotes"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procinboxmessages"
+	"github.com/bsv8/bitfs-contract/ent/v1/gen/procindexresolveroutes"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/proclivefollows"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procnodereachabilitycache"
 	"github.com/bsv8/bitfs-contract/ent/v1/gen/procobservedgatewaystates"
@@ -97,6 +101,12 @@ type Client struct {
 	BizPool *BizPoolClient
 	// BizPoolAllocations is the client for interacting with the BizPoolAllocations builders.
 	BizPoolAllocations *BizPoolAllocationsClient
+	// BizPricingAutopilotAudit is the client for interacting with the BizPricingAutopilotAudit builders.
+	BizPricingAutopilotAudit *BizPricingAutopilotAuditClient
+	// BizPricingAutopilotConfig is the client for interacting with the BizPricingAutopilotConfig builders.
+	BizPricingAutopilotConfig *BizPricingAutopilotConfigClient
+	// BizPricingAutopilotState is the client for interacting with the BizPricingAutopilotState builders.
+	BizPricingAutopilotState *BizPricingAutopilotStateClient
 	// BizPurchases is the client for interacting with the BizPurchases builders.
 	BizPurchases *BizPurchasesClient
 	// BizSeedChunkSupply is the client for interacting with the BizSeedChunkSupply builders.
@@ -171,6 +181,8 @@ type Client struct {
 	ProcGetFileByHashQuotes *ProcGetFileByHashQuotesClient
 	// ProcInboxMessages is the client for interacting with the ProcInboxMessages builders.
 	ProcInboxMessages *ProcInboxMessagesClient
+	// ProcIndexResolveRoutes is the client for interacting with the ProcIndexResolveRoutes builders.
+	ProcIndexResolveRoutes *ProcIndexResolveRoutesClient
 	// ProcLiveFollows is the client for interacting with the ProcLiveFollows builders.
 	ProcLiveFollows *ProcLiveFollowsClient
 	// ProcNodeReachabilityCache is the client for interacting with the ProcNodeReachabilityCache builders.
@@ -218,6 +230,9 @@ func (c *Client) init() {
 	c.BizLiveQuotes = NewBizLiveQuotesClient(c.config)
 	c.BizPool = NewBizPoolClient(c.config)
 	c.BizPoolAllocations = NewBizPoolAllocationsClient(c.config)
+	c.BizPricingAutopilotAudit = NewBizPricingAutopilotAuditClient(c.config)
+	c.BizPricingAutopilotConfig = NewBizPricingAutopilotConfigClient(c.config)
+	c.BizPricingAutopilotState = NewBizPricingAutopilotStateClient(c.config)
 	c.BizPurchases = NewBizPurchasesClient(c.config)
 	c.BizSeedChunkSupply = NewBizSeedChunkSupplyClient(c.config)
 	c.BizSeedPricingPolicy = NewBizSeedPricingPolicyClient(c.config)
@@ -255,6 +270,7 @@ func (c *Client) init() {
 	c.ProcGetFileByHashJobs = NewProcGetFileByHashJobsClient(c.config)
 	c.ProcGetFileByHashQuotes = NewProcGetFileByHashQuotesClient(c.config)
 	c.ProcInboxMessages = NewProcInboxMessagesClient(c.config)
+	c.ProcIndexResolveRoutes = NewProcIndexResolveRoutesClient(c.config)
 	c.ProcLiveFollows = NewProcLiveFollowsClient(c.config)
 	c.ProcNodeReachabilityCache = NewProcNodeReachabilityCacheClient(c.config)
 	c.ProcObservedGatewayStates = NewProcObservedGatewayStatesClient(c.config)
@@ -369,6 +385,9 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		BizLiveQuotes:                            NewBizLiveQuotesClient(cfg),
 		BizPool:                                  NewBizPoolClient(cfg),
 		BizPoolAllocations:                       NewBizPoolAllocationsClient(cfg),
+		BizPricingAutopilotAudit:                 NewBizPricingAutopilotAuditClient(cfg),
+		BizPricingAutopilotConfig:                NewBizPricingAutopilotConfigClient(cfg),
+		BizPricingAutopilotState:                 NewBizPricingAutopilotStateClient(cfg),
 		BizPurchases:                             NewBizPurchasesClient(cfg),
 		BizSeedChunkSupply:                       NewBizSeedChunkSupplyClient(cfg),
 		BizSeedPricingPolicy:                     NewBizSeedPricingPolicyClient(cfg),
@@ -406,6 +425,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		ProcGetFileByHashJobs:                    NewProcGetFileByHashJobsClient(cfg),
 		ProcGetFileByHashQuotes:                  NewProcGetFileByHashQuotesClient(cfg),
 		ProcInboxMessages:                        NewProcInboxMessagesClient(cfg),
+		ProcIndexResolveRoutes:                   NewProcIndexResolveRoutesClient(cfg),
 		ProcLiveFollows:                          NewProcLiveFollowsClient(cfg),
 		ProcNodeReachabilityCache:                NewProcNodeReachabilityCacheClient(cfg),
 		ProcObservedGatewayStates:                NewProcObservedGatewayStatesClient(cfg),
@@ -447,6 +467,9 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		BizLiveQuotes:                            NewBizLiveQuotesClient(cfg),
 		BizPool:                                  NewBizPoolClient(cfg),
 		BizPoolAllocations:                       NewBizPoolAllocationsClient(cfg),
+		BizPricingAutopilotAudit:                 NewBizPricingAutopilotAuditClient(cfg),
+		BizPricingAutopilotConfig:                NewBizPricingAutopilotConfigClient(cfg),
+		BizPricingAutopilotState:                 NewBizPricingAutopilotStateClient(cfg),
 		BizPurchases:                             NewBizPurchasesClient(cfg),
 		BizSeedChunkSupply:                       NewBizSeedChunkSupplyClient(cfg),
 		BizSeedPricingPolicy:                     NewBizSeedPricingPolicyClient(cfg),
@@ -484,6 +507,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		ProcGetFileByHashJobs:                    NewProcGetFileByHashJobsClient(cfg),
 		ProcGetFileByHashQuotes:                  NewProcGetFileByHashQuotesClient(cfg),
 		ProcInboxMessages:                        NewProcInboxMessagesClient(cfg),
+		ProcIndexResolveRoutes:                   NewProcIndexResolveRoutesClient(cfg),
 		ProcLiveFollows:                          NewProcLiveFollowsClient(cfg),
 		ProcNodeReachabilityCache:                NewProcNodeReachabilityCacheClient(cfg),
 		ProcObservedGatewayStates:                NewProcObservedGatewayStatesClient(cfg),
@@ -529,7 +553,8 @@ func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.BizBusinessTriggers, c.BizDemandQuoteArbiters, c.BizDemandQuotes,
 		c.BizDemands, c.BizFrontOrders, c.BizLiveQuotes, c.BizPool,
-		c.BizPoolAllocations, c.BizPurchases, c.BizSeedChunkSupply,
+		c.BizPoolAllocations, c.BizPricingAutopilotAudit, c.BizPricingAutopilotConfig,
+		c.BizPricingAutopilotState, c.BizPurchases, c.BizSeedChunkSupply,
 		c.BizSeedPricingPolicy, c.BizSeeds, c.BizWorkspaceFiles, c.BizWorkspaces,
 		c.FactBsv21, c.FactBsv21Events, c.FactBsvUtxos, c.FactPoolSessionEvents,
 		c.FactSettlementChannelChainAssetCreate, c.FactSettlementChannelChainDirectPay,
@@ -542,10 +567,10 @@ func (c *Client) Use(hooks ...Hook) {
 		c.ProcDirectTransferPools, c.ProcDomainEvents, c.ProcEffectLogs,
 		c.ProcFileDownloadChunks, c.ProcFileDownloads, c.ProcGatewayEvents,
 		c.ProcGetFileByHashChunks, c.ProcGetFileByHashJobs, c.ProcGetFileByHashQuotes,
-		c.ProcInboxMessages, c.ProcLiveFollows, c.ProcNodeReachabilityCache,
-		c.ProcObservedGatewayStates, c.ProcOrchestratorLogs,
-		c.ProcPublishedRouteIndexes, c.ProcSchedulerTaskRuns, c.ProcSchedulerTasks,
-		c.ProcSelfNodeReachabilityState, c.ProcStateSnapshots,
+		c.ProcInboxMessages, c.ProcIndexResolveRoutes, c.ProcLiveFollows,
+		c.ProcNodeReachabilityCache, c.ProcObservedGatewayStates,
+		c.ProcOrchestratorLogs, c.ProcPublishedRouteIndexes, c.ProcSchedulerTaskRuns,
+		c.ProcSchedulerTasks, c.ProcSelfNodeReachabilityState, c.ProcStateSnapshots,
 		c.WalletLocalBroadcastTxs, c.WalletUtxo, c.WalletUtxoSyncCursor,
 		c.WalletUtxoSyncState, c.WalletUtxoTokenVerification,
 	} {
@@ -559,7 +584,8 @@ func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.BizBusinessTriggers, c.BizDemandQuoteArbiters, c.BizDemandQuotes,
 		c.BizDemands, c.BizFrontOrders, c.BizLiveQuotes, c.BizPool,
-		c.BizPoolAllocations, c.BizPurchases, c.BizSeedChunkSupply,
+		c.BizPoolAllocations, c.BizPricingAutopilotAudit, c.BizPricingAutopilotConfig,
+		c.BizPricingAutopilotState, c.BizPurchases, c.BizSeedChunkSupply,
 		c.BizSeedPricingPolicy, c.BizSeeds, c.BizWorkspaceFiles, c.BizWorkspaces,
 		c.FactBsv21, c.FactBsv21Events, c.FactBsvUtxos, c.FactPoolSessionEvents,
 		c.FactSettlementChannelChainAssetCreate, c.FactSettlementChannelChainDirectPay,
@@ -572,10 +598,10 @@ func (c *Client) Intercept(interceptors ...Interceptor) {
 		c.ProcDirectTransferPools, c.ProcDomainEvents, c.ProcEffectLogs,
 		c.ProcFileDownloadChunks, c.ProcFileDownloads, c.ProcGatewayEvents,
 		c.ProcGetFileByHashChunks, c.ProcGetFileByHashJobs, c.ProcGetFileByHashQuotes,
-		c.ProcInboxMessages, c.ProcLiveFollows, c.ProcNodeReachabilityCache,
-		c.ProcObservedGatewayStates, c.ProcOrchestratorLogs,
-		c.ProcPublishedRouteIndexes, c.ProcSchedulerTaskRuns, c.ProcSchedulerTasks,
-		c.ProcSelfNodeReachabilityState, c.ProcStateSnapshots,
+		c.ProcInboxMessages, c.ProcIndexResolveRoutes, c.ProcLiveFollows,
+		c.ProcNodeReachabilityCache, c.ProcObservedGatewayStates,
+		c.ProcOrchestratorLogs, c.ProcPublishedRouteIndexes, c.ProcSchedulerTaskRuns,
+		c.ProcSchedulerTasks, c.ProcSelfNodeReachabilityState, c.ProcStateSnapshots,
 		c.WalletLocalBroadcastTxs, c.WalletUtxo, c.WalletUtxoSyncCursor,
 		c.WalletUtxoSyncState, c.WalletUtxoTokenVerification,
 	} {
@@ -602,6 +628,12 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.BizPool.mutate(ctx, m)
 	case *BizPoolAllocationsMutation:
 		return c.BizPoolAllocations.mutate(ctx, m)
+	case *BizPricingAutopilotAuditMutation:
+		return c.BizPricingAutopilotAudit.mutate(ctx, m)
+	case *BizPricingAutopilotConfigMutation:
+		return c.BizPricingAutopilotConfig.mutate(ctx, m)
+	case *BizPricingAutopilotStateMutation:
+		return c.BizPricingAutopilotState.mutate(ctx, m)
 	case *BizPurchasesMutation:
 		return c.BizPurchases.mutate(ctx, m)
 	case *BizSeedChunkSupplyMutation:
@@ -676,6 +708,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.ProcGetFileByHashQuotes.mutate(ctx, m)
 	case *ProcInboxMessagesMutation:
 		return c.ProcInboxMessages.mutate(ctx, m)
+	case *ProcIndexResolveRoutesMutation:
+		return c.ProcIndexResolveRoutes.mutate(ctx, m)
 	case *ProcLiveFollowsMutation:
 		return c.ProcLiveFollows.mutate(ctx, m)
 	case *ProcNodeReachabilityCacheMutation:
@@ -1770,6 +1804,405 @@ func (c *BizPoolAllocationsClient) mutate(ctx context.Context, m *BizPoolAllocat
 		return (&BizPoolAllocationsDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("gen: unknown BizPoolAllocations mutation op: %q", m.Op())
+	}
+}
+
+// BizPricingAutopilotAuditClient is a client for the BizPricingAutopilotAudit schema.
+type BizPricingAutopilotAuditClient struct {
+	config
+}
+
+// NewBizPricingAutopilotAuditClient returns a client for the BizPricingAutopilotAudit from the given config.
+func NewBizPricingAutopilotAuditClient(c config) *BizPricingAutopilotAuditClient {
+	return &BizPricingAutopilotAuditClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `bizpricingautopilotaudit.Hooks(f(g(h())))`.
+func (c *BizPricingAutopilotAuditClient) Use(hooks ...Hook) {
+	c.hooks.BizPricingAutopilotAudit = append(c.hooks.BizPricingAutopilotAudit, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `bizpricingautopilotaudit.Intercept(f(g(h())))`.
+func (c *BizPricingAutopilotAuditClient) Intercept(interceptors ...Interceptor) {
+	c.inters.BizPricingAutopilotAudit = append(c.inters.BizPricingAutopilotAudit, interceptors...)
+}
+
+// Create returns a builder for creating a BizPricingAutopilotAudit entity.
+func (c *BizPricingAutopilotAuditClient) Create() *BizPricingAutopilotAuditCreate {
+	mutation := newBizPricingAutopilotAuditMutation(c.config, OpCreate)
+	return &BizPricingAutopilotAuditCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of BizPricingAutopilotAudit entities.
+func (c *BizPricingAutopilotAuditClient) CreateBulk(builders ...*BizPricingAutopilotAuditCreate) *BizPricingAutopilotAuditCreateBulk {
+	return &BizPricingAutopilotAuditCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *BizPricingAutopilotAuditClient) MapCreateBulk(slice any, setFunc func(*BizPricingAutopilotAuditCreate, int)) *BizPricingAutopilotAuditCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &BizPricingAutopilotAuditCreateBulk{err: fmt.Errorf("calling to BizPricingAutopilotAuditClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*BizPricingAutopilotAuditCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &BizPricingAutopilotAuditCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for BizPricingAutopilotAudit.
+func (c *BizPricingAutopilotAuditClient) Update() *BizPricingAutopilotAuditUpdate {
+	mutation := newBizPricingAutopilotAuditMutation(c.config, OpUpdate)
+	return &BizPricingAutopilotAuditUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *BizPricingAutopilotAuditClient) UpdateOne(_m *BizPricingAutopilotAudit) *BizPricingAutopilotAuditUpdateOne {
+	mutation := newBizPricingAutopilotAuditMutation(c.config, OpUpdateOne, withBizPricingAutopilotAudit(_m))
+	return &BizPricingAutopilotAuditUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *BizPricingAutopilotAuditClient) UpdateOneID(id int64) *BizPricingAutopilotAuditUpdateOne {
+	mutation := newBizPricingAutopilotAuditMutation(c.config, OpUpdateOne, withBizPricingAutopilotAuditID(id))
+	return &BizPricingAutopilotAuditUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for BizPricingAutopilotAudit.
+func (c *BizPricingAutopilotAuditClient) Delete() *BizPricingAutopilotAuditDelete {
+	mutation := newBizPricingAutopilotAuditMutation(c.config, OpDelete)
+	return &BizPricingAutopilotAuditDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *BizPricingAutopilotAuditClient) DeleteOne(_m *BizPricingAutopilotAudit) *BizPricingAutopilotAuditDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *BizPricingAutopilotAuditClient) DeleteOneID(id int64) *BizPricingAutopilotAuditDeleteOne {
+	builder := c.Delete().Where(bizpricingautopilotaudit.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &BizPricingAutopilotAuditDeleteOne{builder}
+}
+
+// Query returns a query builder for BizPricingAutopilotAudit.
+func (c *BizPricingAutopilotAuditClient) Query() *BizPricingAutopilotAuditQuery {
+	return &BizPricingAutopilotAuditQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeBizPricingAutopilotAudit},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a BizPricingAutopilotAudit entity by its id.
+func (c *BizPricingAutopilotAuditClient) Get(ctx context.Context, id int64) (*BizPricingAutopilotAudit, error) {
+	return c.Query().Where(bizpricingautopilotaudit.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *BizPricingAutopilotAuditClient) GetX(ctx context.Context, id int64) *BizPricingAutopilotAudit {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *BizPricingAutopilotAuditClient) Hooks() []Hook {
+	return c.hooks.BizPricingAutopilotAudit
+}
+
+// Interceptors returns the client interceptors.
+func (c *BizPricingAutopilotAuditClient) Interceptors() []Interceptor {
+	return c.inters.BizPricingAutopilotAudit
+}
+
+func (c *BizPricingAutopilotAuditClient) mutate(ctx context.Context, m *BizPricingAutopilotAuditMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&BizPricingAutopilotAuditCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&BizPricingAutopilotAuditUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&BizPricingAutopilotAuditUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&BizPricingAutopilotAuditDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("gen: unknown BizPricingAutopilotAudit mutation op: %q", m.Op())
+	}
+}
+
+// BizPricingAutopilotConfigClient is a client for the BizPricingAutopilotConfig schema.
+type BizPricingAutopilotConfigClient struct {
+	config
+}
+
+// NewBizPricingAutopilotConfigClient returns a client for the BizPricingAutopilotConfig from the given config.
+func NewBizPricingAutopilotConfigClient(c config) *BizPricingAutopilotConfigClient {
+	return &BizPricingAutopilotConfigClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `bizpricingautopilotconfig.Hooks(f(g(h())))`.
+func (c *BizPricingAutopilotConfigClient) Use(hooks ...Hook) {
+	c.hooks.BizPricingAutopilotConfig = append(c.hooks.BizPricingAutopilotConfig, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `bizpricingautopilotconfig.Intercept(f(g(h())))`.
+func (c *BizPricingAutopilotConfigClient) Intercept(interceptors ...Interceptor) {
+	c.inters.BizPricingAutopilotConfig = append(c.inters.BizPricingAutopilotConfig, interceptors...)
+}
+
+// Create returns a builder for creating a BizPricingAutopilotConfig entity.
+func (c *BizPricingAutopilotConfigClient) Create() *BizPricingAutopilotConfigCreate {
+	mutation := newBizPricingAutopilotConfigMutation(c.config, OpCreate)
+	return &BizPricingAutopilotConfigCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of BizPricingAutopilotConfig entities.
+func (c *BizPricingAutopilotConfigClient) CreateBulk(builders ...*BizPricingAutopilotConfigCreate) *BizPricingAutopilotConfigCreateBulk {
+	return &BizPricingAutopilotConfigCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *BizPricingAutopilotConfigClient) MapCreateBulk(slice any, setFunc func(*BizPricingAutopilotConfigCreate, int)) *BizPricingAutopilotConfigCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &BizPricingAutopilotConfigCreateBulk{err: fmt.Errorf("calling to BizPricingAutopilotConfigClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*BizPricingAutopilotConfigCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &BizPricingAutopilotConfigCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for BizPricingAutopilotConfig.
+func (c *BizPricingAutopilotConfigClient) Update() *BizPricingAutopilotConfigUpdate {
+	mutation := newBizPricingAutopilotConfigMutation(c.config, OpUpdate)
+	return &BizPricingAutopilotConfigUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *BizPricingAutopilotConfigClient) UpdateOne(_m *BizPricingAutopilotConfig) *BizPricingAutopilotConfigUpdateOne {
+	mutation := newBizPricingAutopilotConfigMutation(c.config, OpUpdateOne, withBizPricingAutopilotConfig(_m))
+	return &BizPricingAutopilotConfigUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *BizPricingAutopilotConfigClient) UpdateOneID(id int) *BizPricingAutopilotConfigUpdateOne {
+	mutation := newBizPricingAutopilotConfigMutation(c.config, OpUpdateOne, withBizPricingAutopilotConfigID(id))
+	return &BizPricingAutopilotConfigUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for BizPricingAutopilotConfig.
+func (c *BizPricingAutopilotConfigClient) Delete() *BizPricingAutopilotConfigDelete {
+	mutation := newBizPricingAutopilotConfigMutation(c.config, OpDelete)
+	return &BizPricingAutopilotConfigDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *BizPricingAutopilotConfigClient) DeleteOne(_m *BizPricingAutopilotConfig) *BizPricingAutopilotConfigDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *BizPricingAutopilotConfigClient) DeleteOneID(id int) *BizPricingAutopilotConfigDeleteOne {
+	builder := c.Delete().Where(bizpricingautopilotconfig.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &BizPricingAutopilotConfigDeleteOne{builder}
+}
+
+// Query returns a query builder for BizPricingAutopilotConfig.
+func (c *BizPricingAutopilotConfigClient) Query() *BizPricingAutopilotConfigQuery {
+	return &BizPricingAutopilotConfigQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeBizPricingAutopilotConfig},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a BizPricingAutopilotConfig entity by its id.
+func (c *BizPricingAutopilotConfigClient) Get(ctx context.Context, id int) (*BizPricingAutopilotConfig, error) {
+	return c.Query().Where(bizpricingautopilotconfig.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *BizPricingAutopilotConfigClient) GetX(ctx context.Context, id int) *BizPricingAutopilotConfig {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *BizPricingAutopilotConfigClient) Hooks() []Hook {
+	return c.hooks.BizPricingAutopilotConfig
+}
+
+// Interceptors returns the client interceptors.
+func (c *BizPricingAutopilotConfigClient) Interceptors() []Interceptor {
+	return c.inters.BizPricingAutopilotConfig
+}
+
+func (c *BizPricingAutopilotConfigClient) mutate(ctx context.Context, m *BizPricingAutopilotConfigMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&BizPricingAutopilotConfigCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&BizPricingAutopilotConfigUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&BizPricingAutopilotConfigUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&BizPricingAutopilotConfigDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("gen: unknown BizPricingAutopilotConfig mutation op: %q", m.Op())
+	}
+}
+
+// BizPricingAutopilotStateClient is a client for the BizPricingAutopilotState schema.
+type BizPricingAutopilotStateClient struct {
+	config
+}
+
+// NewBizPricingAutopilotStateClient returns a client for the BizPricingAutopilotState from the given config.
+func NewBizPricingAutopilotStateClient(c config) *BizPricingAutopilotStateClient {
+	return &BizPricingAutopilotStateClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `bizpricingautopilotstate.Hooks(f(g(h())))`.
+func (c *BizPricingAutopilotStateClient) Use(hooks ...Hook) {
+	c.hooks.BizPricingAutopilotState = append(c.hooks.BizPricingAutopilotState, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `bizpricingautopilotstate.Intercept(f(g(h())))`.
+func (c *BizPricingAutopilotStateClient) Intercept(interceptors ...Interceptor) {
+	c.inters.BizPricingAutopilotState = append(c.inters.BizPricingAutopilotState, interceptors...)
+}
+
+// Create returns a builder for creating a BizPricingAutopilotState entity.
+func (c *BizPricingAutopilotStateClient) Create() *BizPricingAutopilotStateCreate {
+	mutation := newBizPricingAutopilotStateMutation(c.config, OpCreate)
+	return &BizPricingAutopilotStateCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of BizPricingAutopilotState entities.
+func (c *BizPricingAutopilotStateClient) CreateBulk(builders ...*BizPricingAutopilotStateCreate) *BizPricingAutopilotStateCreateBulk {
+	return &BizPricingAutopilotStateCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *BizPricingAutopilotStateClient) MapCreateBulk(slice any, setFunc func(*BizPricingAutopilotStateCreate, int)) *BizPricingAutopilotStateCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &BizPricingAutopilotStateCreateBulk{err: fmt.Errorf("calling to BizPricingAutopilotStateClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*BizPricingAutopilotStateCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &BizPricingAutopilotStateCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for BizPricingAutopilotState.
+func (c *BizPricingAutopilotStateClient) Update() *BizPricingAutopilotStateUpdate {
+	mutation := newBizPricingAutopilotStateMutation(c.config, OpUpdate)
+	return &BizPricingAutopilotStateUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *BizPricingAutopilotStateClient) UpdateOne(_m *BizPricingAutopilotState) *BizPricingAutopilotStateUpdateOne {
+	mutation := newBizPricingAutopilotStateMutation(c.config, OpUpdateOne, withBizPricingAutopilotState(_m))
+	return &BizPricingAutopilotStateUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *BizPricingAutopilotStateClient) UpdateOneID(id int) *BizPricingAutopilotStateUpdateOne {
+	mutation := newBizPricingAutopilotStateMutation(c.config, OpUpdateOne, withBizPricingAutopilotStateID(id))
+	return &BizPricingAutopilotStateUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for BizPricingAutopilotState.
+func (c *BizPricingAutopilotStateClient) Delete() *BizPricingAutopilotStateDelete {
+	mutation := newBizPricingAutopilotStateMutation(c.config, OpDelete)
+	return &BizPricingAutopilotStateDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *BizPricingAutopilotStateClient) DeleteOne(_m *BizPricingAutopilotState) *BizPricingAutopilotStateDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *BizPricingAutopilotStateClient) DeleteOneID(id int) *BizPricingAutopilotStateDeleteOne {
+	builder := c.Delete().Where(bizpricingautopilotstate.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &BizPricingAutopilotStateDeleteOne{builder}
+}
+
+// Query returns a query builder for BizPricingAutopilotState.
+func (c *BizPricingAutopilotStateClient) Query() *BizPricingAutopilotStateQuery {
+	return &BizPricingAutopilotStateQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeBizPricingAutopilotState},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a BizPricingAutopilotState entity by its id.
+func (c *BizPricingAutopilotStateClient) Get(ctx context.Context, id int) (*BizPricingAutopilotState, error) {
+	return c.Query().Where(bizpricingautopilotstate.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *BizPricingAutopilotStateClient) GetX(ctx context.Context, id int) *BizPricingAutopilotState {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *BizPricingAutopilotStateClient) Hooks() []Hook {
+	return c.hooks.BizPricingAutopilotState
+}
+
+// Interceptors returns the client interceptors.
+func (c *BizPricingAutopilotStateClient) Interceptors() []Interceptor {
+	return c.inters.BizPricingAutopilotState
+}
+
+func (c *BizPricingAutopilotStateClient) mutate(ctx context.Context, m *BizPricingAutopilotStateMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&BizPricingAutopilotStateCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&BizPricingAutopilotStateUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&BizPricingAutopilotStateUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&BizPricingAutopilotStateDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("gen: unknown BizPricingAutopilotState mutation op: %q", m.Op())
 	}
 }
 
@@ -6774,6 +7207,139 @@ func (c *ProcInboxMessagesClient) mutate(ctx context.Context, m *ProcInboxMessag
 	}
 }
 
+// ProcIndexResolveRoutesClient is a client for the ProcIndexResolveRoutes schema.
+type ProcIndexResolveRoutesClient struct {
+	config
+}
+
+// NewProcIndexResolveRoutesClient returns a client for the ProcIndexResolveRoutes from the given config.
+func NewProcIndexResolveRoutesClient(c config) *ProcIndexResolveRoutesClient {
+	return &ProcIndexResolveRoutesClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `procindexresolveroutes.Hooks(f(g(h())))`.
+func (c *ProcIndexResolveRoutesClient) Use(hooks ...Hook) {
+	c.hooks.ProcIndexResolveRoutes = append(c.hooks.ProcIndexResolveRoutes, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `procindexresolveroutes.Intercept(f(g(h())))`.
+func (c *ProcIndexResolveRoutesClient) Intercept(interceptors ...Interceptor) {
+	c.inters.ProcIndexResolveRoutes = append(c.inters.ProcIndexResolveRoutes, interceptors...)
+}
+
+// Create returns a builder for creating a ProcIndexResolveRoutes entity.
+func (c *ProcIndexResolveRoutesClient) Create() *ProcIndexResolveRoutesCreate {
+	mutation := newProcIndexResolveRoutesMutation(c.config, OpCreate)
+	return &ProcIndexResolveRoutesCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ProcIndexResolveRoutes entities.
+func (c *ProcIndexResolveRoutesClient) CreateBulk(builders ...*ProcIndexResolveRoutesCreate) *ProcIndexResolveRoutesCreateBulk {
+	return &ProcIndexResolveRoutesCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *ProcIndexResolveRoutesClient) MapCreateBulk(slice any, setFunc func(*ProcIndexResolveRoutesCreate, int)) *ProcIndexResolveRoutesCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &ProcIndexResolveRoutesCreateBulk{err: fmt.Errorf("calling to ProcIndexResolveRoutesClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*ProcIndexResolveRoutesCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &ProcIndexResolveRoutesCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ProcIndexResolveRoutes.
+func (c *ProcIndexResolveRoutesClient) Update() *ProcIndexResolveRoutesUpdate {
+	mutation := newProcIndexResolveRoutesMutation(c.config, OpUpdate)
+	return &ProcIndexResolveRoutesUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ProcIndexResolveRoutesClient) UpdateOne(_m *ProcIndexResolveRoutes) *ProcIndexResolveRoutesUpdateOne {
+	mutation := newProcIndexResolveRoutesMutation(c.config, OpUpdateOne, withProcIndexResolveRoutes(_m))
+	return &ProcIndexResolveRoutesUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ProcIndexResolveRoutesClient) UpdateOneID(id int) *ProcIndexResolveRoutesUpdateOne {
+	mutation := newProcIndexResolveRoutesMutation(c.config, OpUpdateOne, withProcIndexResolveRoutesID(id))
+	return &ProcIndexResolveRoutesUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ProcIndexResolveRoutes.
+func (c *ProcIndexResolveRoutesClient) Delete() *ProcIndexResolveRoutesDelete {
+	mutation := newProcIndexResolveRoutesMutation(c.config, OpDelete)
+	return &ProcIndexResolveRoutesDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ProcIndexResolveRoutesClient) DeleteOne(_m *ProcIndexResolveRoutes) *ProcIndexResolveRoutesDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *ProcIndexResolveRoutesClient) DeleteOneID(id int) *ProcIndexResolveRoutesDeleteOne {
+	builder := c.Delete().Where(procindexresolveroutes.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ProcIndexResolveRoutesDeleteOne{builder}
+}
+
+// Query returns a query builder for ProcIndexResolveRoutes.
+func (c *ProcIndexResolveRoutesClient) Query() *ProcIndexResolveRoutesQuery {
+	return &ProcIndexResolveRoutesQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeProcIndexResolveRoutes},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a ProcIndexResolveRoutes entity by its id.
+func (c *ProcIndexResolveRoutesClient) Get(ctx context.Context, id int) (*ProcIndexResolveRoutes, error) {
+	return c.Query().Where(procindexresolveroutes.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ProcIndexResolveRoutesClient) GetX(ctx context.Context, id int) *ProcIndexResolveRoutes {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *ProcIndexResolveRoutesClient) Hooks() []Hook {
+	return c.hooks.ProcIndexResolveRoutes
+}
+
+// Interceptors returns the client interceptors.
+func (c *ProcIndexResolveRoutesClient) Interceptors() []Interceptor {
+	return c.inters.ProcIndexResolveRoutes
+}
+
+func (c *ProcIndexResolveRoutesClient) mutate(ctx context.Context, m *ProcIndexResolveRoutesMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&ProcIndexResolveRoutesCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&ProcIndexResolveRoutesUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&ProcIndexResolveRoutesUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&ProcIndexResolveRoutesDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("gen: unknown ProcIndexResolveRoutes mutation op: %q", m.Op())
+	}
+}
+
 // ProcLiveFollowsClient is a client for the ProcLiveFollows schema.
 type ProcLiveFollowsClient struct {
 	config
@@ -8640,40 +9206,46 @@ func (c *WalletUtxoTokenVerificationClient) mutate(ctx context.Context, m *Walle
 type (
 	hooks struct {
 		BizBusinessTriggers, BizDemandQuoteArbiters, BizDemandQuotes, BizDemands,
-		BizFrontOrders, BizLiveQuotes, BizPool, BizPoolAllocations, BizPurchases,
-		BizSeedChunkSupply, BizSeedPricingPolicy, BizSeeds, BizWorkspaceFiles,
-		BizWorkspaces, FactBsv21, FactBsv21Events, FactBsvUtxos, FactPoolSessionEvents,
-		FactSettlementChannelChainAssetCreate, FactSettlementChannelChainDirectPay,
-		FactSettlementChannelChainQuotePay, FactSettlementChannelPoolSessionQuotePay,
-		FactSettlementCycles, FactSettlementPaymentAttempts, FactSettlementRecords,
-		FactTokenCarrierLinks, FactTokenLots, OrderSettlementEvents, OrderSettlements,
-		Orders, ProcChainTipState, ProcChainTipWorkerLogs, ProcChainUtxoWorkerLogs,
+		BizFrontOrders, BizLiveQuotes, BizPool, BizPoolAllocations,
+		BizPricingAutopilotAudit, BizPricingAutopilotConfig, BizPricingAutopilotState,
+		BizPurchases, BizSeedChunkSupply, BizSeedPricingPolicy, BizSeeds,
+		BizWorkspaceFiles, BizWorkspaces, FactBsv21, FactBsv21Events, FactBsvUtxos,
+		FactPoolSessionEvents, FactSettlementChannelChainAssetCreate,
+		FactSettlementChannelChainDirectPay, FactSettlementChannelChainQuotePay,
+		FactSettlementChannelPoolSessionQuotePay, FactSettlementCycles,
+		FactSettlementPaymentAttempts, FactSettlementRecords, FactTokenCarrierLinks,
+		FactTokenLots, OrderSettlementEvents, OrderSettlements, Orders,
+		ProcChainTipState, ProcChainTipWorkerLogs, ProcChainUtxoWorkerLogs,
 		ProcCommandJournal, ProcDirectDeals, ProcDirectTransferPools, ProcDomainEvents,
 		ProcEffectLogs, ProcFileDownloadChunks, ProcFileDownloads, ProcGatewayEvents,
 		ProcGetFileByHashChunks, ProcGetFileByHashJobs, ProcGetFileByHashQuotes,
-		ProcInboxMessages, ProcLiveFollows, ProcNodeReachabilityCache,
-		ProcObservedGatewayStates, ProcOrchestratorLogs, ProcPublishedRouteIndexes,
-		ProcSchedulerTaskRuns, ProcSchedulerTasks, ProcSelfNodeReachabilityState,
-		ProcStateSnapshots, WalletLocalBroadcastTxs, WalletUtxo, WalletUtxoSyncCursor,
-		WalletUtxoSyncState, WalletUtxoTokenVerification []ent.Hook
+		ProcInboxMessages, ProcIndexResolveRoutes, ProcLiveFollows,
+		ProcNodeReachabilityCache, ProcObservedGatewayStates, ProcOrchestratorLogs,
+		ProcPublishedRouteIndexes, ProcSchedulerTaskRuns, ProcSchedulerTasks,
+		ProcSelfNodeReachabilityState, ProcStateSnapshots, WalletLocalBroadcastTxs,
+		WalletUtxo, WalletUtxoSyncCursor, WalletUtxoSyncState,
+		WalletUtxoTokenVerification []ent.Hook
 	}
 	inters struct {
 		BizBusinessTriggers, BizDemandQuoteArbiters, BizDemandQuotes, BizDemands,
-		BizFrontOrders, BizLiveQuotes, BizPool, BizPoolAllocations, BizPurchases,
-		BizSeedChunkSupply, BizSeedPricingPolicy, BizSeeds, BizWorkspaceFiles,
-		BizWorkspaces, FactBsv21, FactBsv21Events, FactBsvUtxos, FactPoolSessionEvents,
-		FactSettlementChannelChainAssetCreate, FactSettlementChannelChainDirectPay,
-		FactSettlementChannelChainQuotePay, FactSettlementChannelPoolSessionQuotePay,
-		FactSettlementCycles, FactSettlementPaymentAttempts, FactSettlementRecords,
-		FactTokenCarrierLinks, FactTokenLots, OrderSettlementEvents, OrderSettlements,
-		Orders, ProcChainTipState, ProcChainTipWorkerLogs, ProcChainUtxoWorkerLogs,
+		BizFrontOrders, BizLiveQuotes, BizPool, BizPoolAllocations,
+		BizPricingAutopilotAudit, BizPricingAutopilotConfig, BizPricingAutopilotState,
+		BizPurchases, BizSeedChunkSupply, BizSeedPricingPolicy, BizSeeds,
+		BizWorkspaceFiles, BizWorkspaces, FactBsv21, FactBsv21Events, FactBsvUtxos,
+		FactPoolSessionEvents, FactSettlementChannelChainAssetCreate,
+		FactSettlementChannelChainDirectPay, FactSettlementChannelChainQuotePay,
+		FactSettlementChannelPoolSessionQuotePay, FactSettlementCycles,
+		FactSettlementPaymentAttempts, FactSettlementRecords, FactTokenCarrierLinks,
+		FactTokenLots, OrderSettlementEvents, OrderSettlements, Orders,
+		ProcChainTipState, ProcChainTipWorkerLogs, ProcChainUtxoWorkerLogs,
 		ProcCommandJournal, ProcDirectDeals, ProcDirectTransferPools, ProcDomainEvents,
 		ProcEffectLogs, ProcFileDownloadChunks, ProcFileDownloads, ProcGatewayEvents,
 		ProcGetFileByHashChunks, ProcGetFileByHashJobs, ProcGetFileByHashQuotes,
-		ProcInboxMessages, ProcLiveFollows, ProcNodeReachabilityCache,
-		ProcObservedGatewayStates, ProcOrchestratorLogs, ProcPublishedRouteIndexes,
-		ProcSchedulerTaskRuns, ProcSchedulerTasks, ProcSelfNodeReachabilityState,
-		ProcStateSnapshots, WalletLocalBroadcastTxs, WalletUtxo, WalletUtxoSyncCursor,
-		WalletUtxoSyncState, WalletUtxoTokenVerification []ent.Interceptor
+		ProcInboxMessages, ProcIndexResolveRoutes, ProcLiveFollows,
+		ProcNodeReachabilityCache, ProcObservedGatewayStates, ProcOrchestratorLogs,
+		ProcPublishedRouteIndexes, ProcSchedulerTaskRuns, ProcSchedulerTasks,
+		ProcSelfNodeReachabilityState, ProcStateSnapshots, WalletLocalBroadcastTxs,
+		WalletUtxo, WalletUtxoSyncCursor, WalletUtxoSyncState,
+		WalletUtxoTokenVerification []ent.Interceptor
 	}
 )

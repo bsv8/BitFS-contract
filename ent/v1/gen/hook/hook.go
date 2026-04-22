@@ -105,6 +105,42 @@ func (f BizPoolAllocationsFunc) Mutate(ctx context.Context, m gen.Mutation) (gen
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.BizPoolAllocationsMutation", m)
 }
 
+// The BizPricingAutopilotAuditFunc type is an adapter to allow the use of ordinary
+// function as BizPricingAutopilotAudit mutator.
+type BizPricingAutopilotAuditFunc func(context.Context, *gen.BizPricingAutopilotAuditMutation) (gen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f BizPricingAutopilotAuditFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.Value, error) {
+	if mv, ok := m.(*gen.BizPricingAutopilotAuditMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.BizPricingAutopilotAuditMutation", m)
+}
+
+// The BizPricingAutopilotConfigFunc type is an adapter to allow the use of ordinary
+// function as BizPricingAutopilotConfig mutator.
+type BizPricingAutopilotConfigFunc func(context.Context, *gen.BizPricingAutopilotConfigMutation) (gen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f BizPricingAutopilotConfigFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.Value, error) {
+	if mv, ok := m.(*gen.BizPricingAutopilotConfigMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.BizPricingAutopilotConfigMutation", m)
+}
+
+// The BizPricingAutopilotStateFunc type is an adapter to allow the use of ordinary
+// function as BizPricingAutopilotState mutator.
+type BizPricingAutopilotStateFunc func(context.Context, *gen.BizPricingAutopilotStateMutation) (gen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f BizPricingAutopilotStateFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.Value, error) {
+	if mv, ok := m.(*gen.BizPricingAutopilotStateMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.BizPricingAutopilotStateMutation", m)
+}
+
 // The BizPurchasesFunc type is an adapter to allow the use of ordinary
 // function as BizPurchases mutator.
 type BizPurchasesFunc func(context.Context, *gen.BizPurchasesMutation) (gen.Value, error)
@@ -547,6 +583,18 @@ func (f ProcInboxMessagesFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.ProcInboxMessagesMutation", m)
+}
+
+// The ProcIndexResolveRoutesFunc type is an adapter to allow the use of ordinary
+// function as ProcIndexResolveRoutes mutator.
+type ProcIndexResolveRoutesFunc func(context.Context, *gen.ProcIndexResolveRoutesMutation) (gen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ProcIndexResolveRoutesFunc) Mutate(ctx context.Context, m gen.Mutation) (gen.Value, error) {
+	if mv, ok := m.(*gen.ProcIndexResolveRoutesMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *gen.ProcIndexResolveRoutesMutation", m)
 }
 
 // The ProcLiveFollowsFunc type is an adapter to allow the use of ordinary

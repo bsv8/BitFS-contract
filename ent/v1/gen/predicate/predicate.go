@@ -30,6 +30,15 @@ type BizPool func(*sql.Selector)
 // BizPoolAllocations is the predicate function for bizpoolallocations builders.
 type BizPoolAllocations func(*sql.Selector)
 
+// BizPricingAutopilotAudit is the predicate function for bizpricingautopilotaudit builders.
+type BizPricingAutopilotAudit func(*sql.Selector)
+
+// BizPricingAutopilotConfig is the predicate function for bizpricingautopilotconfig builders.
+type BizPricingAutopilotConfig func(*sql.Selector)
+
+// BizPricingAutopilotState is the predicate function for bizpricingautopilotstate builders.
+type BizPricingAutopilotState func(*sql.Selector)
+
 // BizPurchases is the predicate function for bizpurchases builders.
 type BizPurchases func(*sql.Selector)
 
@@ -140,6 +149,9 @@ type ProcGetFileByHashQuotes func(*sql.Selector)
 
 // ProcInboxMessages is the predicate function for procinboxmessages builders.
 type ProcInboxMessages func(*sql.Selector)
+
+// ProcIndexResolveRoutes is the predicate function for procindexresolveroutes builders.
+type ProcIndexResolveRoutes func(*sql.Selector)
 
 // ProcLiveFollows is the predicate function for proclivefollows builders.
 type ProcLiveFollows func(*sql.Selector)
