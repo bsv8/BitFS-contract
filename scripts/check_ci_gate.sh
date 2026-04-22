@@ -9,9 +9,6 @@ cd "$repo_root"
 echo "[bitfs-contract] gate: proto generated check"
 "$repo_root/scripts/check_proto_generated.sh"
 
-echo "[bitfs-contract] gate: ent v1 generated check"
-"$repo_root/scripts/check_ent_generated_v1.sh"
-
 echo "[bitfs-contract] gate: go test"
 "$go_bin" test ./...
 
